@@ -1,0 +1,213 @@
+.backdrop-blur {
+    backdrop-filter: blur(10px);
+}
+
+body {
+    background: #f5f5f5;
+}
+/* ===========================
+   PREMIUM UI VARIABLES
+=========================== */
+
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    --glass-blur: blur(12px);
+
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.35s ease;
+}
+
+/* ===========================
+   GLASS / BLUR COMPONENTS
+=========================== */
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--glass-shadow);
+    padding: 20px;
+    transition: var(--transition-medium);
+}
+
+.glass-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* ===========================
+   NAVBAR BLUR
+=========================== */
+
+.navbar {
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.65) !important;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.btn {
+    transition: var(--transition-fast);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ===========================
+   TABLES
+=========================== */
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.03);
+    transition: var(--transition-fast);
+}
+
+/* ===========================
+   DASHBOARD CARDS
+=========================== */
+
+.dashboard-card {
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-medium);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+}
+
+/* ===========================
+   SMOOTH PAGE TRANSITIONS
+=========================== */
+
+body {
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ===========================
+   BURGER MENU ANIMATION
+=========================== */
+
+.navbar-toggler {
+    border: none;
+    padding: 0;
+    width: 40px;
+    height: 32px;
+    position: relative;
+    transition: 0.3s ease;
+}
+
+.toggler-icon {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 100%;
+    background: white;
+    border-radius: 4px;
+    opacity: 1;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.top-bar {
+    top: 0;
+}
+
+.middle-bar {
+    top: 14px;
+}
+
+.bottom-bar {
+    top: 28px;
+}
+
+/* ANIMACIJA KAI MENIU ATIDARYTAS */
+.navbar-toggler:not(.collapsed) .top-bar {
+    transform: rotate(45deg);
+    top: 14px;
+}
+
+.navbar-toggler:not(.collapsed) .middle-bar {
+    opacity: 0;
+}
+
+.navbar-toggler:not(.collapsed) .bottom-bar {
+    transform: rotate(-45deg);
+    top: 14px;
+}
+/* ===========================
+   FOOTER GLASS
+=========================== */
+
+.footer-glass {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.footer-link {
+    color: #555;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #000;
+    text-decoration: underline;
+}
+.badge {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+}
+
+/* ===========================
+   HERO SECTION
+=========================== */
+
+.hero-section {
+    min-height: 70vh;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    padding: 60px 0;
+}
+/* AUTH BACKGROUND */
+.auth-bg {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background-size: cover;
+    background-position: center;
+    padding: 40px 0;
+}
+
+/* Glass card adjustments for auth */
+.glass-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}

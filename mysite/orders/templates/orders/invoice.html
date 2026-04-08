@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <title>Sąskaita faktūra #{{ order.id }}</title>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .company-info, .client-info {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .company-info strong, .client-info strong {
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        table th {
+            background: #f2f2f2;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: left;
+        }
+
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .totals {
+            margin-top: 30px;
+            width: 40%;
+            float: right;
+            border: 1px solid #ddd;
+            padding: 15px;
+        }
+
+        .totals table {
+            width: 100%;
+            border: none;
+        }
+
+        .totals td {
+            padding: 6px 0;
+        }
+
+        .footer {
+            margin-top: 80px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Sąskaita faktūra Nr. {{ order.id }}</h1>
+
+<div class="company-info">
+    <strong>{{ company.name }}</strong><br>
+    {{ company.address }}<br>
+    {{ company.code }}<br>
+    {{ company.vat_code }}<br>
+    {{ company.email }}<br>
+</div>
+
+<div class="client-info">
+    <strong>Klientas:</strong><br>
+    {{ order.full_name }}<br>
+    {{ order.email }}<br>
+    {{ order.address }}<br>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Prekė</th>
+            <th>Kiekis</th>
+            <th>Kaina (su PVM)</th>
+            <th>Suma (su PVM)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }} €</td>
+            <td>{{ item.total_price }} €</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% comment %}
+    PVM SKAIČIAVIMAS:
+    order.total = suma su PVM
+    suma_be_pvm = total / 1.21
+    pvm = total - suma_be_pvm
+{% endcomment %}
+
+{% with suma_be_pvm=order.total|div:1.21 %}
+{% with pvm=order.total|floatformat:2|floatformat:""|add:"-"|add:suma_be_pvm %}
+
+<div class="totals">
+    <table>
+        <tr>
+            <td>Suma be PVM:</td>
+            <td><strong>{{ suma_be_pvm|floatformat:2 }} €</strong></td>
+        </tr>
+        <tr>
+            <td>PVM (21%):</td>
+            <td><strong>{{ order.total|floatformat:2|floatformat:""|add:"-"|add:suma_be_pvm }} €</strong></td>
+        </tr>
+        <tr>
+            <td>Viso su PVM:</td>
+            <td><strong>{{ order.total|floatformat:2 }} €</strong></td>
+        </tr>
+    </table>
+</div>
+
+{% endwith %}
+{% endwith %}
+
+<div class="footer">
+    Sąskaita sugeneruota automatiškai FinPro sistemoje.
+</div>
+
+</body>
+</html>

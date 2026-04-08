@@ -1,0 +1,65 @@
+{% load static %}
+{% load role_badges %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-75 backdrop-blur">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="/">FinPro</a>
+
+        <!-- ANIMUOTAS BURGERIS -->
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="toggler-icon top-bar"></span>
+            <span class="toggler-icon middle-bar"></span>
+            <span class="toggler-icon bottom-bar"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Pradžia</a>
+                </li>
+
+                {% if user.is_authenticated %}
+
+                    {% if user.profile.role == 'client' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/orders/client/">Mano paskyra</a>
+                        </li>
+                    {% endif %}
+
+                    {% if user.profile.role == 'manager' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/orders/manager/">Vadibininko panelė</a>
+                        </li>
+                    {% endif %}
+
+                    {% if user.profile.role == 'admin' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/">Admin</a>
+                        </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/orders/list/">Užsakymai</a>
+                    </li>
+
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Profilis</a>
+                    <a href="{% url 'logout' %}">Atsijungti</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Prisijungti</a>
+                 <a href="{% url 'register' %}">Registruotis</a>
+                {% endif %}
+
+
+            </ul>
+
+        </div>
+    </div>
+</nav>

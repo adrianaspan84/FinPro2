@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="glass-card p-4" style="max-width: 650px; margin: auto;">
+
+        <h2 class="fw-bold mb-4 text-center">Redaguoti profilį</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row g-4">
+
+                <!-- Avatar -->
+                <div class="col-md-12 text-center">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" class="rounded-circle shadow mb-3"
+                             style="width: 130px; height: 130px; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle shadow mb-3"
+                             style="width: 130px; height: 130px; object-fit: cover;">
+                    {% endif %}
+
+                    <div class="mt-2">
+                        <label class="form-label fw-semibold"><i class="bi bi-image me-2"></i>Keisti nuotrauką</label>
+                        {{ form.avatar }}
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold"><i class="bi bi-telephone me-2"></i>Telefonas</label>
+                    {{ form.phone }}
+                </div>
+
+                <!-- City -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold"><i class="bi bi-geo-alt me-2"></i>Miestas</label>
+                    {{ form.city }}
+                </div>
+
+                <!-- Address -->
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold"><i class="bi bi-house-door me-2"></i>Adresas</label>
+                    {{ form.address }}
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">
+                Išsaugoti pakeitimus
+            </button>
+
+            <a href="{% url 'profile' %}" class="btn btn-light btn-lg w-100 mt-3">
+                Atgal į profilį
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}

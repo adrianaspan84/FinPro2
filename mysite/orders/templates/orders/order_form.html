@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load status_badges %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="glass-card p-4">
+
+        <h2 class="fw-bold mb-4">
+            {% if form.instance.pk %}
+                Redaguoti užsakymą
+            {% else %}
+                Naujas užsakymas
+            {% endif %}
+        </h2>
+
+        <form method="POST" id="orderForm">
+            {% csrf_token %}
+
+            <div class="row g-4">
+
+                <!-- Kategorija -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Kategorija</label>
+                    {{ form.category }}
+                </div>
+
+                <!-- Paslauga -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Paslauga</label>
+                    {{ form.service }}
+                </div>
+
+                <!-- Kiekis -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Kiekis</label>
+                    {{ form.quantity }}
+                </div>
+
+                <!-- Terminas -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Terminas</label>
+                    {{ form.deadline }}
+                </div>
+
+                <!-- Automatinė kaina -->
+                <div class="col-md-12">
+                    <div class="p-3 rounded bg-light border">
+                        <strong>Numatoma kaina:</strong>
+                        <span id="pricePreview" class="fw-bold">0 €</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg mt-4">
+                {% if form.instance.pk %}
+                    Išsaugoti pakeitimus
+                {% else %}
+                    Sukurti užsakymą
+                {% endif %}
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- PREMIUM JS: dinaminės paslaugos + automatinė kaina -->
+<script>
+    const categorySelect = document.getElementById('id_category');
+    const serviceSelect = document.getElementById('id_service');
+    const quantityInput = document.getElementById('id_quantity');
+    const pricePreview = document.getElementById('pricePreview');
+
+    // 1) Dinaminis paslaugų užkrovimas pagal kategoriją
+    categorySelect.addEventListener('change', function () {
+        const categoryId = this.value;
+
+        fetch(`/orders/load-services/?category_id=${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+                serviceSelect.innerHTML = '';
+
+                data.forEach(service => {
+                    const option = document.createElement('option');
+                    option.value = service.id;
+                    option.textContent = service.name;
+                    option.dataset.price = service.price;
+                    serviceSelect.appendChild(option);
+                });
+
+                updatePrice();
+            });
+    });
+
+    // 2) Automatinė kainos skaičiavimo funkcija
+    function updatePrice() {
+        const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+        const price = selectedOption ? parseFloat(selectedOption.dataset.price || 0) : 0;
+        const quantity = parseInt(quantityInput.value || 1);
+
+        const total = price * quantity;
+        pricePreview.textContent = total.toFixed(2) + " €";
+    }
+
+    serviceSelect.addEventListener('change', updatePrice);
+    quantityInput.addEventListener('input', updatePrice);
+
+    // Paleidžiam automatinį skaičiavimą iškart
+    updatePrice();
+</script>
+
+{% endblock %}

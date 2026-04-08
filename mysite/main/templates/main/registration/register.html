@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-bg d-flex align-items-center justify-content-center">
+
+    <div class="glass-card p-4" style="width: 480px;">
+
+        <h2 class="fw-bold text-center mb-4">Registracija</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold"><i class="bi bi-person me-2"></i>Vartotojo vardas</label>
+                    {{ form.username }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold"><i class="bi bi-envelope me-2"></i>El. paštas</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold"><i class="bi bi-lock me-2"></i>Slaptažodis</label>
+                    {{ form.password1 }}
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold"><i class="bi bi-lock-fill me-2"></i>Pakartoti slaptažodį</label>
+                    {{ form.password2 }}
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-lg mt-4">
+                Sukurti paskyrą
+            </button>
+
+        </form>
+
+        <p class="text-center mt-3">
+            Jau turi paskyrą?
+            <a href="/login/" class="fw-semibold">Prisijunk</a>
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}

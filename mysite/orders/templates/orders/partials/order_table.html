@@ -1,0 +1,36 @@
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Klientas</th>
+            <th>Statusas</th>
+            <th>Terminas</th>
+            <th>Vėluoja?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.client.username }}</td>
+            <td>{% status_badge order.status %}</td>
+            <td>{{ order.deadline|default:"-" }}</td>
+            <td>
+                {% if order.is_overdue %}
+                    <span class="text-danger">Taip</span>
+                {% else %}
+                    Ne
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">Peržiūrėti</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center">Nėra duomenų.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: DejaVu Sans, sans-serif; }
+        h1 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+        .right { text-align: right; }
+        .totals { margin-top: 20px; width: 40%; float: right; }
+    </style>
+</head>
+<body>
+
+<h1>SĄSKAITA FAKTŪRA</h1>
+
+<h3>Užsakymas #{{ order.id }}</h3>
+<p><strong>Data:</strong> {{ order.created_at.date }}</p>
+
+<h3>Pardavėjas:</h3>
+<p>
+    <strong>{{ company.name }}</strong><br>
+    {{ company.address }}<br>
+    Pardavėjo kodas: {{ company.seller_code }}<br>
+    PVM mokėtojo kodas: {{ company.vat_code }}<br>
+    Sąskaitos nr.: {{ company.account_number }}<br>
+    Bankas: {{ company.bank_name }}<br>
+    Tel.: {{ company.phone }}<br>
+    El. paštas: {{ company.email }}
+</p>
+
+<h3>Pirkėjas:</h3>
+<p>
+    {{ order.client.first_name }} {{ order.client.last_name }}<br>
+    {{ order.client.profile.address }}<br>
+    {{ order.client.profile.city }}<br>
+    Tel.: {{ order.client.profile.phone }}
+</p>
+
+<h3>Paslaugos:</h3>
+
+<table>
+    <tr>
+        <th>Paslauga</th>
+        <th>Kiekis</th>
+        <th>Kaina</th>
+        <th>Suma</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <td>{{ item.service.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.service.price }} €</td>
+        <td>{{ item.total_price }} €</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="totals">
+    <p><strong>Tarpinė suma:</strong> {{ order.subtotal }} €</p>
+    <p><strong>PVM (21%):</strong> {{ order.vat_amount }} €</p>
+    <p><strong>Galutinė suma:</strong> {{ order.total_with_vat }} €</p>
+</div>
+
+</body>
+</html>

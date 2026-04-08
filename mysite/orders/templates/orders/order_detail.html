@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load role_badges %}
+{% load status_badges %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="glass-card p-4">
+
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="fw-bold">Užsakymas #{{ order.id }}</h2>
+
+            <div>
+                {% status_badge order.status %}
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- CLIENT & MANAGER INFO -->
+        <div class="row mt-3">
+
+            <div class="col-md-6 mb-3">
+                <h5 class="fw-semibold">Klientas</h5>
+                <p class="mb-1">
+                    {{ order.client.username }}
+                    {% role_badge order.client.profile.role %}
+                </p>
+                <p class="text-muted small">
+                    {{ order.client.profile.phone|default:"Telefono nėra" }}<br>
+                    {{ order.client.profile.city|default:"Miestas nenurodytas" }}
+                </p>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <h5 class="fw-semibold">Vadibininkas</h5>
+                {% if order.manager %}
+                    <p class="mb-1">
+                        {{ order.manager.username }}
+                        {% role_badge order.manager.profile.role %}
+                    </p>
+                {% else %}
+                    <p class="text-muted">Nepriskirtas</p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- ORDER INFO -->
+        <div class="row mt-3">
+
+            <div class="col-md-4 mb-3">
+                <h6 class="fw-semibold">Sukūrimo data</h6>
+                <p>{{ order.created_at|date:"Y-m-d H:i" }}</p>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <h6 class="fw-semibold">Terminas</h6>
+                <p>{{ order.deadline|default:"-" }}</p>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <h6 class="fw-semibold">Bendra kaina</h6>
+                <p class="fw-bold">{{ order.total_price }} €</p>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- SERVICES LIST -->
+        <h4 class="fw-semibold mt-3">Paslaugos</h4>
+
+        <div class="table-responsive mt-3">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Paslauga</th>
+                        <th>Kiekis</th>
+                        <th>Kaina</th>
+                        <th>Suma</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>{{ item.service.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.service.price }} €</td>
+                        <td class="fw-semibold">{{ item.total }} €</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <hr>
+
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex gap-3 mt-4">
+
+            <a href="{% url 'order_edit' order.id %}" class="btn btn-primary px-4">
+                Redaguoti
+            </a>
+
+            <a href="{% url 'download_invoice' order.id %}" class="btn btn-outline-secondary px-4">
+                Atsisiųsti sąskaitą (PDF)
+            </a>
+
+            <a href="/orders/list/" class="btn btn-light px-4">
+                Grįžti į sąrašą
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

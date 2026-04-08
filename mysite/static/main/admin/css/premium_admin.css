@@ -1,0 +1,87 @@
+/* ===========================
+   PREMIUM DJANGO ADMIN UI
+   Glass, modern colors, spacing
+=========================== */
+
+/* Background */
+body {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+#header {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+#header a:link, #header a:visited {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+/* Sidebar */
+#content-related {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+}
+
+/* Main content card */
+#content {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 14px;
+    margin-top: 20px;
+}
+
+/* Tables */
+table {
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table thead th {
+    background: rgba(255, 255, 255, 0.45) !important;
+    font-weight: 600;
+}
+
+table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Buttons */
+.button, input[type=submit], .submit-row input {
+    background: #1e3c72 !important;
+    border: none !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.button:hover, input[type=submit]:hover {
+    background: #2a5298 !important;
+}
+
+/* Forms */
+input, select, textarea {
+    border-radius: 8px !important;
+    border: 1px solid rgba(0,0,0,0.2) !important;
+    padding: 8px !important;
+}
+
+/* Footer */
+#footer {
+    background: rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    color: white !important;
+}

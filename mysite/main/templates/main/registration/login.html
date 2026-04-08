@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-bg d-flex align-items-center justify-content-center">
+
+    <div class="glass-card p-4" style="width: 420px;">
+
+        <h2 class="fw-bold text-center mb-4">Prisijungimas</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold"><i class="bi bi-person me-2"></i>Vartotojo vardas</label>
+                {{ form.username }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold"><i class="bi bi-lock me-2"></i>Slaptažodis</label>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-lg mt-3">
+                Prisijungti
+            </button>
+
+        </form>
+
+        <p class="text-center mt-3">
+            Neturi paskyros?
+            <a href="/register/" class="fw-semibold">Registruokis</a>
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}

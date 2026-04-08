@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load role_badges %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4">Mano profilis</h2>
+
+    <div class="glass-card p-4" style="max-width: 650px; margin: auto;">
+
+        <!-- AVATAR + USERNAME -->
+        <div class="text-center mb-4">
+
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" class="rounded-circle shadow"
+                     style="width: 140px; height: 140px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle shadow"
+                     style="width: 140px; height: 140px; object-fit: cover;">
+            {% endif %}
+
+            <h3 class="fw-bold mt-3 mb-0">{{ profile.user.username }}</h3>
+            <div class="mt-1">
+                {% role_badge profile.role %}
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- USER INFO -->
+        <div class="row mt-4">
+
+            <div class="col-md-6 mb-3">
+                <h6 class="fw-semibold"><i class="bi bi-telephone me-2"></i>Telefonas</h6>
+                <p class="text-muted">{{ profile.phone|default:"Nenurodytas" }}</p>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <h6 class="fw-semibold"><i class="bi bi-geo-alt me-2"></i>Miestas</h6>
+                <p class="text-muted">{{ profile.city|default:"Nenurodytas" }}</p>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <h6 class="fw-semibold"><i class="bi bi-house-door me-2"></i>Adresas</h6>
+                <p class="text-muted">{{ profile.address|default:"Nenurodytas" }}</p>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{% url 'profile_edit' %}" class="btn btn-primary px-4">Redaguoti profilį</a>
+            <a href="/orders/client/" class="btn btn-outline-secondary px-4">Mano užsakymai</a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="glass-card p-4" style="max-width: 650px; margin: auto;">
+
+        <h2 class="fw-bold mb-4">
+            {% if form.instance.pk %}
+                Redaguoti kategoriją
+            {% else %}
+                Nauja kategorija
+            {% endif %}
+        </h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row g-4">
+
+                <!-- Pavadinimas -->
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Pavadinimas</label>
+                    {{ form.name }}
+                </div>
+
+                <!-- Aprašymas -->
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Aprašymas</label>
+                    {{ form.description }}
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg mt-4 px-4">
+                {% if form.instance.pk %}
+                    Išsaugoti pakeitimus
+                {% else %}
+                    Sukurti kategoriją
+                {% endif %}
+            </button>
+
+            <a href="{% url 'category_list' %}" class="btn btn-light btn-lg mt-4 px-4 ms-2">
+                Grįžti į sąrašą
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+{% endblock %}
