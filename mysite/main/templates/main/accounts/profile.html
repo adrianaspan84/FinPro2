@@ -1,26 +1,28 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 {% load role_badges %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
+    {% trans "Nenurodytas" as not_set %}
 
-    <h2 class="fw-bold mb-4">Mano profilis</h2>
+    <h2 class="fw-bold text-center mb-4">{% trans "Mano profilis" %}</h2>
 
-    <div class="glass-card p-4" style="max-width: 650px; margin: auto;">
+    <div class="glass-card p-4" style="max-width: 700px; margin: auto;">
 
-        <!-- AVATAR + USERNAME -->
         <div class="text-center mb-4">
 
-            {% if profile.avatar %}
+            {% if profile.avatar and profile.avatar.url %}
                 <img src="{{ profile.avatar.url }}" class="rounded-circle shadow"
                      style="width: 140px; height: 140px; object-fit: cover;">
             {% else %}
-                <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle shadow"
+                <img src="{% static 'main/img/default-avatar.png' %}" class="rounded-circle shadow"
                      style="width: 140px; height: 140px; object-fit: cover;">
             {% endif %}
 
             <h3 class="fw-bold mt-3 mb-0">{{ profile.user.username }}</h3>
+            <p class="text-muted mb-1">{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
             <div class="mt-1">
                 {% role_badge profile.role %}
             </div>
@@ -29,32 +31,33 @@
 
         <hr>
 
-        <!-- USER INFO -->
         <div class="row mt-4">
+            <div class="col-md-6 mb-3">
+                <h6 class="fw-semibold">{% trans "El. paštas" %}</h6>
+                <p class="text-muted">{{ profile.user.email|default:not_set }}</p>
+            </div>
 
             <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold"><i class="bi bi-telephone me-2"></i>Telefonas</h6>
-                <p class="text-muted">{{ profile.phone|default:"Nenurodytas" }}</p>
+                <h6 class="fw-semibold">{% trans "Telefonas" %}</h6>
+                <p class="text-muted">{{ profile.phone|default:not_set }}</p>
             </div>
 
             <div class="col-md-6 mb-3">
-                <h6 class="fw-semibold"><i class="bi bi-geo-alt me-2"></i>Miestas</h6>
-                <p class="text-muted">{{ profile.city|default:"Nenurodytas" }}</p>
+                <h6 class="fw-semibold">{% trans "Miestas" %}</h6>
+                <p class="text-muted">{{ profile.city|default:not_set }}</p>
             </div>
 
-            <div class="col-md-12 mb-3">
-                <h6 class="fw-semibold"><i class="bi bi-house-door me-2"></i>Adresas</h6>
-                <p class="text-muted">{{ profile.address|default:"Nenurodytas" }}</p>
+            <div class="col-md-6 mb-3">
+                <h6 class="fw-semibold">{% trans "Adresas" %}</h6>
+                <p class="text-muted">{{ profile.address|default:not_set }}</p>
             </div>
-
         </div>
 
         <hr>
 
-        <!-- ACTION BUTTONS -->
         <div class="d-flex justify-content-center gap-3 mt-4">
-            <a href="{% url 'profile_edit' %}" class="btn btn-primary px-4">Redaguoti profilį</a>
-            <a href="/orders/client/" class="btn btn-outline-secondary px-4">Mano užsakymai</a>
+            <a href="{% url 'profile_edit' %}" class="btn btn-primary px-4">{% trans "Redaguoti profilį" %}</a>
+            <a href="{% url 'order_list' %}" class="btn btn-outline-secondary px-4">{% trans "Mano užsakymai" %}</a>
         </div>
 
     </div>

@@ -1,60 +1,110 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
 
-    <div class="glass-card p-4" style="max-width: 650px; margin: auto;">
+    <div class="glass-card p-4" style="max-width: 760px; margin: auto;">
 
-        <h2 class="fw-bold mb-4 text-center">Redaguoti profilį</h2>
+        <h2 class="fw-bold mb-4 text-center">{% trans "Redaguoti profilį" %}</h2>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
             <div class="row g-4">
 
-                <!-- Avatar -->
                 <div class="col-md-12 text-center">
-                    {% if profile.avatar %}
+                    {% if profile.avatar and profile.avatar.url %}
                         <img src="{{ profile.avatar.url }}" class="rounded-circle shadow mb-3"
                              style="width: 130px; height: 130px; object-fit: cover;">
                     {% else %}
-                        <img src="{% static 'img/default-avatar.png' %}" class="rounded-circle shadow mb-3"
+                        <img src="{% static 'main/img/default-avatar.png' %}" class="rounded-circle shadow mb-3"
                              style="width: 130px; height: 130px; object-fit: cover;">
                     {% endif %}
 
                     <div class="mt-2">
-                        <label class="form-label fw-semibold"><i class="bi bi-image me-2"></i>Keisti nuotrauką</label>
+                        <label class="form-label fw-semibold d-block text-center">{% trans "Keisti nuotrauką" %}</label>
                         {{ form.avatar }}
                     </div>
                 </div>
 
-                <!-- Phone -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold"><i class="bi bi-telephone me-2"></i>Telefonas</label>
+                <div class="col-md-6 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "Vardas" %}</label>
+                    {{ form.first_name }}
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "Pavardė" %}</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "El. paštas" %}</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "Telefonas" %}</label>
                     {{ form.phone }}
                 </div>
 
-                <!-- City -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold"><i class="bi bi-geo-alt me-2"></i>Miestas</label>
+                <div class="col-md-6 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "Miestas" %}</label>
                     {{ form.city }}
                 </div>
 
-                <!-- Address -->
-                <div class="col-md-12">
-                    <label class="form-label fw-semibold"><i class="bi bi-house-door me-2"></i>Adresas</label>
+                <div class="col-md-12 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "Adresas" %}</label>
                     {{ form.address }}
+                </div>
+
+                <div class="col-md-12 text-center">
+                    <label class="form-label fw-semibold d-block text-center">{% trans "Aprašymas" %}</label>
+                    {{ form.bio }}
+                </div>
+
+                <div class="col-md-12">
+                    <hr class="my-2">
+                    <h5 class="fw-bold mb-2 text-center">{% trans "Juridinio asmens rekvizitai" %}</h5>
+                    <div class="form-check d-flex justify-content-center align-items-center gap-2 mb-2">
+                        {{ form.is_legal_entity }}
+                        <label class="form-check-label" for="{{ form.is_legal_entity.id_for_label }}">
+                            {% trans "Esu juridinis asmuo" %}
+                        </label>
+                    </div>
+                </div>
+
+                <div id="legal-fields" class="row g-4">
+                    <div class="col-md-12 text-center">
+                        <label class="form-label fw-semibold d-block text-center">{% trans "Įmonės pavadinimas" %}</label>
+                        {{ form.company_name }}
+                    </div>
+
+                    <div class="col-md-6 text-center">
+                        <label class="form-label fw-semibold d-block text-center">{% trans "Įmonės kodas" %}</label>
+                        {{ form.company_code }}
+                    </div>
+
+                    <div class="col-md-6 text-center">
+                        <label class="form-label fw-semibold d-block text-center">{% trans "PVM kodas" %}</label>
+                        {{ form.company_vat_code }}
+                    </div>
+
+                    <div class="col-md-12 text-center">
+                        <label class="form-label fw-semibold d-block text-center">{% trans "Juridinis adresas" %}</label>
+                        {{ form.company_address }}
+                    </div>
                 </div>
 
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">
-                Išsaugoti pakeitimus
+                {% trans "Išsaugoti pakeitimus" %}
             </button>
 
             <a href="{% url 'profile' %}" class="btn btn-light btn-lg w-100 mt-3">
-                Atgal į profilį
+                {% trans "Atgal į profilį" %}
             </a>
 
         </form>
@@ -62,4 +112,28 @@
     </div>
 
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkbox = document.getElementById('{{ form.is_legal_entity.id_for_label }}');
+        const legalFields = document.getElementById('legal-fields');
+        const legalInputs = legalFields ? legalFields.querySelectorAll('input') : [];
+
+        function toggleLegalFields() {
+            const show = checkbox && checkbox.checked;
+            if (!legalFields) return;
+
+            legalFields.style.display = show ? 'flex' : 'none';
+
+            legalInputs.forEach((input) => {
+                input.disabled = !show;
+            });
+        }
+
+        if (checkbox) {
+            checkbox.addEventListener('change', toggleLegalFields);
+            toggleLegalFields();
+        }
+    });
+</script>
 {% endblock %}

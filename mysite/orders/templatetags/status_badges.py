@@ -1,4 +1,6 @@
 from django import template
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 
 register = template.Library()
 
@@ -12,13 +14,13 @@ def status_badge(status):
     }
 
     labels = {
-        'new': 'Naujas',
-        'in_progress': 'Vykdomas',
-        'done': 'Atliktas',
-        'cancelled': 'Atšauktas',
+        'new': _('Naujas'),
+        'in_progress': _('Vykdomas'),
+        'done': _('Atliktas'),
+        'cancelled': _('Atšauktas'),
     }
 
     color = colors.get(status, 'secondary')
     label = labels.get(status, status)
 
-    return f'<span class="badge bg-{color}">{label}</span>'
+    return mark_safe(f'<span class="badge bg-{color}">{label}</span>')

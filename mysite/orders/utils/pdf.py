@@ -6,11 +6,15 @@ from django.template.loader import render_to_string
 def generate_invoice_pdf(order):
     """Generuoja PDF sąskaitą ir grąžina santykinį kelią MEDIA_ROOT aplanke."""
     from weasyprint import HTML, CSS
+
+    invoice_number = f"h-pro-online Nr.{order.id:06d}"
+
     # 1. HTML sugeneravimas
     html_string = render_to_string('orders/invoice.html', {
         'order': order,
         'items': order.items.all(),
         'company': settings.COMPANY_INFO,
+        'invoice_number': invoice_number,
     })
 
     # 2. Failo kelias

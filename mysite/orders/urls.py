@@ -10,6 +10,7 @@ urlpatterns = [
     # DASHBOARDS
     path('manager/', views.manager_dashboard, name='manager_dashboard'),
     path('client/', views.client_dashboard, name='client_dashboard'),
+    path('admin/', views.admin_dashboard, name='admin_dashboard'),
 
     # AJAX
     path('load-services/', views.load_services, name='load_services'),
@@ -21,6 +22,12 @@ urlpatterns = [
 
     # EDIT
     path('<int:order_id>/edit/', views.edit_order, name='edit_order'),
+
+    # DELETE
+    path('<int:order_id>/delete/', views.delete_order, name='delete_order'),
+
+    # RESTORE (SOFT DELETE)
+    path('<int:order_id>/restore/', views.restore_order, name='restore_order'),
 
     # PDF
     path('invoice/<int:order_id>/', views.download_invoice, name='download_invoice'),

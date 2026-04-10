@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import ServiceCategory
+
+
+def services_home(request):
+    categories = ServiceCategory.objects.prefetch_related('services').all()
+    return render(request, 'services/services_list.html', {'categories': categories})

@@ -1,6 +1,19 @@
 from django import template
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
+
+from main.models import Profile
 
 register = template.Library()
+
+
+@register.simple_tag
+def get_or_create_profile(user):
+    if not user or not getattr(user, 'is_authenticated', False):
+        return None
+    profile, _ = Profile.objects.get_or_create(user=user)
+    return profile
+
 
 @register.simple_tag
 def role_badge(role):
@@ -10,12 +23,12 @@ def role_badge(role):
         'admin': 'danger',
     }
     labels = {
-        'client': 'Klientas',
-        'manager': 'Vadibininkas',
-        'admin': 'Administratorius',
+        'client': _('Klientas'),
+        'manager': _('Vadybininkas'),
+        'admin': _('Administratorius'),
     }
 
     color = colors.get(role, 'secondary')
     label = labels.get(role, role)
 
-    return f'<span class="badge bg-{color}">{label}</span>'
+    return mark_safe(f'<span class="badge bg-{color}">{label}</span>')

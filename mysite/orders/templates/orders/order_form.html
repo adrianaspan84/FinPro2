@@ -1,116 +1,240 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
-{% load status_badges %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
-
-    <div class="glass-card p-4">
-
-        <h2 class="fw-bold mb-4">
+    <div class="glass-card p-4" style="max-width: 900px; margin: auto;">
+        <h2 class="fw-bold mb-4 text-center">
             {% if form.instance.pk %}
-                Redaguoti užsakymą
+                {% trans "Redaguoti užsakymą" %}
             {% else %}
-                Naujas užsakymas
+                {% trans "Naujas užsakymas" %}
             {% endif %}
         </h2>
 
-        <form method="POST" id="orderForm">
+        <form method="POST" id="orderForm" novalidate>
             {% csrf_token %}
+            {{ form.items_json }}
 
-            <div class="row g-4">
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
 
-                <!-- Kategorija -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Kategorija</label>
+            <div class="d-flex flex-column gap-3">
+                <div>
+                    <label class="form-label fw-semibold">{% trans "Paslaugų kategorija" %}</label>
                     {{ form.category }}
                 </div>
 
-                <!-- Paslauga -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Paslauga</label>
-                    {{ form.service }}
+                <div>
+                    <label class="form-label fw-semibold">{% trans "Paslauga" %}</label>
+                    <select id="id_service" class="form-select">
+                        <option value="">-- {% trans "Pasirinkite paslaugą" %} --</option>
+                    </select>
                 </div>
 
-                <!-- Kiekis -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Kiekis</label>
-                    {{ form.quantity }}
+                <div>
+                    <label class="form-label fw-semibold">{% trans "Kiekis" %}</label>
+                    <input type="number" id="id_quantity" class="form-control" value="1" min="0.01" step="0.01">
                 </div>
 
-                <!-- Terminas -->
-                <div class="col-md-6">
-                    <label class="form-label fw-semibold">Terminas</label>
+                <div>
+                    <label class="form-label fw-semibold">{% trans "Atlikimo terminas" %}</label>
                     {{ form.deadline }}
                 </div>
 
-                <!-- Automatinė kaina -->
-                <div class="col-md-12">
-                    <div class="p-3 rounded bg-light border">
-                        <strong>Numatoma kaina:</strong>
-                        <span id="pricePreview" class="fw-bold">0 €</span>
-                    </div>
+                <div>
+                    <button type="button" id="addLineBtn" class="btn btn-outline-primary">
+                        + {% trans "Pridėti paslaugos eilutę" %}
+                    </button>
                 </div>
-
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg mt-4">
+            <hr class="my-4">
+
+            <h5 class="fw-bold">{% trans "Užsakymo eilutės" %}</h5>
+            <div class="table-responsive mt-3">
+                <table class="table table-striped align-middle" id="itemsTable">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Paslauga" %}</th>
+                            <th class="num-col">{% trans "Kiekis" %}</th>
+                            <th class="num-col">{% trans "Kaina" %}</th>
+                            <th class="num-col">{% trans "Suma" %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="emptyRow">
+                            <td colspan="5" class="text-center text-muted">{% trans "Kol kas nepridėta nė viena paslauga." %}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">{% trans "Numatoma kaina be PVM:" %}</th>
+                            <th id="subtotalPreview" class="num-col">0.00 €</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">{% trans "PVM (21%):" %}</th>
+                            <th id="vatPreview" class="num-col">0.00 €</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">{% trans "Viso su PVM:" %}</th>
+                            <th id="totalPreview" class="num-col">0.00 €</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg mt-3">
                 {% if form.instance.pk %}
-                    Išsaugoti pakeitimus
+                    {% trans "Išsaugoti pakeitimus" %}
                 {% else %}
-                    Sukurti užsakymą
+                    {% trans "Sukurti užsakymą" %}
                 {% endif %}
             </button>
-
         </form>
-
     </div>
-
 </div>
 
-<!-- PREMIUM JS: dinaminės paslaugos + automatinė kaina -->
 <script>
     const categorySelect = document.getElementById('id_category');
     const serviceSelect = document.getElementById('id_service');
     const quantityInput = document.getElementById('id_quantity');
-    const pricePreview = document.getElementById('pricePreview');
+    const addLineBtn = document.getElementById('addLineBtn');
+    const itemsTableBody = document.querySelector('#itemsTable tbody');
+    const emptyRow = document.getElementById('emptyRow');
+    const itemsJsonInput = document.getElementById('id_items_json');
 
-    // 1) Dinaminis paslaugų užkrovimas pagal kategoriją
-    categorySelect.addEventListener('change', function () {
-        const categoryId = this.value;
+    const subtotalPreview = document.getElementById('subtotalPreview');
+    const vatPreview = document.getElementById('vatPreview');
+    const totalPreview = document.getElementById('totalPreview');
 
-        fetch(`/orders/load-services/?category_id=${categoryId}`)
-            .then(response => response.json())
-            .then(data => {
-                serviceSelect.innerHTML = '';
+    const chooseServiceLabel = "{% trans 'Pasirinkite paslaugą' %}";
+    const selectServiceAndQuantityError = "{% trans 'Pasirinkite paslaugą ir įveskite teisingą kiekį.' %}";
+    const servicePriceResolveError = "{% trans 'Nepavyko nustatyti paslaugos kainos.' %}";
+    const minOneLineError = "{% trans 'Pridėkite bent vieną paslaugos eilutę.' %}";
+    const removeLabel = "{% trans 'Šalinti' %}";
 
-                data.forEach(service => {
-                    const option = document.createElement('option');
-                    option.value = service.id;
-                    option.textContent = service.name;
-                    option.dataset.price = service.price;
-                    serviceSelect.appendChild(option);
-                });
+    const orderLines = [];
 
-                updatePrice();
-            });
-    });
-
-    // 2) Automatinė kainos skaičiavimo funkcija
-    function updatePrice() {
-        const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
-        const price = selectedOption ? parseFloat(selectedOption.dataset.price || 0) : 0;
-        const quantity = parseInt(quantityInput.value || 1);
-
-        const total = price * quantity;
-        pricePreview.textContent = total.toFixed(2) + " €";
+    function money(value) {
+        return `${value.toFixed(2)} €`;
     }
 
-    serviceSelect.addEventListener('change', updatePrice);
-    quantityInput.addEventListener('input', updatePrice);
+    function renderRows() {
+        itemsTableBody.innerHTML = '';
 
-    // Paleidžiam automatinį skaičiavimą iškart
-    updatePrice();
+        if (!orderLines.length) {
+            itemsTableBody.appendChild(emptyRow);
+            subtotalPreview.textContent = money(0);
+            vatPreview.textContent = money(0);
+            totalPreview.textContent = money(0);
+            itemsJsonInput.value = '';
+            return;
+        }
+
+        let subtotal = 0;
+
+        orderLines.forEach((line, index) => {
+            const row = document.createElement('tr');
+            const lineTotal = line.price * line.quantity;
+            subtotal += lineTotal;
+
+            row.innerHTML = `
+                <td>${line.name}</td>
+                <td class="num-col">${line.quantity.toFixed(2)}</td>
+                <td class="num-col">${money(line.price)}</td>
+                <td class="num-col">${money(lineTotal)}</td>
+                <td class="text-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-remove-index="${index}">${removeLabel}</button>
+                </td>
+            `;
+            itemsTableBody.appendChild(row);
+        });
+
+        const vat = subtotal * 0.21;
+        const total = subtotal + vat;
+
+        subtotalPreview.textContent = money(subtotal);
+        vatPreview.textContent = money(vat);
+        totalPreview.textContent = money(total);
+
+        itemsJsonInput.value = JSON.stringify(orderLines.map(line => ({
+            service_id: line.service_id,
+            quantity: line.quantity,
+        })));
+    }
+
+    async function loadServicesByCategory() {
+        const categoryId = categorySelect.value;
+        serviceSelect.innerHTML = `<option value="">-- ${chooseServiceLabel} --</option>`;
+
+        if (!categoryId) {
+            return;
+        }
+
+        const response = await fetch(`/orders/load-services/?category_id=${categoryId}`);
+        const services = await response.json();
+
+        services.forEach((service) => {
+            const option = document.createElement('option');
+            option.value = service.id;
+            option.textContent = `${service.name} (${money(service.price)} / ${service.unit})`;
+            option.dataset.price = service.price;
+            option.dataset.name = service.name;
+            serviceSelect.appendChild(option);
+        });
+    }
+
+    categorySelect.addEventListener('change', loadServicesByCategory);
+
+    addLineBtn.addEventListener('click', () => {
+        const selected = serviceSelect.options[serviceSelect.selectedIndex];
+        const serviceId = parseInt(serviceSelect.value, 10);
+        const quantity = parseFloat(quantityInput.value);
+
+        if (!serviceId || !selected || Number.isNaN(quantity) || quantity <= 0) {
+            alert(selectServiceAndQuantityError);
+            return;
+        }
+
+        const price = parseFloat(selected.dataset.price || '0');
+        if (Number.isNaN(price)) {
+            alert(servicePriceResolveError);
+            return;
+        }
+
+        orderLines.push({
+            service_id: serviceId,
+            name: selected.dataset.name,
+            price: price,
+            quantity: quantity,
+        });
+
+        renderRows();
+    });
+
+    itemsTableBody.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-remove-index]');
+        if (!button) return;
+
+        const index = parseInt(button.dataset.removeIndex, 10);
+        orderLines.splice(index, 1);
+        renderRows();
+    });
+
+    document.getElementById('orderForm').addEventListener('submit', (event) => {
+        if (!orderLines.length) {
+            event.preventDefault();
+            alert(minOneLineError);
+        }
+    });
+
+    renderRows();
 </script>
-
 {% endblock %}

@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Laikinai tuščia, kol sukursime view'us
+    path('', views.services_home, name='services_home'),
 ]

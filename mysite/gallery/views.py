@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from .models import GalleryItem
 
-# Create your views here.
+
+def gallery_home(request):
+    items = GalleryItem.objects.filter(is_published=True)
+    return render(request, 'gallery/gallery_list.html', {'items': items})

@@ -1,16 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="fw-bold mb-4">Paslaugų katalogas</h2>
+    <h2 class="fw-bold mb-4">{% trans "Paslaugų katalogas" %}</h2>
 
     <!-- SEARCH BAR -->
     <div class="glass-card p-3 mb-4">
         <form method="GET" class="d-flex gap-2">
-            <input type="text" name="q" class="form-control" placeholder="Ieškoti paslaugos..." value="{{ request.GET.q }}">
-            <button class="btn btn-primary px-4">Ieškoti</button>
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'Ieškoti paslaugos...' %}" value="{{ request.GET.q }}">
+            <button class="btn btn-primary px-4">{% trans "Ieškoti" %}</button>
         </form>
     </div>
 
@@ -18,17 +19,17 @@
     <div class="glass-card p-3">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-semibold">Visos paslaugos</h4>
-            <a href="{% url 'service_create' %}" class="btn btn-success px-4">+ Nauja paslauga</a>
+            <h4 class="fw-semibold">{% trans "Visos paslaugos" %}</h4>
+            <a href="{% url 'service_create' %}" class="btn btn-success px-4">+ {% trans "Nauja paslauga" %}</a>
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
-                        <th>Pavadinimas</th>
-                        <th>Kategorija</th>
-                        <th>Kaina</th>
+                        <th>{% trans "Pavadinimas" %}</th>
+                        <th>{% trans "Kategorija" %}</th>
+                        <th class="num-col">{% trans "Kaina" %}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,16 +38,16 @@
                     <tr>
                         <td class="fw-semibold">{{ service.name }}</td>
                         <td>{{ service.category.name }}</td>
-                        <td>{{ service.price }} €</td>
+                        <td class="num-col">{{ service.price|floatformat:2 }} €</td>
                         <td class="text-end">
-                            <a href="{% url 'service_edit' service.id %}" class="btn btn-sm btn-primary">Redaguoti</a>
-                            <a href="{% url 'service_delete' service.id %}" class="btn btn-sm btn-danger">Šalinti</a>
+                            <a href="{% url 'service_edit' service.id %}" class="btn btn-sm btn-primary">{% trans "Redaguoti" %}</a>
+                            <a href="{% url 'service_delete' service.id %}" class="btn btn-sm btn-danger">{% trans "Šalinti" %}</a>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
                         <td colspan="4" class="text-center text-muted py-4">
-                            Paslaugų nerasta.
+                            {% trans "Paslaugų nerasta." %}
                         </td>
                     </tr>
                     {% endfor %}

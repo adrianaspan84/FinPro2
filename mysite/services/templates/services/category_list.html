@@ -1,18 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="fw-bold mb-4">Paslaugų kategorijos</h2>
+    <h2 class="fw-bold mb-4">{% trans "Paslaugų kategorijos" %}</h2>
 
     <!-- SEARCH BAR -->
     <div class="glass-card p-3 mb-4">
         <form method="GET" class="d-flex gap-2">
             <input type="text" name="q" class="form-control"
-                   placeholder="Ieškoti kategorijos..."
+                   placeholder="{% trans 'Ieškoti kategorijos...' %}"
                    value="{{ request.GET.q }}">
-            <button class="btn btn-primary px-4">Ieškoti</button>
+            <button class="btn btn-primary px-4">{% trans "Ieškoti" %}</button>
         </form>
     </div>
 
@@ -20,9 +21,9 @@
     <div class="glass-card p-3">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-semibold">Visos kategorijos</h4>
+            <h4 class="fw-semibold">{% trans "Visos kategorijos" %}</h4>
             <a href="{% url 'category_create' %}" class="btn btn-success px-4">
-                + Nauja kategorija
+                + {% trans "Nauja kategorija" %}
             </a>
         </div>
 
@@ -30,9 +31,9 @@
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
-                        <th>Pavadinimas</th>
-                        <th>Aprašymas</th>
-                        <th>Paslaugų skaičius</th>
+                        <th>{% trans "Pavadinimas" %}</th>
+                        <th>{% trans "Aprašymas" %}</th>
+                        <th>{% trans "Paslaugų skaičius" %}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -46,17 +47,17 @@
 
                         <td class="text-end">
                             <a href="{% url 'category_edit' category.id %}" class="btn btn-sm btn-primary">
-                                Redaguoti
+                                {% trans "Redaguoti" %}
                             </a>
                             <a href="{% url 'category_delete' category.id %}" class="btn btn-sm btn-danger">
-                                Šalinti
+                                {% trans "Šalinti" %}
                             </a>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
                         <td colspan="4" class="text-center text-muted py-4">
-                            Kategorijų nerasta.
+                            {% trans "Kategorijų nerasta." %}
                         </td>
                     </tr>
                     {% endfor %}

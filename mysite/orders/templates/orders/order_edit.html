@@ -1,34 +1,327 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
+    <div class="glass-card p-4" style="max-width: 980px; margin: auto;">
+        <h2 class="fw-bold mb-4">{% trans "Redaguoti užsakymą" %} #{{ order.id }}</h2>
 
-    <h2>Redaguoti užsakymą #{{ order.id }}</h2>
+        <form method="POST" id="orderEditForm" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="items_json" id="id_items_json" value="[]">
+            {{ existing_items_payload|json_script:"existing-order-items" }}
 
-    <form method="POST">
-        {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% if items_error %}
+                <div class="alert alert-danger">{{ items_error }}</div>
+            {% endif %}
 
-        <div class="mb-3">
-            <label>Terminas</label>
-            {{ form.deadline }}
-        </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">{% trans "Vadybininko terminas" %}</label>
+                    {{ form.deadline }}
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">{% trans "Statusas" %}</label>
+                    {{ form.status }}
+                </div>
 
-        <div class="mb-3">
-            <label>Statusas</label>
-            {{ form.status }}
-        </div>
+                {% if form.manager %}
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">{% trans "Vadybininkas" %}</label>
+                    {{ form.manager }}
+                </div>
+                {% endif %}
 
-        {% if form.manager %}
-        <div class="mb-3">
-            <label>Vadibininkas</label>
-            {{ form.manager }}
-        </div>
-        {% endif %}
+                <div class="col-12">
+                    <label class="form-label fw-semibold">{% trans "Komentarai klientui" %}</label>
+                    {{ form.manager_comment }}
+                </div>
+            </div>
 
-        <button type="submit" class="btn btn-primary">Išsaugoti</button>
-        <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary">Atgal</a>
-    </form>
+            <hr class="my-4">
 
+            <h5 class="fw-bold">{% trans "Užsakymo eilutės" %}</h5>
+            <div class="row g-3 align-items-end mt-1">
+                <div class="col-md-3">
+                    <label class="form-label">{% trans "Paslaugų kategorija" %}</label>
+                    <select id="id_category" class="form-select">
+                        <option value="">-- {% trans "Pasirinkite kategoriją" %} --</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">{% trans "Paslauga" %}</label>
+                    <select id="id_service" class="form-select">
+                        <option value="">-- {% trans "Pasirinkite paslaugą" %} --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">{% trans "Kiekis" %}</label>
+                    <input type="number" id="id_quantity" class="form-control" value="1" min="0.01" step="0.01">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">{% trans "Kaina, EUR" %}</label>
+                    <input type="number" id="id_price" class="form-control" value="0" min="0.01" step="0.01">
+                </div>
+                <div class="col-md-1 d-grid">
+                    <button type="button" id="addLineBtn" class="btn btn-outline-primary">+</button>
+                </div>
+            </div>
+
+            <div class="table-responsive mt-3">
+                <table class="table table-striped align-middle" id="itemsTable">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Paslauga" %}</th>
+                            <th class="num-col">{% trans "Kiekis" %}</th>
+                            <th class="num-col">{% trans "Kaina" %}</th>
+                            <th class="num-col">{% trans "Suma" %}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="emptyRow">
+                            <td colspan="5" class="text-center text-muted">{% trans "Kol kas nepridėta nė viena paslauga." %}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">{% trans "Suma be PVM:" %}</th>
+                            <th id="subtotalPreview" class="num-col">0.00 EUR</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">{% trans "PVM (21%):" %}</th>
+                            <th id="vatPreview" class="num-col">0.00 EUR</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="3" class="text-end">{% trans "Viso su PVM:" %}</th>
+                            <th id="totalPreview" class="num-col">0.00 EUR</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-primary">{% trans "Išsaugoti" %}</button>
+                <a href="{% url 'order_detail' order.id %}" class="btn btn-secondary">{% trans "Atgal" %}</a>
+            </div>
+        </form>
+    </div>
 </div>
+
+<script>
+    const chooseServiceLabel = "{% trans 'Pasirinkite paslaugą' %}";
+    const removeLabel = "{% trans 'Šalinti' %}";
+    const badLineInputError = "{% trans 'Pasirinkite paslaugą ir įveskite teisingą kiekį bei kainą.' %}";
+    const minOneLineError = "{% trans 'Pridėkite bent vieną paslaugos eilutę.' %}";
+
+    const categorySelect = document.getElementById('id_category');
+    const serviceSelect = document.getElementById('id_service');
+    const quantityInput = document.getElementById('id_quantity');
+    const priceInput = document.getElementById('id_price');
+    const addLineBtn = document.getElementById('addLineBtn');
+
+    const itemsTableBody = document.querySelector('#itemsTable tbody');
+    const emptyRow = document.getElementById('emptyRow');
+    const itemsJsonInput = document.getElementById('id_items_json');
+
+    const subtotalPreview = document.getElementById('subtotalPreview');
+    const vatPreview = document.getElementById('vatPreview');
+    const totalPreview = document.getElementById('totalPreview');
+
+    const orderLines = [];
+
+    function money(value) {
+        return `${value.toFixed(2)} EUR`;
+    }
+
+    function syncItemsJson() {
+        itemsJsonInput.value = JSON.stringify(orderLines.map((line) => ({
+            service_id: line.service_id,
+            quantity: line.quantity,
+            price: line.price,
+            name: line.name,
+        })));
+    }
+
+    function recalcTotals() {
+        const subtotal = orderLines.reduce((acc, line) => acc + (line.quantity * line.price), 0);
+        const vat = subtotal * 0.21;
+        const total = subtotal + vat;
+
+        subtotalPreview.textContent = money(subtotal);
+        vatPreview.textContent = money(vat);
+        totalPreview.textContent = money(total);
+    }
+
+    function renderRows() {
+        itemsTableBody.innerHTML = '';
+
+        if (!orderLines.length) {
+            itemsTableBody.appendChild(emptyRow);
+            subtotalPreview.textContent = money(0);
+            vatPreview.textContent = money(0);
+            totalPreview.textContent = money(0);
+            syncItemsJson();
+            return;
+        }
+
+        orderLines.forEach((line, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${line.name}</td>
+                <td class="num-col" style="width: 180px;">
+                    <input type="number" class="form-control form-control-sm text-end" min="0.01" step="0.01" value="${line.quantity.toFixed(2)}" data-quantity-index="${index}">
+                </td>
+                <td class="num-col" style="width: 180px;">
+                    <input type="number" class="form-control form-control-sm text-end" min="0.01" step="0.01" value="${line.price.toFixed(2)}" data-price-index="${index}">
+                </td>
+                <td class="num-col fw-semibold">${money(line.quantity * line.price)}</td>
+                <td class="text-end" style="width: 90px;">
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-remove-index="${index}">${removeLabel}</button>
+                </td>
+            `;
+            itemsTableBody.appendChild(row);
+        });
+
+        recalcTotals();
+        syncItemsJson();
+    }
+
+    async function loadServicesByCategory() {
+        const categoryId = categorySelect.value;
+        serviceSelect.innerHTML = `<option value="">-- ${chooseServiceLabel} --</option>`;
+        priceInput.value = '0';
+
+        if (!categoryId) {
+            return;
+        }
+
+        const response = await fetch(`/orders/load-services/?category_id=${categoryId}`);
+        const services = await response.json();
+
+        services.forEach((service) => {
+            const option = document.createElement('option');
+            option.value = String(service.id);
+            option.textContent = `${service.name} (${money(service.price)} / ${service.unit})`;
+            option.dataset.name = service.name;
+            option.dataset.price = String(service.price);
+            serviceSelect.appendChild(option);
+        });
+    }
+
+    function applySelectedServicePrice() {
+        const selected = serviceSelect.options[serviceSelect.selectedIndex];
+        if (!selected || !serviceSelect.value) {
+            priceInput.value = '0';
+            return;
+        }
+
+        const defaultPrice = parseFloat(selected.dataset.price || '0');
+        priceInput.value = Number.isNaN(defaultPrice) ? '0' : defaultPrice.toFixed(2);
+    }
+
+    function addLine() {
+        const selected = serviceSelect.options[serviceSelect.selectedIndex];
+        const serviceId = parseInt(serviceSelect.value, 10);
+        const quantity = parseFloat(quantityInput.value);
+        const price = parseFloat(priceInput.value);
+
+        if (!serviceId || !selected || Number.isNaN(quantity) || Number.isNaN(price) || quantity <= 0 || price <= 0) {
+            alert(badLineInputError);
+            return;
+        }
+
+        orderLines.push({
+            service_id: serviceId,
+            name: selected.dataset.name || selected.textContent,
+            quantity,
+            price,
+        });
+
+        renderRows();
+    }
+
+    categorySelect.addEventListener('change', loadServicesByCategory);
+    serviceSelect.addEventListener('change', applySelectedServicePrice);
+    addLineBtn.addEventListener('click', addLine);
+
+    itemsTableBody.addEventListener('click', (event) => {
+        const removeButton = event.target.closest('[data-remove-index]');
+        if (!removeButton) {
+            return;
+        }
+
+        const index = parseInt(removeButton.dataset.removeIndex, 10);
+        if (!Number.isNaN(index)) {
+            orderLines.splice(index, 1);
+            renderRows();
+        }
+    });
+
+    itemsTableBody.addEventListener('input', (event) => {
+        const quantityInputEl = event.target.closest('[data-quantity-index]');
+        if (quantityInputEl) {
+            const index = parseInt(quantityInputEl.dataset.quantityIndex, 10);
+            const value = parseFloat(quantityInputEl.value);
+            if (!Number.isNaN(index) && !Number.isNaN(value) && value > 0) {
+                orderLines[index].quantity = value;
+                renderRows();
+            }
+            return;
+        }
+
+        const priceInputEl = event.target.closest('[data-price-index]');
+        if (priceInputEl) {
+            const index = parseInt(priceInputEl.dataset.priceIndex, 10);
+            const value = parseFloat(priceInputEl.value);
+            if (!Number.isNaN(index) && !Number.isNaN(value) && value > 0) {
+                orderLines[index].price = value;
+                renderRows();
+            }
+        }
+    });
+
+    document.getElementById('orderEditForm').addEventListener('submit', (event) => {
+        if (!orderLines.length) {
+            event.preventDefault();
+            alert(minOneLineError);
+            return;
+        }
+        syncItemsJson();
+    });
+
+    try {
+        const parsed = JSON.parse(document.getElementById('existing-order-items').textContent || '[]');
+        if (Array.isArray(parsed)) {
+            parsed.forEach((line) => {
+                const serviceId = parseInt(line.service_id, 10);
+                const quantity = parseFloat(line.quantity);
+                const price = parseFloat(line.price);
+
+                if (!Number.isNaN(serviceId) && !Number.isNaN(quantity) && !Number.isNaN(price) && quantity > 0 && price > 0) {
+                    orderLines.push({
+                        service_id: serviceId,
+                        name: line.name || `Paslauga #${serviceId}`,
+                        quantity,
+                        price,
+                    });
+                }
+            });
+        }
+    } catch (error) {
+        // Ignore malformed payload and keep an empty editor.
+    }
+
+    renderRows();
+</script>
 {% endblock %}

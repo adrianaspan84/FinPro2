@@ -1,62 +1,70 @@
 {% extends "main/base.html" %}
 
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
-<!-- HERO SECTION -->
+
 <section class="hero-section d-flex align-items-center justify-content-center text-center">
     <div class="container">
 
         <div class="glass-card p-5 mx-auto" style="max-width: 700px;">
-            <h1 class="fw-bold mb-3">FinPro – moderni autoserviso valdymo sistema</h1>
+            <h1 class="fw-bold mb-3">{% blocktrans %}„H-Pro“ – paverskite savo svajonių namų viziją realybe{% endblocktrans %}</h1>
             <p class="lead mb-4">
-                Valdykite užsakymus, klientus ir paslaugas lengvai.
-                Premium dizainas, aiškus valdymas ir profesionali darbo eiga.
+                {% blocktrans %}Valdykite užsakymus ir paslaugas lengvai.
+                „Premium" interjero dizaino paslaugos, visi inžineriniai ir apdailos darbai, profesionali
+                darbo eiga ir sprendimai.{% endblocktrans %}
             </p>
 
             {% if not user.is_authenticated %}
-                <a href="/login/" class="btn btn-primary btn-lg px-4 me-2">Prisijungti</a>
-                <a href="/register/" class="btn btn-outline-light btn-lg px-4">Registruotis</a>
+                <a href="/login/" class="btn btn-primary btn-lg px-4 me-2">{% trans "Prisijungti" %}</a>
+                <a href="/register/" class="btn btn-outline-light btn-lg px-4">{% trans "Registruotis" %}</a>
+            {% elif user.profile.role == 'admin' or user.is_superuser %}
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-primary btn-lg px-4 me-2">{% trans "Administravimas" %}</a>
+                <a href="/orders/list/" class="btn btn-outline-light btn-lg px-4">{% trans "Užsakymai" %}</a>
+            {% elif user.profile.role == 'manager' %}
+                <a href="/orders/manager/" class="btn btn-primary btn-lg px-4 me-2">{% trans "Vadybininko panelė" %}</a>
+                <a href="/orders/list/" class="btn btn-outline-light btn-lg px-4">{% trans "Užsakymai" %}</a>
             {% else %}
-                <a href="/orders/list/" class="btn btn-primary btn-lg px-4">Eiti į užsakymus</a>
+                <a href="/orders/list/" class="btn btn-primary btn-lg px-4">{% trans "Eiti į užsakymus" %}</a>
             {% endif %}
         </div>
 
     </div>
 </section>
 
-<!-- FEATURES SECTION -->
+
 <section class="container mt-5">
 
-    <h2 class="text-center fw-bold mb-4">Kodėl FinPro?</h2>
+    <h2 class="text-center fw-bold mb-4">{% trans "Kodėl H-Pro?" %}</h2>
 
     <div class="row g-4">
 
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 text-center">
-                <h4 class="fw-semibold mb-2">Greitas valdymas</h4>
+                <h4 class="fw-semibold mb-2">{% trans "Greitas valdymas" %}</h4>
                 <p class="text-muted">
-                    Sukurkite, redaguokite ir sekite užsakymus realiu laiku.
-                    Intuityvi sąsaja leidžia dirbti greičiau.
+                    {% blocktrans %}Sukurkite, redaguokite ir sekite užsakymus bei projektus realiuoju laiku.
+                    Asmeninis projekto ar užsakymo vadybininkas visada padės.{% endblocktrans %}
                 </p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 text-center">
-                <h4 class="fw-semibold mb-2">Aiškūs statusai</h4>
+                <h4 class="fw-semibold mb-2">{% trans "Aiškūs statusai" %}</h4>
                 <p class="text-muted">
-                    Spalvotos žymos ir aiškūs statusai leidžia akimirksniu matyti užsakymo būseną.
+                    {% trans "Spalvotos žymos ir aiškūs statusai leidžia akimirksniu matyti užsakymo būseną." %}
                 </p>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 text-center">
-                <h4 class="fw-semibold mb-2">Premium dizainas</h4>
+                <h4 class="fw-semibold mb-2">{% trans "Premium paslaugų kokybė" %}</h4>
                 <p class="text-muted">
-                    Blur, glass, animacijos ir modernus išdėstymas suteikia profesionalų įvaizdį.
+                    {% trans "Darbus atlieka tik savo srities profesionalai, o kiekvienas projektas yra kruopščiai prižiūrimas." %}
                 </p>
             </div>
         </div>

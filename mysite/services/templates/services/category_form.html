@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
@@ -8,9 +9,9 @@
 
         <h2 class="fw-bold mb-4">
             {% if form.instance.pk %}
-                Redaguoti kategoriją
+                {% trans "Redaguoti kategoriją" %}
             {% else %}
-                Nauja kategorija
+                {% trans "Nauja kategorija" %}
             {% endif %}
         </h2>
 
@@ -21,13 +22,13 @@
 
                 <!-- Pavadinimas -->
                 <div class="col-md-12">
-                    <label class="form-label fw-semibold">Pavadinimas</label>
+                    <label class="form-label fw-semibold">{% trans "Pavadinimas" %}</label>
                     {{ form.name }}
                 </div>
 
                 <!-- Aprašymas -->
                 <div class="col-md-12">
-                    <label class="form-label fw-semibold">Aprašymas</label>
+                    <label class="form-label fw-semibold">{% trans "Aprašymas" %}</label>
                     {{ form.description }}
                 </div>
 
@@ -35,14 +36,14 @@
 
             <button type="submit" class="btn btn-primary btn-lg mt-4 px-4">
                 {% if form.instance.pk %}
-                    Išsaugoti pakeitimus
+                    {% trans "Išsaugoti pakeitimus" %}
                 {% else %}
-                    Sukurti kategoriją
+                    {% trans "Sukurti kategoriją" %}
                 {% endif %}
             </button>
 
             <a href="{% url 'category_list' %}" class="btn btn-light btn-lg mt-4 px-4 ms-2">
-                Grįžti į sąrašą
+                {% trans "Grįžti į sąrašą" %}
             </a>
 
         </form>

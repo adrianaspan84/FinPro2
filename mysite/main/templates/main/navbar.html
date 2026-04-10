@@ -1,65 +1,108 @@
 {% load static %}
 {% load role_badges %}
+{% load i18n %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-75 backdrop-blur">
-    <div class="container">
+    <div class="container-fluid">
 
-        <a class="navbar-brand fw-bold" href="/">FinPro</a>
 
-        <!-- ANIMUOTAS BURGERIS -->
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="toggler-icon top-bar"></span>
             <span class="toggler-icon middle-bar"></span>
             <span class="toggler-icon bottom-bar"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="mainNav">
+            <!-- LEFT: public links -->
+            <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">{% trans "Pradžia" %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'services_home' %}">{% trans "Paslaugos" %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'gallery_home' %}">{% trans "Galerija" %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'reviews_list' %}">{% trans "Atsiliepimai" %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">{% trans "Kontaktai" %}</a></li>
+            </ul>
 
-            <ul class="navbar-nav me-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Pradžia</a>
-                </li>
-
+            <!-- RIGHT: auth controls -->
+            <ul class="navbar-nav ms-auto align-items-lg-center">
                 {% if user.is_authenticated %}
+                    {% get_or_create_profile user as nav_profile %}
+                    <li class="nav-item dropdown user-menu">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 py-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if nav_profile and nav_profile.avatar and nav_profile.avatar.url %}
+                                <img src="{{ nav_profile.avatar.url }}" alt="{{ user.username }}" class="nav-avatar">
+                            {% else %}
+                                <img src="{% static 'main/img/default-avatar.png' %}" alt="{{ user.username }}" class="nav-avatar">
+                            {% endif %}
+                            <span class="fw-semibold">{{ user.username }}</span>
+                            {% if nav_profile %}
+                                {% role_badge nav_profile.role %}
+                            {% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark user-dropdown shadow">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">{% trans "Profilis" %}</a></li>
 
-                    {% if user.profile.role == 'client' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/orders/client/">Mano paskyra</a>
-                        </li>
-                    {% endif %}
+                            {% if user.is_superuser or user.is_staff or nav_profile.role == 'admin' %}
+                                <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin Panelė" %}</a></li>
+                            {% elif nav_profile and nav_profile.role == 'manager' %}
+                                <li><a class="dropdown-item" href="{% url 'manager_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
+                            {% endif %}
 
-                    {% if user.profile.role == 'manager' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/orders/manager/">Vadibininko panelė</a>
-                        </li>
-                    {% endif %}
 
-                    {% if user.profile.role == 'admin' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/">Admin</a>
-                        </li>
-                    {% endif %}
+                            {% if nav_profile and nav_profile.role == 'client' and not user.is_staff and not user.is_superuser %}
+                                <li><a class="dropdown-item" href="{% url 'order_list' %}">{% trans "Mano užsakymai" %}</a></li>
+                            {% endif %}
+                            <li><a class="dropdown-item" href="{% url 'password_change' %}">{% trans "Slaptažodžio keitimas" %}</a></li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orders/list/">Užsakymai</a>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">{% trans "Atsijungti" %}</a></li>
+                        </ul>
                     </li>
-
-                {% endif %}
-            </ul>
-
-            <ul class="navbar-nav ms-auto">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'profile' %}">Profilis</a>
-                    <a href="{% url 'logout' %}">Atsijungti</a>
-                {% else %}
-                    <a href="{% url 'login' %}">Prisijungti</a>
-                 <a href="{% url 'register' %}">Registruotis</a>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="btn btn-outline-light">{% trans "Prisijungti" %}</a>
+                    </li>
                 {% endif %}
 
-
+                <!-- Language selector - visible to all -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="cursor: pointer;">
+                        🌐
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <input type="hidden" name="language" value="lt">
+                                <button type="submit" class="dropdown-item d-flex align-items-center">
+                                    <img src="{% static 'main/img/flags/lt.svg' %}" alt="LT" class="lang-flag">Lietuvių
+                                </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <input type="hidden" name="language" value="en">
+                                <button type="submit" class="dropdown-item d-flex align-items-center">
+                                    <img src="{% static 'main/img/flags/en.svg' %}" alt="EN" class="lang-flag">English
+                                </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{% url 'set_language' %}" method="post" class="m-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                <input type="hidden" name="language" value="ru">
+                                <button type="submit" class="dropdown-item d-flex align-items-center">
+                                    <img src="{% static 'main/img/flags/ru.svg' %}" alt="RU" class="lang-flag">Русский
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
             </ul>
-
         </div>
     </div>
 </nav>

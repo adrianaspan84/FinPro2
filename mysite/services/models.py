@@ -1,12 +1,13 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class ServiceCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
     class Meta:
-        verbose_name = "Paslaugų kategorija"
-        verbose_name_plural = "Paslaugų kategorijos"
+        verbose_name = _("Paslaugų kategorija")
+        verbose_name_plural = _("Paslaugų kategorijos")
         ordering = ['id']
 
     def __str__(self):
@@ -16,10 +17,10 @@ class ServiceCategory(models.Model):
 class Service(models.Model):
     UNIT_CHOICES = [
         ('m2', 'm²'),
-        ('m', 'bėginiai metrai'),
-        ('vnt', 'vnt.'),
-        ('h', 'valandos'),
-        ('task', 'taškai'),
+        ('m', _('bėginiai metrai')),
+        ('vnt', _('vnt.')),
+        ('h', _('valandos')),
+        ('task', _('taškai')),
     ]
 
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='services')
@@ -29,8 +30,8 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
-        verbose_name = "Paslauga"
-        verbose_name_plural = "Paslaugos"
+        verbose_name = _("Paslauga")
+        verbose_name_plural = _("Paslaugos")
         ordering = ['category', 'name']
 
     def __str__(self):

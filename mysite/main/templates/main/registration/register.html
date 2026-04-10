@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="auth-bg d-flex align-items-center justify-content-center">
 
     <div class="glass-card p-4" style="width: 480px;">
 
-        <h2 class="fw-bold text-center mb-4">Registracija</h2>
+        <h2 class="fw-bold text-center mb-4">{% trans "Registracija" %}</h2>
 
         <form method="POST">
             {% csrf_token %}
@@ -14,36 +15,36 @@
             <div class="row g-3">
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold"><i class="bi bi-person me-2"></i>Vartotojo vardas</label>
+                    <label class="form-label fw-semibold"><i class="bi bi-person me-2"></i>{% trans "Vartotojo vardas" %}</label>
                     {{ form.username }}
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold"><i class="bi bi-envelope me-2"></i>El. paštas</label>
+                    <label class="form-label fw-semibold"><i class="bi bi-envelope me-2"></i>{% trans "El. paštas" %}</label>
                     {{ form.email }}
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold"><i class="bi bi-lock me-2"></i>Slaptažodis</label>
-                    {{ form.password1 }}
+                    <label class="form-label fw-semibold"><i class="bi bi-lock me-2"></i>{% trans "Slaptažodis" %}</label>
+                    {{ form.password }}
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold"><i class="bi bi-lock-fill me-2"></i>Pakartoti slaptažodį</label>
+                    <label class="form-label fw-semibold"><i class="bi bi-lock-fill me-2"></i>{% trans "Pakartoti slaptažodį" %}</label>
                     {{ form.password2 }}
                 </div>
 
             </div>
 
             <button type="submit" class="btn btn-primary w-100 btn-lg mt-4">
-                Sukurti paskyrą
+                {% trans "Sukurti paskyrą" %}
             </button>
 
         </form>
 
         <p class="text-center mt-3">
-            Jau turi paskyrą?
-            <a href="/login/" class="fw-semibold">Prisijunk</a>
+            {% trans "Jau turi paskyrą?" %}
+            <a href="/login/" class="fw-semibold">{% trans "Prisijunk" %}</a>
         </p>
 
     </div>

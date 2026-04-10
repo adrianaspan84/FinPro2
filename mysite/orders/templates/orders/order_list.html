@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
+{% load i18n %}
 {% load status_badges %}
 {% load role_badges %}
 
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="fw-bold mb-4">Užsakymų sąrašas</h2>
+    <h2 class="fw-bold mb-4">{% trans "Orders List" %}</h2>
 
     <!-- SEARCH + FILTER BAR -->
     <div class="glass-card p-3 mb-4">
@@ -14,22 +15,22 @@
 
             <div class="col-md-4">
                 <input type="text" name="q" class="form-control"
-                       placeholder="Ieškoti pagal klientą, ID..."
+                       placeholder="{% trans 'Search by client, ID...' %}"
                        value="{{ request.GET.q }}">
             </div>
 
             <div class="col-md-3">
                 <select name="status" class="form-select">
-                    <option value="">Visi statusai</option>
-                    <option value="new" {% if request.GET.status == 'new' %}selected{% endif %}>Nauji</option>
-                    <option value="in_progress" {% if request.GET.status == 'in_progress' %}selected{% endif %}>Vykdomi</option>
-                    <option value="done" {% if request.GET.status == 'done' %}selected{% endif %}>Atlikti</option>
-                    <option value="cancelled" {% if request.GET.status == 'cancelled' %}selected{% endif %}>Atšaukti</option>
+                    <option value="">{% trans "All statuses" %}</option>
+                    <option value="new" {% if request.GET.status == 'new' %}selected{% endif %}>{% trans "New" %}</option>
+                    <option value="in_progress" {% if request.GET.status == 'in_progress' %}selected{% endif %}>{% trans "In Progress" %}</option>
+                    <option value="done" {% if request.GET.status == 'done' %}selected{% endif %}>{% trans "Done" %}</option>
+                    <option value="cancelled" {% if request.GET.status == 'cancelled' %}selected{% endif %}>{% trans "Cancelled" %}</option>
                 </select>
             </div>
 
             <div class="col-md-3">
-                <button class="btn btn-primary w-100">Filtruoti</button>
+                <button class="btn btn-primary w-100">{% trans "Filter" %}</button>
             </div>
 
         </form>
@@ -39,11 +40,11 @@
     <div class="glass-card p-3">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-semibold">Visi užsakymai</h4>
+            <h4 class="fw-semibold">{% trans "All Orders" %}</h4>
 
             {% if user.profile.role == 'client' %}
-                <a href="{% url 'order_create' %}" class="btn btn-success px-4">
-                    + Naujas užsakymas
+                <a href="{% url 'create_order' %}" class="btn btn-success px-4">
+                    + {% trans "New Order" %}
                 </a>
             {% endif %}
         </div>
@@ -53,10 +54,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Klientas</th>
-                        <th>Statusas</th>
-                        <th>Terminas</th>
-                        <th>Kaina</th>
+                        <th>{% trans "Client" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th class="num-col">{% trans "Deadline" %}</th>
+                        <th class="num-col">{% trans "Price" %}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -76,23 +77,39 @@
                             {% status_badge order.status %}
                         </td>
 
-                        <td>
+                        <td class="num-col">
                             {{ order.deadline|default:"-" }}
                         </td>
 
-                        <td class="fw-bold">
-                            {{ order.total_price }} €
+                        <td class="fw-bold num-col">
+                            {{ order.total_price|floatformat:2 }} €
                         </td>
 
                         <td class="text-end">
                             <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">
-                                Peržiūrėti
+                                {% trans "View" %}
                             </a>
 
-                            {% if user.profile.role != 'client' %}
-                                <a href="{% url 'order_edit' order.id %}" class="btn btn-sm btn-warning">
-                                    Redaguoti
+                            {% if user.profile.role == 'client' %}
+                                <a href="{% url 'download_invoice' order.id %}" class="btn btn-sm btn-outline-secondary">
+                                    {% trans "Invoice PDF" %}
                                 </a>
+                            {% else %}
+                                <a href="{% url 'edit_order' order.id %}" class="btn btn-sm btn-warning">
+                                    {% trans "Edit" %}
+                                </a>
+
+                                <form method="post" action="{% url 'delete_order' order.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-danger"
+                                        onclick="return confirm('{% trans "Are you sure you want to delete this order?" %}');"
+                                    >
+                                        {% trans "Delete" %}
+                                    </button>
+                                </form>
                             {% endif %}
                         </td>
 
@@ -100,7 +117,7 @@
                     {% empty %}
                     <tr>
                         <td colspan="6" class="text-center text-muted py-4">
-                            Užsakymų nerasta.
+                            {% trans "No orders found." %}
                         </td>
                     </tr>
                     {% endfor %}

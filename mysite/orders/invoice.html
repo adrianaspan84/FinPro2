@@ -51,17 +51,17 @@
     {% for item in items %}
     <tr>
         <td>{{ item.service.name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.service.price }} €</td>
-        <td>{{ item.total_price }} €</td>
+        <td>{{ item.quantity|floatformat:2 }}</td>
+        <td>{{ item.unit_price|floatformat:2 }} €</td>
+        <td>{{ item.total_price|floatformat:2 }} €</td>
     </tr>
     {% endfor %}
 </table>
 
 <div class="totals">
-    <p><strong>Tarpinė suma:</strong> {{ order.subtotal }} €</p>
-    <p><strong>PVM (21%):</strong> {{ order.vat_amount }} €</p>
-    <p><strong>Galutinė suma:</strong> {{ order.total_with_vat }} €</p>
+    <p><strong>Tarpinė suma:</strong> {{ order.subtotal|floatformat:2 }} €</p>
+    <p><strong>PVM (21%):</strong> {{ order.vat_amount|floatformat:2 }} €</p>
+    <p><strong>Galutinė suma:</strong> {{ order.total_with_vat|floatformat:2 }} €</p>
 </div>
 
 </body>

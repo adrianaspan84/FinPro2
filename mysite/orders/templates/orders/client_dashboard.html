@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 {% load role_badges %}
 {% load status_badges %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="fw-bold">Mano paskyra</h2>
+    <h2 class="fw-bold">{% trans "Mano paskyra" %}</h2>
 
     <!-- DASHBOARD STATISTIKA -->
     <div class="row mt-4">
@@ -15,7 +16,7 @@
             <div class="dashboard-card bg-primary mb-3">
                 <div class="card-body">
                     <h4>{{ stats.active }}</h4>
-                    <p>Vykdomi užsakymai</p>
+                    <p>{% trans "Vykdomi užsakymai" %}</p>
                 </div>
             </div>
         </div>
@@ -24,7 +25,7 @@
             <div class="dashboard-card bg-warning mb-3">
                 <div class="card-body">
                     <h4>{{ stats.new }}</h4>
-                    <p>Nauji užsakymai</p>
+                    <p>{% trans "Nauji užsakymai" %}</p>
                 </div>
             </div>
         </div>
@@ -33,7 +34,7 @@
             <div class="dashboard-card bg-success mb-3">
                 <div class="card-body">
                     <h4>{{ stats.done }}</h4>
-                    <p>Atlikti užsakymai</p>
+                    <p>{% trans "Atlikti užsakymai" %}</p>
                 </div>
             </div>
         </div>
@@ -42,7 +43,7 @@
             <div class="dashboard-card bg-danger mb-3">
                 <div class="card-body">
                     <h4>{{ stats.overdue }}</h4>
-                    <p>Vėluojantys</p>
+                    <p>{% trans "Vėluojantys" %}</p>
                 </div>
             </div>
         </div>
@@ -52,19 +53,19 @@
     <hr class="my-4">
 
     <!-- NAUJI UŽSAKYMAI -->
-    <h4 class="fw-semibold">Nauji užsakymai</h4>
+    <h4 class="fw-semibold">{% trans "Nauji užsakymai" %}</h4>
     <div class="glass-card p-3 mb-4">
         {% include 'orders/partials/order_table.html' with orders=new_orders %}
     </div>
 
     <!-- VYKDOMI UŽSAKYMAI -->
-    <h4 class="fw-semibold mt-4">Vykdomi užsakymai</h4>
+    <h4 class="fw-semibold mt-4">{% trans "Vykdomi užsakymai" %}</h4>
     <div class="glass-card p-3 mb-4">
         {% include 'orders/partials/order_table.html' with orders=active_orders %}
     </div>
 
     <!-- ATLIKTI UŽSAKYMAI -->
-    <h4 class="fw-semibold mt-4">Atlikti užsakymai</h4>
+    <h4 class="fw-semibold mt-4">{% trans "Atlikti užsakymai" %}</h4>
     <div class="glass-card p-3 mb-4">
         {% include 'orders/partials/order_table.html' with orders=done_orders %}
     </div>

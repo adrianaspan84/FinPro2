@@ -1,147 +1,319 @@
+{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
 <!DOCTYPE html>
-<html lang="lt">
+<html lang="{{ CURRENT_LANGUAGE|default:'lt' }}">
 <head>
     <meta charset="UTF-8">
-    <title>Sąskaita faktūra #{{ order.id }}</title>
-
+    <title>{{ invoice_number }}</title>
     <style>
+        @page {
+            size: A4;
+            margin: 16mm;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            margin: 40px;
-            color: #333;
+            font-family: DejaVu Sans, Arial, sans-serif;
+            color: #111827;
+            font-size: 12px;
+            margin: 0;
+            line-height: 1.45;
+            background: #ffffff;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
+        .invoice {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            overflow: hidden;
         }
 
-        .company-info, .client-info {
-            width: 100%;
-            margin-bottom: 25px;
+        .header {
+            background: #f3f4f6;
+            color: #0f172a;
+            padding: 12px 16px;
+            border-bottom: 1px solid #d1d5db;
         }
 
-        .company-info strong, .client-info strong {
-            font-size: 16px;
-        }
-
-        table {
+        .header-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 25px;
         }
 
-        table th {
-            background: #f2f2f2;
+        .header-table td {
+            vertical-align: middle;
+        }
+
+        .logo {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            background: #ffffff;
+            object-fit: contain;
+            padding: 6px;
+            box-sizing: border-box;
+            display: block;
+            border: 1px solid #d1d5db;
+        }
+
+        .brand {
+            padding-left: 12px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 0.3px;
+            color: #0f172a;
+        }
+
+        .brand p {
+            margin: 4px 0 0;
+            color: #475569;
+            font-size: 11px;
+        }
+
+        .meta {
+            text-align: right;
+            font-size: 11px;
+            color: #334155;
+        }
+
+        .section {
+            padding: 14px 18px;
+        }
+
+        .top-grid {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .top-grid td {
+            width: 50%;
+            vertical-align: top;
+            padding-right: 10px;
+        }
+
+        .box-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.35px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .box {
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            border-radius: 6px;
             padding: 10px;
-            border-bottom: 1px solid #ccc;
+            min-height: 110px;
+        }
+
+        .items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .items th {
+            background: #ffffff;
+            color: #334155;
+            border: 1px solid #d1d5db;
+            padding: 8px;
             text-align: left;
+            font-weight: bold;
         }
 
-        table td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
+        .items td {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+        }
+
+        .num-col {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .num-head {
+            text-align: center !important;
         }
 
         .totals {
-            margin-top: 30px;
-            width: 40%;
-            float: right;
-            border: 1px solid #ddd;
-            padding: 15px;
-        }
-
-        .totals table {
-            width: 100%;
-            border: none;
+            width: 44%;
+            margin-left: auto;
+            margin-top: 12px;
+            border-collapse: collapse;
         }
 
         .totals td {
-            padding: 6px 0;
+            border: 1px solid #d1d5db;
+            padding: 7px 8px;
+        }
+
+        .totals .label {
+            background: #ffffff;
+            font-weight: bold;
+        }
+
+        .totals .value {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        .totals .grand .label,
+        .totals .grand .value {
+            background: #f3f4f6;
+            color: #0f172a;
+            font-weight: bold;
+        }
+
+        .signature-grid {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        .signature-grid td {
+            width: 50%;
+            vertical-align: top;
+            padding-right: 16px;
+        }
+
+        .signature-title {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+
+        .signature-line {
+            border-top: 1px solid #94a3b8;
+            margin-top: 26px;
+            padding-top: 4px;
+            font-size: 10px;
+            color: #64748b;
         }
 
         .footer {
-            margin-top: 80px;
+            border-top: 1px solid #e2e8f0;
             text-align: center;
-            font-size: 12px;
-            color: #777;
+            color: #64748b;
+            font-size: 11px;
+            padding: 10px 18px 14px;
         }
     </style>
 </head>
-
 <body>
+<div class="invoice">
+    <div class="header">
+        <table class="header-table">
+            <tr>
+                <td style="width: 72px;">
+                    <img src="static/main/img/invoice-house-logo.svg" alt="H-Pro" class="logo">
+                </td>
+                <td class="brand">
+                    <h1>{{ company.name }}</h1>
+                    <p>{{ invoice_number }}</p>
+                </td>
+                <td class="meta">
+                    {% trans "Išrašymo data:" %} {{ order.created_at|date:"Y-m-d H:i" }}<br>
+                    {% trans "Valiuta:" %} EUR
+                </td>
+            </tr>
+        </table>
+    </div>
 
-<h1>Sąskaita faktūra Nr. {{ order.id }}</h1>
+    <div class="section">
+        <table class="top-grid">
+            <tr>
+                <td>
+                    <div class="box-title">{% trans "Pardavėjo rekvizitai" %}</div>
+                    <div class="box">
+                        <strong>{{ company.name }}</strong><br>
+                        {{ company.full_name }}<br>
+                        {{ company.address }}<br>
+                        {% trans "Įmonės kodas:" %} {{ company.seller_code }}<br>
+                        {% trans "PVM kodas:" %} {{ company.vat_code }}<br>
+                        {% trans "El. paštas:" %} {{ company.email }}<br>
+                        Tel.: {{ company.phone }}
+                    </div>
+                </td>
+                <td>
+                    <div class="box-title">{% trans "Pirkėjo rekvizitai" %}</div>
+                    <div class="box">
+                        {% with profile=order.client.profile %}
+                            {% if profile.is_legal_entity %}
+                                {{ profile.company_name|default:profile.billing_name }}<br>
+                                {% trans "Įmonės kodas:" %} {{ profile.company_code|default:'-' }}<br>
+                                {% trans "PVM kodas:" %} {{ profile.company_vat_code|default:'-' }}<br>
+                                {% trans "Adresas:" %} {{ profile.company_address|default:profile.billing_address|default:'-' }}<br>
+                            {% else %}
+                                {{ profile.billing_name }}<br>
+                                {% trans "Adresas:" %} {{ profile.billing_address|default:'-' }}<br>
+                            {% endif %}
+                            {% trans "El. paštas:" %} {{ order.client.email|default:'-' }}<br>
+                            Tel.: {{ profile.phone|default:'-' }}
+                        {% endwith %}
+                    </div>
+                </td>
+            </tr>
+        </table>
 
-<div class="company-info">
-    <strong>{{ company.name }}</strong><br>
-    {{ company.address }}<br>
-    {{ company.code }}<br>
-    {{ company.vat_code }}<br>
-    {{ company.email }}<br>
-</div>
+        <table class="items">
+            <thead>
+                <tr>
+                    <th>{% trans "Paslauga" %}</th>
+                    <th class="num-head">{% trans "Kiekis" %}</th>
+                    <th class="num-head">{% trans "Kaina" %}</th>
+                    <th class="num-head">{% trans "Suma" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.service.name }}</td>
+                    <td class="num-col">{{ item.quantity|floatformat:2 }}</td>
+                    <td class="num-col">{{ item.unit_price|floatformat:2 }} €</td>
+                    <td class="num-col">{{ item.total_price|floatformat:2 }} €</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<div class="client-info">
-    <strong>Klientas:</strong><br>
-    {{ order.full_name }}<br>
-    {{ order.email }}<br>
-    {{ order.address }}<br>
-</div>
+        <table class="totals">
+            <tr>
+                <td class="label">{% trans "Suma be PVM" %}</td>
+                <td class="value">{{ order.subtotal|floatformat:2 }} €</td>
+            </tr>
+            <tr>
+                <td class="label">PVM (21%)</td>
+                <td class="value">{{ order.vat_amount|floatformat:2 }} €</td>
+            </tr>
+            <tr class="grand">
+                <td class="label">{% trans "Viso su PVM" %}</td>
+                <td class="value">{{ order.total_with_vat|floatformat:2 }} €</td>
+            </tr>
+        </table>
 
-<table>
-    <thead>
-        <tr>
-            <th>Prekė</th>
-            <th>Kiekis</th>
-            <th>Kaina (su PVM)</th>
-            <th>Suma (su PVM)</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in items %}
-        <tr>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.price }} €</td>
-            <td>{{ item.total_price }} €</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <table class="signature-grid">
+            <tr>
+                <td>
+                    <div class="signature-title">{% trans "Pardavėjo parašas" %}</div>
+                    <div class="signature-line">{% trans "(vardas, pavardė, parašas)" %}</div>
+                </td>
+                <td>
+                    <div class="signature-title">{% trans "Pirkėjo parašas" %}</div>
+                    <div class="signature-line">{% trans "(vardas, pavardė, parašas)" %}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-{% comment %}
-    PVM SKAIČIAVIMAS:
-    order.total = suma su PVM
-    suma_be_pvm = total / 1.21
-    pvm = total - suma_be_pvm
-{% endcomment %}
-
-{% with suma_be_pvm=order.total|div:1.21 %}
-{% with pvm=order.total|floatformat:2|floatformat:""|add:"-"|add:suma_be_pvm %}
-
-<div class="totals">
-    <table>
-        <tr>
-            <td>Suma be PVM:</td>
-            <td><strong>{{ suma_be_pvm|floatformat:2 }} €</strong></td>
-        </tr>
-        <tr>
-            <td>PVM (21%):</td>
-            <td><strong>{{ order.total|floatformat:2|floatformat:""|add:"-"|add:suma_be_pvm }} €</strong></td>
-        </tr>
-        <tr>
-            <td>Viso su PVM:</td>
-            <td><strong>{{ order.total|floatformat:2 }} €</strong></td>
-        </tr>
-    </table>
-</div>
-
-{% endwith %}
-{% endwith %}
-
-<div class="footer">
-    Sąskaita sugeneruota automatiškai FinPro sistemoje.
+    <div class="footer">
+        {% trans "Sąskaita sugeneruota automatiškai FinPro sistemoje." %}
+    </div>
 </div>
 
 </body>
