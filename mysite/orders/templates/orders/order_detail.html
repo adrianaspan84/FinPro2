@@ -12,7 +12,7 @@
 
         <!-- HEADER -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="fw-bold">{% trans "Užsakymas" %} #{{ order.id }}</h2>
+            <h2 class="fw-bold text-light">{% trans "Užsakymas" %} #{{ order.id }}</h2>
             <div>{% status_badge order.status %}</div>
         </div>
 
@@ -21,26 +21,26 @@
         <!-- CLIENT & MANAGER INFO -->
         <div class="row mt-3">
             <div class="col-md-6 mb-3">
-                <h5 class="fw-semibold">{% trans "Klientas" %}</h5>
-                <p class="mb-1">
+                <h5 class="fw-semibold text-light">{% trans "Klientas" %}</h5>
+                <p class="mb-1 text-light">
                     {{ order.client.username }}
                     {% role_badge order.client.profile.role %}
                 </p>
-                <p class="text-muted small mb-0">
+                <p class="text-light small mb-0">
                     {{ order.client.profile.phone|default:no_phone }}<br>
                     {{ order.client.profile.city|default:no_city }}
                 </p>
             </div>
 
             <div class="col-md-6 mb-3">
-                <h5 class="fw-semibold">{% trans "Priskirtas vadybininkas" %}</h5>
+                <h5 class="fw-semibold text-light">{% trans "Priskirtas vadybininkas" %}</h5>
                 {% if order.manager %}
-                    <p class="mb-1">
+                    <p class="mb-1 text-light">
                         {{ order.manager.username }}
                         {% role_badge order.manager.profile.role %}
                     </p>
                 {% else %}
-                    <p class="text-muted">{% trans "Nepriskirtas" %}</p>
+                    <p class="text-light">{% trans "Nepriskirtas" %}</p>
                 {% endif %}
             </div>
         </div>
@@ -50,62 +50,62 @@
         <!-- ORDER INFO -->
         <div class="row mt-3">
             <div class="col-md-4 mb-3">
-                <h6 class="fw-semibold">{% trans "Sukūrimo data" %}</h6>
-                <p>{{ order.created_at|date:"Y-m-d H:i" }}</p>
+                <h6 class="fw-semibold text-light">{% trans "Sukūrimo data" %}</h6>
+                <p class="text-light">{{ order.created_at|date:"Y-m-d H:i" }}</p>
             </div>
 
             <div class="col-md-4 mb-3">
-                <h6 class="fw-semibold">{% trans "Vadybininko terminas" %}</h6>
-                <p>{{ order.deadline|default:"-" }}</p>
+                <h6 class="fw-semibold text-light">{% trans "Vadybininko terminas" %}</h6>
+                <p class="text-light">{{ order.deadline|default:"-" }}</p>
             </div>
 
             <div class="col-md-4 mb-3">
-                <h6 class="fw-semibold">{% trans "Bendra kaina (su PVM)" %}</h6>
-                <p class="fw-bold">{{ order.total_with_vat|floatformat:2 }} €</p>
+                <h6 class="fw-semibold text-light">{% trans "Bendra kaina (su PVM)" %}</h6>
+                <p class="fw-bold text-light">{{ order.total_with_vat|floatformat:2 }} €</p>
             </div>
         </div>
 
         <div class="mt-2 mb-3">
-            <h6 class="fw-semibold">{% trans "Vadybininko komentarai" %}</h6>
-            <p class="text-muted mb-0">{{ order.manager_comment|default:no_comments }}</p>
+            <h6 class="fw-semibold text-light">{% trans "Vadybininko komentarai" %}</h6>
+            <p class="text-light mb-0">{{ order.manager_comment|default:no_comments }}</p>
         </div>
 
         <hr>
 
         <!-- SERVICES LIST -->
-        <h4 class="fw-semibold mt-3">{% trans "Paslaugos" %}</h4>
+        <h4 class="fw-semibold text-light mt-3">{% trans "Paslaugos" %}</h4>
         <div class="table-responsive mt-3">
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
-                        <th>{% trans "Paslauga" %}</th>
-                        <th class="num-col">{% trans "Kiekis" %}</th>
-                        <th class="num-col">{% trans "Kaina" %}</th>
-                        <th class="num-col">{% trans "Suma" %}</th>
+                        <th class="text-light">{% trans "Paslauga" %}</th>
+                        <th class="num-col text-light">{% trans "Kiekis" %}</th>
+                        <th class="num-col text-light">{% trans "Kaina" %}</th>
+                        <th class="num-col text-light">{% trans "Suma" %}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in order.items.all %}
                     <tr>
-                        <td>{{ item.service.name }}</td>
-                        <td class="num-col">{{ item.quantity|floatformat:2 }}</td>
-                        <td class="num-col">{{ item.unit_price|floatformat:2 }} €</td>
-                        <td class="fw-semibold num-col">{{ item.total_price|floatformat:2 }} €</td>
+                        <td class="text-light">{{ item.service.name }}</td>
+                        <td class="num-col text-light">{{ item.quantity|floatformat:2 }}</td>
+                        <td class="num-col text-light">{{ item.unit_price|floatformat:2 }} €</td>
+                        <td class="fw-semibold num-col text-light">{{ item.total_price|floatformat:2 }} €</td>
                     </tr>
                     {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="3" class="text-end">{% trans "Suma be PVM:" %}</th>
-                        <th class="num-col">{{ order.subtotal|floatformat:2 }} €</th>
+                        <th colspan="3" class="text-end text-light">{% trans "Suma be PVM:" %}</th>
+                        <th class="num-col text-light">{{ order.subtotal|floatformat:2 }} €</th>
                     </tr>
                     <tr>
-                        <th colspan="3" class="text-end">{% trans "PVM (21%):" %}</th>
-                        <th class="num-col">{{ order.vat_amount|floatformat:2 }} €</th>
+                        <th colspan="3" class="text-end text-light">{% trans "PVM (21%):" %}</th>
+                        <th class="num-col text-light">{{ order.vat_amount|floatformat:2 }} €</th>
                     </tr>
                     <tr>
-                        <th colspan="3" class="text-end">{% trans "Viso su PVM:" %}</th>
-                        <th class="num-col">{{ order.total_with_vat|floatformat:2 }} €</th>
+                        <th colspan="3" class="text-end text-light">{% trans "Viso su PVM:" %}</th>
+                        <th class="num-col text-light">{{ order.total_with_vat|floatformat:2 }} €</th>
                     </tr>
                 </tfoot>
             </table>

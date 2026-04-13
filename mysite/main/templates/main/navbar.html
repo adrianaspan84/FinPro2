@@ -13,7 +13,34 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNav">
-            <!-- LEFT: public links -->
+            <!-- LEFT: Logo & public links -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="{% url 'home' %}" class="navbar-brand neon-logo" title="H-Pro">
+                    <svg width="84" height="40" viewBox="0 0 84 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HPro logo">
+                        <defs>
+                            <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+                                <feGaussianBlur stdDeviation="1.8" result="coloredBlur"/>
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <!-- H -->
+                        <rect x="3" y="8" width="3" height="24" fill="none" stroke="#00FFF3" stroke-width="2" filter="url(#neonGlow)"/>
+                        <rect x="3" y="19" width="10" height="3" fill="none" stroke="#00FFF3" stroke-width="2" filter="url(#neonGlow)"/>
+                        <rect x="13" y="8" width="3" height="24" fill="none" stroke="#00FFF3" stroke-width="2" filter="url(#neonGlow)"/>
+
+                        <!-- Pro -->
+                        <text x="23" y="26" fill="#FF00FF" font-size="16" font-weight="700" font-family="Segoe UI, Arial, sans-serif" letter-spacing="0.6" filter="url(#neonGlow)">Pro</text>
+
+                        <!-- Accent line -->
+                        <line x1="3" y1="6" x2="73" y2="6" stroke="#00FFF3" stroke-width="1.5" opacity="0.65"/>
+                    </svg>
+                </a>
+            </div>
+
             <ul class="navbar-nav me-auto align-items-lg-center gap-lg-2">
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">{% trans "Pradžia" %}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'services_home' %}">{% trans "Paslaugos" %}</a></li>
@@ -114,3 +141,6 @@
         </div>
     </div>
 </nav>
+
+
+

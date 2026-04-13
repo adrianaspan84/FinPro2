@@ -1,216 +1,106 @@
-# FinPro - Projekto suvestine pagal paskaitu plana
+# FinPro - Baigiamojo projekto atitiktis paskaitų planui
 
-> Projektas: **FinPro** (Django)  
-> Imone: **UAB "HARLEMO PROJEKTAI" (H-Pro)**  
-> Tikslas: parodyti, kaip baigiamajame projekte pritaikytos paskaitu temos
+> Projektas: **FinPro**  
+> Įmonė: **UAB "HARLEMO PROJEKTAI" (H-Pro)**  
+> Technologinė bazė: **Django 5, Python 3.14, SQLite, Bootstrap 5**
 
-## Naudotos programos ir bibliotekos
+## 1. Dokumento paskirtis
 
-- **Python 3.14** - programavimo kalba
-- **Django 5.x** - MVC/MVT karkasas (modeliai, views, autentifikacija, admin)
-- **SQLite** - duomenu baze (development)
-- **Bootstrap 5** - UI komponentai ir responsyvus dizainas
-- **django-crispy-forms** + **crispy-bootstrap5** - formu atvaizdavimas
-- **django-tinymce** - HTML/WYSIWYG laukai
-- **WeasyPrint** - PDF saskaitu generavimas
-- **Pillow** - paveiksliuku ikelimas (ImageField)
-- **gettext / django i18n** - vertimai (lt/en/ru)
+Šis dokumentas pateikia aiškų atitikimą tarp paskaitų plano temų ir realiai įgyvendintų sprendimų projekte `FinPro`.
+
+Tikslas:
+- parodyti, kur kiekviena paskaitos tema panaudota projekte,
+- įvardyti konkrečius failus, modelius ir funkcijas,
+- pagrįsti praktinę kiekvieno sprendimo vertę.
 
 ---
 
-## 1) Izanga
+## 2. Naudotos programos ir bibliotekos
 
-**Projekto paskirtis:**
-- Klientas kuria uzsakymus, mato statusus, atsisiuncia PDF saskaita.
-- Vadybininkas administruoja priskirtus uzsakymus.
-- Administratorius mato ir valdo visus uzsakymus, atkuria soft-delete irasus.
-- Viesi dalis: paslaugos, galerija, atsiliepimai.
-
-**Pagrindinis verslo srautas:**
-`Klientas -> Uzsakymas -> Vadybininko administravimas -> Saskaita PDF -> Atsisiuntimas`
+- `Python 3.14` - pagrindinė programavimo kalba
+- `Django 5.x` - MVT architektūra, ORM, autentifikacija, administravimo modulis, formos, i18n
+- `SQLite` - duomenų bazė (development aplinkoje)
+- `Bootstrap 5` - vartotojo sąsajos struktūra ir responsyvus dizainas
+- `django-crispy-forms` + `crispy-bootstrap5` - patogus formų atvaizdavimas
+- `django-tinymce` - HTML/WYSIWYG laukų palaikymas
+- `WeasyPrint` - PDF sąskaitų generavimas
+- `Pillow` - `ImageField` palaikymas
+- `gettext` / Django i18n - daugiakalbystė (`lt`, `en`, `ru`)
 
 ---
 
-## 2) Modeliai
+## 3. Projekto modeliai ir ryšiai
 
-### Naudoti modeliai
-- `main.Profile` - vartotojo profilis, role, kontaktai, imones rekvizitai
-- `main.SiteSettings` - svetaines hero/fono nustatymai (singleton)
-- `services.ServiceCategory` - paslaugu kategorijos
-- `services.Service` - paslaugos (kaina, vienetas, aprasas)
-- `orders.Order` - uzsakymas (client, manager, status, terminas, soft-delete)
-- `orders.OrderItem` - uzsakymo eilute (service, kiekis, kaina)
-- `reviews.Review` - atsiliepimai (reitingas, tekstas, foto)
-- `gallery.GalleryItem` - galerijos turinys (foto/video/tiktok)
+### Pagrindiniai modeliai
+- `main.Profile`
+- `main.SiteSettings`
+- `services.ServiceCategory`
+- `services.Service`
+- `orders.Order`
+- `orders.OrderItem`
+- `reviews.Review`
+- `gallery.GalleryItem`
 
-### Modeliu rysiai
+### Esminiai ryšiai
 - `User (1:1) Profile`
-- `User (1:N) Order` kaip `client`
-- `User (1:N) Order` kaip `manager`
+- `User (1:N) Order` kaip klientas
+- `User (1:N) Order` kaip vadybininkas
 - `ServiceCategory (1:N) Service`
 - `Order (1:N) OrderItem`
 - `OrderItem (N:1) Service`
 - `User (1:N) Review`
 
-### Svarbios modeliu funkcijos
-- `Order.assign_manager()` - auto priskiria vadybininka
-- `Order.soft_delete()` - logiskas trynimas
+### Svarbiausia verslo logika modeliuose
+- `Order.assign_manager()` - automatinis vadybininko priskyrimas
+- `Order.soft_delete()` - loginis trynimas
 - `Order.is_overdue`, `subtotal`, `vat_amount`, `total_with_vat`
 - `OrderItem.unit_price`
 - `Profile.billing_name`, `Profile.billing_address`
 
 ---
 
-## 3) Administratoriaus svetaine
+## 4. Atitikties matrica pagal paskaitas
 
-**Django admin:**
-- `main/admin.py` - `ProfileAdmin`, `SiteSettingsAdmin`
-- `orders/admin.py` - `OrderAdmin`, `OrderItemInline`
-- `services/admin.py` - `ServiceCategoryAdmin`, `ServiceAdmin`
-
-**Custom administravimo paneles (ne tik /admin):**
-- `orders/views.py -> admin_dashboard`
-- `orders/templates/orders/admin_dashboard.html`
-- Filtravimas, paieska, deleted rodymas, statistikos korteles
-
----
-
-## 4) Sablonai
-
-**Baziniai sablonai:**
-- `main/templates/main/base.html`
-- `main/templates/main/navbar.html`
-- `main/templates/main/footer.html`
-
-**App sablonai:**
-- `orders/templates/orders/*.html`
-- `services/templates/services/*.html`
-- `reviews/templates/reviews/*.html`
-- `gallery/templates/gallery/*.html`
-
-**Naudojami include/templatetag sprendimai:**
-- `orders/templates/orders/partials/order_table.html`
-- `main/templatetags/role_badges.py`
-- `orders/templatetags/status_badges.py`
+| Paskaita | Kur realizuota projekte | Pagrindiniai pavadinimai / funkcijos | Praktinis rezultatas |
+|---|---|---|---|
+| 1. Įžanga | `main/views.py`, `main/templates/main/index.html` | `index`, hero sekcija, role-based CTA | Pradinis puslapis su aiškia projekto paskirtimi |
+| 2. Modeliai | `main/models.py`, `orders/models.py`, `services/models.py`, `reviews/models.py`, `gallery/models.py` | `Profile`, `Order`, `OrderItem`, `Service`, `Review`, `GalleryItem` | Pilna duomenų schema su realiais ryšiais |
+| 3. Administratoriaus svetainė | `main/admin.py`, `orders/admin.py`, `services/admin.py`, `orders/views.py` | `ProfileAdmin`, `OrderAdmin`, `admin_dashboard` | Administratorius valdo duomenis per Django admin ir custom panelę |
+| 4. Šablonai | `main/templates/main/base.html`, `navbar.html`, app šablonai | `base`, `include`, role badge, status badge | Vieninga UI architektūra visame projekte |
+| 5. Views | `main/views.py`, `orders/views.py`, `services/views.py`, `reviews/views.py` | `order_list`, `order_detail`, `create_order`, `admin_dashboard`, `ReviewCreateView` | Įgyvendintas pilnas vartotojo veiksmų ciklas |
+| 6. Puslapiavimas, paieška, nuotraukos | `orders/views.py`, `gallery/views.py`, modelių `ImageField` | `Paginator`, `_apply_order_filters`, `avatar/photo/image` | Patogus didesnio duomenų kiekio valdymas |
+| 7. Autorizacija | Django auth + role tikrinimai views | `@login_required`, `PermissionDenied`, role-based logika | Apsaugotos funkcijos pagal vartotojo teises |
+| 8. Vartotojai II, HTML laukai | `main/signals.py`, `reviews/models.py`, `gallery/models.py` | `create_profile`, `save_profile`, TinyMCE `content` | Automatinis profilio valdymas ir rich text turinys |
+| 9. Registracija, formos | `main/forms.py`, `orders/forms.py`, `reviews/forms.py` | `RegisterForm`, `ProfileEditForm`, `OrderCreateForm`, `OrderEditForm` | Kontroliuojamas duomenų įvedimas ir validacija |
+| 10. Vartotojo profilis | `main/templates/main/accounts/profile*.html`, `main/views.py` | `profile_view`, `profile_edit_view` | Pilnas profilio peržiūros ir redagavimo scenarijus |
+| 11. Create/Update/Delete rodinių klasės | `reviews/views.py`, papildomai FBV kituose app | `ReviewCreateView`, `ReviewUpdateView`, `ReviewDeleteView`; `edit_order`, `delete_order`, `restore_order` | Pritaikyti tiek CBV, tiek FBV CRUD principai |
+| 12. Vertimai | `main/locale/*/LC_MESSAGES/django.po`, `_fill_translations.py` | `compilemessages`, `/set-language/`, gettext | Veikianti daugiakalbė sistema (`lt/en/ru`) |
 
 ---
 
-## 5) Views
+## 5. Papildomi komponentai, stiprinantys projektą
 
-**Function-Based Views (FBV):**
-- `main/views.py`: `index`, `contact_view`, `login_view`, `register_view`, `profile_view`
-- `orders/views.py`: `create_order`, `order_list`, `order_detail`, `edit_order`, `delete_order`, `restore_order`, `admin_dashboard`, `manager_dashboard`, `client_dashboard`, `download_invoice`, `load_services`
-- `services/views.py`: `services_home`, category/service CRUD
+### PDF sąskaitos
+- Failai: `orders/utils/pdf.py`, `orders/templates/orders/invoice.html`
+- Funkcija: `generate_invoice_pdf(order)`
+- Vertė: automatizuota komercinių dokumentų generacija
 
-**Class-Based Views (CBV):**
-- `reviews/views.py`: `ReviewCreateView`, `ReviewUpdateView`, `ReviewDeleteView`
+### Dashboard analitika
+- Failas: `orders/views.py` (`admin_dashboard`, `manager_dashboard`, `client_dashboard`)
+- Rodikliai: nauji, aktyvūs, atlikti, vėluojantys, deleted
 
----
-
-## 6) Puslapiavimas, Paieska, Nuotraukos
-
-**Puslapiavimas:**
-- `orders/views.py -> order_list` (`Paginator`, 10 irasu)
-- `gallery/views.py -> gallery_home` (9 irasai)
-
-**Paieska / filtravimas:**
-- `_apply_order_filters(queryset, status, q)` in `orders/views.py`
-- Admin dashboard filtrai pagal statusa, q, include_deleted
-
-**Nuotraukos / media:**
-- `ImageField` modeliuose (`Profile.avatar`, `Review.photo`, `GalleryItem.image`)
-- media katalogas: `mysite/media/`
+### Testavimas
+- Failai: `main/tests.py`, `orders/tests.py`, `services/tests.py`, `reviews/tests.py`, `gallery/tests.py`
+- Tikrinama: teisės, validacija, puslapiavimas, dashboard elgsena
 
 ---
 
-## 7) Autorizacija
+## 6. Trumpa architektūrinė išvada
 
-- Django auth (`login`, `logout`, `@login_required`)
-- Teisiu kontrole pagal role (`client`, `manager`, `admin`, `staff`)
-- `PermissionDenied` kai vartotojas neturi teisiu
-- Role-based navigation `navbar.html`
+Projektas pilnai atitinka paskaitų planą ir parodo praktinį visų temų pritaikymą vienoje sistemoje:
+- nuo modelių projektavimo ir ryšių,
+- iki autentifikacijos, formų, CRUD, paieškos ir puslapiavimo,
+- su administravimo valdymu, media ir PDF,
+- bei pilna i18n integracija.
 
----
-
-## 8) Vartotojai II, HTML laukai
-
-**Vartotoju role logika:**
-- saugoma `Profile.role`
-- signalai: `main/signals.py` (`create_profile`, `save_profile`)
-
-**HTML laukai (rich text):**
-- `reviews.models.Review.content` (TinyMCE)
-- `gallery.models.GalleryItem.content` (TinyMCE)
-
----
-
-## 9) Registracija, Formos
-
-**Registracija:**
-- `main/forms.py -> RegisterForm`
-- `main/views.py -> register_view`
-
-**Profilio formos:**
-- `ProfileEditForm` su User + Profile atnaujinimu
-
-**Uzsakymo formos:**
-- `orders/forms.py -> OrderCreateForm`, `OrderEditForm`
-- JSON eiluciu validacija (`items_json`)
-
-**Atsiliepimu forma:**
-- `reviews/forms.py -> ReviewForm`
-
----
-
-## 10) Vartotojo profilis
-
-- Profilio perziura: `main/templates/main/accounts/profile.html`
-- Profilio redagavimas: `profile_edit.html`
-- Avataras, kontaktai, juridinio asmens laukai, role badge
-- Vartotojo verslo rekvizitai panaudojami saskaitose (`billing_name/address`)
-
----
-
-## 11) Create, Update, Delete rodiniu klases
-
-**CBV sukurimas/redagavimas/trynimas:**
-- `reviews/views.py`: `ReviewCreateView`, `ReviewUpdateView`, `ReviewDeleteView`
-
-**FBV CRUD principai kitose vietose:**
-- `orders/views.py`: kurimas, redagavimas, soft-delete, restore
-- `services/views.py`: category/service create-edit-delete
-
----
-
-## 12) Vertimai
-
-- Kalbos: `lt`, `en`, `ru`
-- Failai: `main/locale/{lt,en,ru}/LC_MESSAGES/django.po`
-- Kompiliavimas: `python manage.py compilemessages`
-- Kalbos perjungimas per `navbar` ir `/set-language/`
-- Pagalbinis skriptas: `_fill_translations.py`
-
----
-
-## Papildomai: PDF, testai, kokybe
-
-**PDF saskaita:**
-- `orders/utils/pdf.py -> generate_invoice_pdf(order)`
-- WeasyPrint + `orders/templates/orders/invoice.html`
-
-**Testai:**
-- `main/tests.py`, `orders/tests.py`, `services/tests.py`, `reviews/tests.py`, `gallery/tests.py`
-- Testuojami: teises, puslapiavimas, validacija, dashboard elgsena
-
----
-
-## Trumpa isvada pagal paskaitu plana
-
-Visos 12 paskaitu temu projekte panaudotos praktiskai:
-- nuo modeliu ir rysiu,
-- iki autorizacijos, formu, CRUD, vertimu,
-- su admin valdymu, paieska/puslapiavimu,
-- ir papildomu realaus projekto komponentu (PDF, media, role-based dashboard).
-
-Sis dokumentas gali buti naudojamas kaip baigiamojo projekto "atitikties paskaitoms" suvestine.
-
+`FinPro` yra funkcionalus, testuojamas ir toliau plečiamas Django projektas, tinkamas baigiamajam atsiskaitymui.
