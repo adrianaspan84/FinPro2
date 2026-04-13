@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import CreateView, DeleteView, UpdateView
+from django.db.models import Count, Avg
 
 from main.models import Profile
 from .forms import ReviewForm
@@ -14,7 +15,32 @@ from .models import Review
 def review_list(request):
     reviews = Review.objects.select_related('user').filter(is_approved=True)
     form = ReviewForm() if request.user.is_authenticated else None
-    return render(request, 'reviews/review_list.html', {'reviews': reviews, 'form': form})
+
+    stats = Review.objects.filter(is_approved=True).aggregate(
+        avg_rating=Avg('rating'),
+        total_reviews=Count('id')
+    )
+
+    total = stats['total_reviews'] or 0
+    rating_rows = []
+    for rating in range(1, 6):
+        count = Review.objects.filter(is_approved=True, rating=rating).count()
+        percentage = (count * 100 // total) if total > 0 else 0
+        rating_rows.append({
+            'rating': rating,
+            'count': count,
+            'percentage': percentage
+        })
+    rating_rows.reverse()
+
+    context = {
+        'reviews': reviews,
+        'form': form,
+        'avg_rating': stats['avg_rating'] or 0,
+        'total_reviews': total,
+        'rating_rows': rating_rows,
+    }
+    return render(request, 'reviews/review_list.html', context)
 
 
 class ReviewCreateView(LoginRequiredMixin, CreateView):

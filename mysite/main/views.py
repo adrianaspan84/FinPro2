@@ -5,12 +5,26 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 
 from .forms import RegisterForm, ProfileEditForm
-from .models import Profile, SiteSettings
+from .models import Profile, SiteSettings, get_rotating_background_urls, get_hero_rotation_settings
 
 def index(request):
     settings = SiteSettings.load()
-    background_url = settings.background_image.url if settings.background_image else '/media/background/background.jpg'
-    return render(request, 'main/index.html', {'background_url': background_url})
+    hero_background_urls = get_rotating_background_urls()
+    rotation_settings = get_hero_rotation_settings()
+    if not hero_background_urls:
+        fallback = settings.background_image.url if settings.background_image else '/media/background/background.jpg'
+        hero_background_urls = [fallback]
+
+    return render(
+        request,
+        'main/index.html',
+        {
+            'background_url': hero_background_urls[0],
+            'hero_background_urls': hero_background_urls,
+            'hero_rotation_enabled': rotation_settings['enabled'],
+            'hero_rotation_interval_ms': rotation_settings['interval_seconds'] * 1000,
+        },
+    )
 
 
 def contact_view(request):

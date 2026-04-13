@@ -5,7 +5,7 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container orders-wide-container mt-4">
 
     <h2 class="fw-bold">{% trans "Vadybininko panelė" %}</h2>
 
@@ -53,17 +53,17 @@
 
     <h4 class="fw-semibold">{% trans "Nauji užsakymai" %}</h4>
     <div class="glass-card p-3 mb-4">
-        {% include 'orders/partials/order_table.html' with orders=new_orders %}
+        {% include 'orders/partials/order_table.html' with orders=new_orders show_manager=True %}
     </div>
 
     <h4 class="fw-semibold mt-4">{% trans "Vykdomi užsakymai" %}</h4>
     <div class="glass-card p-3 mb-4">
-        {% include 'orders/partials/order_table.html' with orders=active_orders %}
+        {% include 'orders/partials/order_table.html' with orders=active_orders show_manager=True %}
     </div>
 
     <h4 class="fw-semibold mt-4">{% trans "Atlikti užsakymai" %}</h4>
     <div class="glass-card p-3 mb-4">
-        {% include 'orders/partials/order_table.html' with orders=done_orders %}
+        {% include 'orders/partials/order_table.html' with orders=done_orders show_manager=True %}
     </div>
 
 </div>

@@ -1,12 +1,86 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import json
+
+ROTATING_BACKGROUND_DIR = 'settings/rotating'
+ROTATING_BACKGROUND_SLOTS = 5
+ROTATING_BACKGROUND_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.webp')
+ROTATING_CONFIG_PATH = f'{ROTATING_BACKGROUND_DIR}/rotation_config.json'
+DEFAULT_ROTATION_SECONDS = 30
+
+
+def get_rotating_background_urls():
+    urls = []
+    for slot in range(1, ROTATING_BACKGROUND_SLOTS + 1):
+        for ext in ROTATING_BACKGROUND_EXTENSIONS:
+            path = f'{ROTATING_BACKGROUND_DIR}/background_{slot}{ext}'
+            if default_storage.exists(path):
+                urls.append(default_storage.url(path))
+                break
+    return urls
+
+
+def save_rotating_background(slot, uploaded_file):
+    if not uploaded_file or slot < 1 or slot > ROTATING_BACKGROUND_SLOTS:
+        return
+
+    # Keep one file per slot by removing previous known extensions first.
+    for ext in ROTATING_BACKGROUND_EXTENSIONS:
+        old_path = f'{ROTATING_BACKGROUND_DIR}/background_{slot}{ext}'
+        if default_storage.exists(old_path):
+            default_storage.delete(old_path)
+
+    extension = ''
+    if '.' in uploaded_file.name:
+        extension = '.' + uploaded_file.name.rsplit('.', 1)[1].lower()
+    if extension not in ROTATING_BACKGROUND_EXTENSIONS:
+        extension = '.jpg'
+
+    target_path = f'{ROTATING_BACKGROUND_DIR}/background_{slot}{extension}'
+    default_storage.save(target_path, uploaded_file)
+
+
+def get_hero_rotation_settings():
+    settings = {
+        'enabled': True,
+        'interval_seconds': DEFAULT_ROTATION_SECONDS,
+    }
+    if not default_storage.exists(ROTATING_CONFIG_PATH):
+        return settings
+
+    try:
+        with default_storage.open(ROTATING_CONFIG_PATH, 'r') as config_file:
+            data = json.load(config_file)
+        settings['enabled'] = bool(data.get('enabled', True))
+        interval = int(data.get('interval_seconds', DEFAULT_ROTATION_SECONDS))
+        settings['interval_seconds'] = max(5, min(600, interval))
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return settings
+    return settings
+
+
+def save_hero_rotation_settings(enabled, interval_seconds):
+    interval = max(5, min(600, int(interval_seconds or DEFAULT_ROTATION_SECONDS)))
+    payload = {
+        'enabled': bool(enabled),
+        'interval_seconds': interval,
+    }
+    if default_storage.exists(ROTATING_CONFIG_PATH):
+        default_storage.delete(ROTATING_CONFIG_PATH)
+    default_storage.save(
+        ROTATING_CONFIG_PATH,
+        ContentFile(json.dumps(payload, ensure_ascii=False, indent=2)),
+    )
 
 class Profile(models.Model):
     ROLE_CHOICES = [
         ('client', _('Klientas')),
         ('manager', _('Vadybininkas')),
         ('admin', _('Administratorius')),
+        ('staff', _('Darbuotojas')),
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

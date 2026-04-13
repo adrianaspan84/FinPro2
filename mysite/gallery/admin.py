@@ -32,7 +32,7 @@ class GalleryItemAdmin(admin.ModelAdmin):
         }),
         ('Medija', {
             'fields': ('image', 'video_url', 'video_file'),
-            'description': 'Pasirinkite vieną medijos tipą pagal "Medijos tipas" lauką.',
+            'description': 'Pasirinkite vieną medijos tipą pagal "Medijos tipas" lauką: nuotrauka, YouTube/Vimeo, TikTok arba video failas.',
         }),
         ('Aprašymas (TinyMCE)', {
             'fields': ('content',),

@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="glass-card p-4" style="max-width: 620px; margin: auto;">
+        <h2 class="fw-bold mb-3">{% trans "Patvirtinkite šalinimą" %}</h2>
+        <p class="mb-4">
+            {% blocktrans with object_type=object_type object_name=object %}
+                Ar tikrai norite ištrinti {{ object_type }} "{{ object_name }}"?
+            {% endblocktrans %}
+        </p>
+
+        <form method="post" class="d-flex gap-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger px-4">{% trans "Ištrinti" %}</button>
+            <a href="{% url cancel_url %}" class="btn btn-light px-4">{% trans "Atgal" %}</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

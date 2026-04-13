@@ -1,0 +1,1334 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-13 15:44+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\gallery\models.py:9 .\gallery\models.py:21
+msgid "Nuotrauka"
+msgstr "Photo"
+
+#: .\gallery\models.py:10
+msgid "Video nuoroda (YouTube/Vimeo)"
+msgstr "Video URL (YouTube/Vimeo)"
+
+#: .\gallery\models.py:11 .\gallery\models.py:30 .\reviews\models.py:22
+msgid "Video failas"
+msgstr "Video file"
+
+#: .\gallery\models.py:14 .\services\templates\services\category_form.html:25
+#: .\services\templates\services\category_list.html:34
+#: .\services\templates\services\service_list.html:30
+msgid "Pavadinimas"
+msgstr "Name"
+
+#: .\gallery\models.py:17
+msgid "Medijos tipas"
+msgstr "Media type"
+
+#: .\gallery\models.py:25 .\reviews\models.py:21
+msgid "Video nuoroda"
+msgstr "Video URL"
+
+#: .\gallery\models.py:26
+msgid "YouTube arba Vimeo nuoroda (pvz. https://www.youtube.com/embed/XXX)"
+msgstr "YouTube or Vimeo URL (e.g. https://www.youtube.com/embed/XXX)"
+
+#: .\gallery\models.py:32
+msgid "Aprašymas / Turinys"
+msgstr "Description / Content"
+
+#: .\gallery\models.py:33
+msgid "Eilės tvarka"
+msgstr "Sort order"
+
+#: .\gallery\models.py:34
+msgid "Viešas"
+msgstr "Public"
+
+#: .\gallery\models.py:38
+msgid "Įkėlė"
+msgstr "Uploaded by"
+
+#: .\gallery\models.py:43
+msgid "Galerijos įrašas"
+msgstr "Gallery item"
+
+#: .\gallery\models.py:44 .\gallery\templates\gallery\gallery_list.html:6
+#: .\main\templates\main\navbar.html:20
+msgid "Galerija"
+msgstr "Gallery"
+
+#: .\gallery\templates\gallery\gallery_list.html:32
+msgid "Galerija tuščia."
+msgstr "Gallery is empty."
+
+#: .\main\forms.py:10 .\main\templates\main\registration\register.html:33
+msgid "Pakartoti slaptažodį"
+msgstr "Repeat password"
+
+#: .\main\forms.py:19
+msgid "Slaptažodžiai nesutampa"
+msgstr "Passwords do not match"
+
+#: .\main\forms.py:53
+msgid "Įveskite vardą"
+msgstr "Enter first name"
+
+#: .\main\forms.py:54
+msgid "Įveskite pavardę"
+msgstr "Enter last name"
+
+#: .\main\forms.py:56
+msgid "0XXXXXXXX"
+msgstr "0XXXXXXXX"
+
+#: .\main\forms.py:57 .\main\templates\main\accounts\profile.html:46
+#: .\main\templates\main\accounts\profile_edit.html:53
+msgid "Miestas"
+msgstr "City"
+
+#: .\main\forms.py:58 .\main\templates\main\accounts\profile.html:51
+#: .\main\templates\main\accounts\profile_edit.html:58
+#: .\main\templates\main\contact.html:17
+msgid "Adresas"
+msgstr "Address"
+
+#: .\main\forms.py:59 .\main\templates\main\accounts\profile_edit.html:80
+msgid "Įmonės pavadinimas"
+msgstr "Company name"
+
+#: .\main\forms.py:60 .\main\templates\main\accounts\profile_edit.html:85
+#: .\main\templates\main\contact.html:15
+msgid "Įmonės kodas"
+msgstr "Company code"
+
+#: .\main\forms.py:61 .\main\templates\main\accounts\profile_edit.html:90
+#: .\main\templates\main\contact.html:16
+msgid "PVM kodas"
+msgstr "VAT code"
+
+#: .\main\forms.py:62 .\main\templates\main\accounts\profile_edit.html:95
+msgid "Juridinis adresas"
+msgstr "Legal address"
+
+#: .\main\forms.py:87
+msgid "Trumpas aprašymas apie jus"
+msgstr "Short description about you"
+
+#: .\main\models.py:7 .\main\templatetags\role_badges.py:36
+#: .\orders\templates\orders\admin_dashboard.html:103
+#: .\orders\templates\orders\admin_dashboard.html:158
+#: .\orders\templates\orders\admin_dashboard.html:215
+#: .\orders\templates\orders\admin_dashboard.html:264
+#: .\orders\templates\orders\admin_dashboard.html:318
+#: .\orders\templates\orders\order_detail.html:24
+#: .\orders\templates\orders\partials\order_table.html:7
+msgid "Klientas"
+msgstr "Client"
+
+#: .\main\models.py:8 .\main\templatetags\role_badges.py:37
+#: .\orders\templates\orders\admin_dashboard.html:161
+#: .\orders\templates\orders\admin_dashboard.html:218
+#: .\orders\templates\orders\order_edit.html:34
+msgid "Vadybininkas"
+msgstr "Manager"
+
+#: .\main\models.py:9 .\main\templatetags\role_badges.py:38
+msgid "Administratorius"
+msgstr "Administrator"
+
+#: .\main\models.py:10 .\main\templatetags\role_badges.py:39
+msgid "Darbuotojas"
+msgstr "Personal"
+
+#: .\main\templates\main\accounts\profile.html:8
+msgid "Nenurodytas"
+msgstr "Not specified"
+
+#: .\main\templates\main\accounts\profile.html:10
+msgid "Mano profilis"
+msgstr "My profile"
+
+#: .\main\templates\main\accounts\profile.html:36
+#: .\main\templates\main\accounts\profile_edit.html:43
+#: .\main\templates\main\contact.html:21
+#: .\main\templates\main\registration\register.html:23
+msgid "El. paštas"
+msgstr "E-mail"
+
+#: .\main\templates\main\accounts\profile.html:41
+#: .\main\templates\main\accounts\profile_edit.html:48
+#: .\main\templates\main\contact.html:20
+msgid "Telefonas"
+msgstr "Phone"
+
+#: .\main\templates\main\accounts\profile.html:59
+#: .\main\templates\main\accounts\profile_edit.html:10
+msgid "Redaguoti profilį"
+msgstr "Edit profile"
+
+#: .\main\templates\main\accounts\profile.html:60
+#: .\main\templates\main\navbar.html:53
+msgid "Mano užsakymai"
+msgstr "My orders"
+
+#: .\main\templates\main\accounts\profile_edit.html:27
+msgid "Keisti nuotrauką"
+msgstr "Change photo"
+
+#: .\main\templates\main\accounts\profile_edit.html:33
+#: .\orders\templates\orders\admin_dashboard.html:104
+#: .\orders\templates\orders\admin_dashboard.html:159
+#: .\orders\templates\orders\admin_dashboard.html:216
+#: .\orders\templates\orders\admin_dashboard.html:265
+#: .\orders\templates\orders\admin_dashboard.html:319
+msgid "Vardas"
+msgstr "First name"
+
+#: .\main\templates\main\accounts\profile_edit.html:38
+#: .\orders\templates\orders\admin_dashboard.html:105
+#: .\orders\templates\orders\admin_dashboard.html:160
+#: .\orders\templates\orders\admin_dashboard.html:217
+#: .\orders\templates\orders\admin_dashboard.html:266
+#: .\orders\templates\orders\admin_dashboard.html:320
+msgid "Pavardė"
+msgstr "Last name"
+
+#: .\main\templates\main\accounts\profile_edit.html:63
+#: .\services\templates\services\category_form.html:31
+#: .\services\templates\services\category_list.html:35
+#: .\services\templates\services\services_list.html:23
+msgid "Aprašymas"
+msgstr "Description"
+
+#: .\main\templates\main\accounts\profile_edit.html:69
+msgid "Juridinio asmens rekvizitai"
+msgstr "Legal entity details"
+
+#: .\main\templates\main\accounts\profile_edit.html:73
+msgid "Esu juridinis asmuo"
+msgstr "I am a legal entity"
+
+#: .\main\templates\main\accounts\profile_edit.html:103
+#: .\orders\templates\orders\order_form.html:95
+#: .\services\templates\services\category_form.html:39
+msgid "Išsaugoti pakeitimus"
+msgstr "Save changes"
+
+#: .\main\templates\main\accounts\profile_edit.html:107
+msgid "Atgal į profilį"
+msgstr "Back to profile"
+
+#: .\main\templates\main\contact.html:10 .\main\templates\main\navbar.html:22
+msgid "Kontaktai"
+msgstr "Contacts"
+
+#: .\main\templates\main\contact.html:12
+msgid "Įmonė"
+msgstr "Company"
+
+#: .\main\templates\main\contact.html:13
+msgid "Pilnas pavadinimas"
+msgstr "Full name"
+
+#: .\main\templates\main\contact.html:14
+msgid "Vadovas"
+msgstr "Director"
+
+#: .\main\templates\main\contact.html:18
+msgid "Bankas"
+msgstr "Bank"
+
+#: .\main\templates\main\contact.html:19
+msgid "Sąskaita"
+msgstr "Account"
+
+#: .\main\templates\main\footer.html:5
+msgid "Visos teisės saugomos"
+msgstr "All rights reserved"
+
+#: .\main\templates\main\index.html:13
+msgid "„H-Pro“ – paverskite savo svajonių namų viziją realybe"
+msgstr "\"H-Pro\" – turn your dream home vision into reality"
+
+#: .\main\templates\main\index.html:15
+msgid ""
+"Valdykite užsakymus ir paslaugas lengvai.\n"
+"                „Premium\" interjero dizaino paslaugos, visi inžineriniai ir apdailos darbai, profesionali\n"
+"                darbo eiga ir sprendimai."
+msgstr ""
+"Manage orders and services with ease.\n"
+"                Premium interior design services, all engineering and finishing works, professional\n"
+"                workflow and solutions."
+
+#: .\main\templates\main\index.html:21 .\main\templates\main\navbar.html:63
+#: .\main\templates\main\registration\login.html:26
+#: .\main\templates\main\registration\password_reset_complete.html:8
+msgid "Prisijungti"
+msgstr "Log in"
+
+#: .\main\templates\main\index.html:22
+msgid "Registruotis"
+msgstr "Register"
+
+#: .\main\templates\main\index.html:24
+msgid "Administravimas"
+msgstr "Administration"
+
+#: .\main\templates\main\index.html:25 .\main\templates\main\index.html:28
+#: .\orders\models.py:30
+msgid "Užsakymai"
+msgstr "Orders"
+
+#: .\main\templates\main\index.html:27
+#: .\orders\templates\orders\manager_dashboard.html:10
+msgid "Vadybininko panelė"
+msgstr "Manager panel"
+
+#: .\main\templates\main\index.html:30
+msgid "Eiti į užsakymus"
+msgstr "Go to orders"
+
+#: .\main\templates\main\index.html:40
+msgid "Kodėl H-Pro?"
+msgstr "Why H-Pro?"
+
+#: .\main\templates\main\index.html:46
+msgid "Greitas valdymas"
+msgstr "Fast management"
+
+#: .\main\templates\main\index.html:48
+msgid ""
+"Sukurkite, redaguokite ir sekite užsakymus bei projektus realiuoju laiku.\n"
+"                    Asmeninis projekto ar užsakymo vadybininkas visada padės."
+msgstr ""
+"Create, edit and track orders and projects in real time.\n"
+"                    A personal project or order manager will always help."
+
+#: .\main\templates\main\index.html:56
+msgid "Aiškūs statusai"
+msgstr "Clear statuses"
+
+#: .\main\templates\main\index.html:58
+msgid "Spalvotos žymos ir aiškūs statusai leidžia akimirksniu matyti užsakymo būseną."
+msgstr "Colour tags and clear statuses let you instantly see the order status."
+
+#: .\main\templates\main\index.html:65
+msgid "Premium paslaugų kokybė"
+msgstr "Premium service quality"
+
+#: .\main\templates\main\index.html:67
+msgid "Darbus atlieka tik savo srities profesionalai, o kiekvienas projektas yra kruopščiai prižiūrimas."
+msgstr "Only specialists in their field perform the work, and every project is carefully supervised."
+
+#: .\main\templates\main\navbar.html:18
+msgid "Pradžia"
+msgstr "Home"
+
+#: .\main\templates\main\navbar.html:19
+#: .\orders\templates\orders\order_detail.html:76 .\services\models.py:34
+msgid "Paslaugos"
+msgstr "Services"
+
+#: .\main\templates\main\navbar.html:21 .\reviews\models.py:30
+msgid "Atsiliepimai"
+msgstr "Reviews"
+
+#: .\main\templates\main\navbar.html:42
+msgid "Profilis"
+msgstr "Profile"
+
+#: .\main\templates\main\navbar.html:45 .\main\templates\main\navbar.html:48
+msgid "Užsakymų administravimas"
+msgstr "Order management"
+
+#: .\main\templates\main\navbar.html:46
+msgid "Admin Panelė"
+msgstr "Admin Panel"
+
+#: .\main\templates\main\navbar.html:55
+#: .\main\templates\main\registration\password_change_form.html:7
+msgid "Slaptažodžio keitimas"
+msgstr "Change password"
+
+#: .\main\templates\main\navbar.html:58
+msgid "Atsijungti"
+msgstr "Log out"
+
+#: .\main\templates\main\navbar.html:68
+msgid "Dienos / nakties režimas"
+msgstr "Day / night mode"
+
+#: .\main\templates\main\registration\login.html:10
+msgid "Prisijungimas"
+msgstr "Login"
+
+#: .\main\templates\main\registration\login.html:16
+#: .\main\templates\main\registration\register.html:18
+msgid "Vartotojo vardas"
+msgstr "Username"
+
+#: .\main\templates\main\registration\login.html:17
+msgid "Įveskite vartotojo vardą"
+msgstr "Enter username"
+
+#: .\main\templates\main\registration\login.html:21
+#: .\main\templates\main\registration\register.html:28
+msgid "Slaptažodis"
+msgstr "Password"
+
+#: .\main\templates\main\registration\login.html:22
+msgid "Įveskite slaptažodį"
+msgstr "Enter password"
+
+#: .\main\templates\main\registration\login.html:32
+msgid "Neturi paskyros?"
+msgstr "Don't have an account?"
+
+#: .\main\templates\main\registration\login.html:33
+msgid "Registruokis"
+msgstr "Sign up"
+
+#: .\main\templates\main\registration\logout.html:7
+msgid "Atsijungėte"
+msgstr "Logged out"
+
+#: .\main\templates\main\registration\logout.html:8
+msgid "Prisijungti iš naujo"
+msgstr "Log in again"
+
+#: .\main\templates\main\registration\password_change_done.html:7
+msgid "Slaptažodis pakeistas"
+msgstr "Password changed"
+
+#: .\main\templates\main\registration\password_change_done.html:8
+msgid "Jūsų slaptažodis sėkmingai atnaujintas."
+msgstr "Your password has been successfully updated."
+
+#: .\main\templates\main\registration\password_change_done.html:9
+msgid "Grįžti į profilį"
+msgstr "Back to profile"
+
+#: .\main\templates\main\registration\password_change_form.html:12
+#: .\main\templates\main\registration\password_reset_confirm.html:13
+#: .\orders\templates\orders\order_edit.html:114
+#: .\reviews\templates\reviews\review_form.html:22
+msgid "Išsaugoti"
+msgstr "Save"
+
+#: .\main\templates\main\registration\password_reset_complete.html:7
+msgid "Slaptažodis sėkmingai atstatytas"
+msgstr "Password successfully reset"
+
+#: .\main\templates\main\registration\password_reset_confirm.html:7
+msgid "Nustatyti naują slaptažodį"
+msgstr "Set new password"
+
+#: .\main\templates\main\registration\password_reset_done.html:7
+msgid "Patikrinkite el. paštą"
+msgstr "Check your e-mail"
+
+#: .\main\templates\main\registration\password_reset_done.html:8
+msgid "Išsiuntėme slaptažodžio atkūrimo nuorodą."
+msgstr "We have sent you a password recovery link."
+
+#: .\main\templates\main\registration\password_reset_form.html:7
+msgid "Slaptažodžio atstatymas"
+msgstr "Password reset"
+
+#: .\main\templates\main\registration\password_reset_form.html:13
+msgid "Siųsti atkūrimo nuorodą"
+msgstr "Send recovery link"
+
+#: .\main\templates\main\registration\register.html:10
+msgid "Registracija"
+msgstr "Registration"
+
+#: .\main\templates\main\registration\register.html:40
+msgid "Sukurti paskyrą"
+msgstr "Create account"
+
+#: .\main\templates\main\registration\register.html:46
+msgid "Jau turi paskyrą?"
+msgstr "Already have an account?"
+
+#: .\main\templates\main\registration\register.html:47
+msgid "Prisijunk"
+msgstr "Log in"
+
+#: .\main\views.py:30
+msgid "Neteisingi prisijungimo duomenys"
+msgstr "Invalid login credentials"
+
+#: .\main\views.py:47
+msgid "Registracija sėkminga"
+msgstr "Registration successful"
+
+#: .\main\views.py:77
+msgid "Profilis atnaujintas"
+msgstr "Profile updated"
+
+#: .\orders\forms.py:27 .\orders\templates\orders\order_edit.html:50
+#: .\orders\templates\orders\order_form.html:26 .\services\models.py:9
+msgid "Paslaugų kategorija"
+msgstr "Service category"
+
+#: .\orders\forms.py:42 .\orders\forms.py:50
+#: .\orders\templates\orders\order_edit.html:125
+#: .\orders\templates\orders\order_form.html:120 .\orders\views.py:183
+#: .\orders\views.py:203
+msgid "Pridėkite bent vieną paslaugos eilutę."
+msgstr "Please add at least one service line."
+
+#: .\orders\forms.py:47
+msgid "Neteisingas užsakymo eilučių formatas."
+msgstr "Invalid order line format."
+
+#: .\orders\forms.py:58
+msgid "Neteisingi paslaugos arba kiekio duomenys."
+msgstr "Invalid service or quantity data."
+
+#: .\orders\forms.py:61
+msgid "Kiekis turi būti didesnis už 0."
+msgstr "Quantity must be greater than 0."
+
+#: .\orders\models.py:11 .\orders\templatetags\status_badges.py:17
+msgid "Naujas"
+msgstr "New"
+
+#: .\orders\models.py:12 .\orders\templatetags\status_badges.py:18
+msgid "Vykdomas"
+msgstr "In progress"
+
+#: .\orders\models.py:13 .\orders\templatetags\status_badges.py:19
+msgid "Atliktas"
+msgstr "Done"
+
+#: .\orders\models.py:14 .\orders\templatetags\status_badges.py:20
+msgid "Atšauktas"
+msgstr "Cancelled"
+
+#: .\orders\models.py:29 .\orders\templates\orders\order_detail.html:15
+msgid "Užsakymas"
+msgstr "Order"
+
+#: .\orders\models.py:96
+msgid "Užsakymo eilutė"
+msgstr "Order line"
+
+#: .\orders\models.py:97 .\orders\templates\orders\order_edit.html:47
+#: .\orders\templates\orders\order_form.html:56
+msgid "Užsakymo eilutės"
+msgstr "Order lines"
+
+#: .\orders\templates\orders\admin_dashboard.html:8
+#: .\orders\templates\orders\order_detail.html:43
+msgid "Nepriskirtas"
+msgstr "Unassigned"
+
+#: .\orders\templates\orders\admin_dashboard.html:11
+msgid "Administravimo panelė"
+msgstr "Administration panel"
+
+#: .\orders\templates\orders\admin_dashboard.html:17
+msgid "Ieškoti pagal klientą, ID..."
+msgstr "Search by client, ID..."
+
+#: .\orders\templates\orders\admin_dashboard.html:23
+msgid "Visi statusai"
+msgstr "All statuses"
+
+#: .\orders\templates\orders\admin_dashboard.html:24
+msgid "Nauji"
+msgstr "New"
+
+#: .\orders\templates\orders\admin_dashboard.html:25
+msgid "Vykdomi"
+msgstr "In progress"
+
+#: .\orders\templates\orders\admin_dashboard.html:26
+msgid "Atlikti"
+msgstr "Done"
+
+#: .\orders\templates\orders\admin_dashboard.html:27
+#: .\reviews\templates\reviews\review_form.html:23
+msgid "Atšaukti"
+msgstr "Cancelled"
+
+#: .\orders\templates\orders\admin_dashboard.html:35
+msgid "Rodyti pašalintus užsakymus"
+msgstr "Show deleted orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:41
+msgid "Filtruoti"
+msgstr "Filter"
+
+#: .\orders\templates\orders\admin_dashboard.html:50
+msgid "Iš viso užsakymų"
+msgstr "Total orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:57
+#: .\orders\templates\orders\admin_dashboard.html:151
+msgid "Aktyvūs užsakymai"
+msgstr "Active orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:64
+#: .\orders\templates\orders\admin_dashboard.html:96
+#: .\orders\templates\orders\client_dashboard.html:28
+#: .\orders\templates\orders\client_dashboard.html:56
+#: .\orders\templates\orders\manager_dashboard.html:27
+#: .\orders\templates\orders\manager_dashboard.html:54
+msgid "Nauji užsakymai"
+msgstr "New orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:71
+#: .\orders\templates\orders\admin_dashboard.html:257
+msgid "Baigti užsakymai"
+msgstr "Completed orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:78
+#: .\orders\templates\orders\admin_dashboard.html:208
+msgid "Pasibaigę terminai"
+msgstr "Overdue"
+
+#: .\orders\templates\orders\admin_dashboard.html:78
+#: .\orders\templates\orders\admin_dashboard.html:208
+msgid "Vėluojantys užsakymai"
+msgstr "Overdue orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:85
+msgid "Pradėti užsakymai"
+msgstr "Started orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:102
+#: .\orders\templates\orders\admin_dashboard.html:157
+#: .\orders\templates\orders\admin_dashboard.html:214
+#: .\orders\templates\orders\admin_dashboard.html:263
+#: .\orders\templates\orders\admin_dashboard.html:317
+msgid "Užsakymo ID"
+msgstr "Order ID"
+
+#: .\orders\templates\orders\admin_dashboard.html:106
+#: .\orders\templates\orders\admin_dashboard.html:162
+#: .\orders\templates\orders\admin_dashboard.html:219
+#: .\orders\templates\orders\admin_dashboard.html:267
+#: .\orders\templates\orders\admin_dashboard.html:321
+#: .\orders\templates\orders\invoice.html:270
+#: .\orders\templates\orders\order_detail.html:84
+#: .\orders\templates\orders\order_edit.html:84
+#: .\orders\templates\orders\order_form.html:64
+msgid "Suma"
+msgstr "Total"
+
+#: .\orders\templates\orders\admin_dashboard.html:107
+msgid "Data"
+msgstr "Date"
+
+#: .\orders\templates\orders\admin_dashboard.html:108
+#: .\orders\templates\orders\admin_dashboard.html:164
+#: .\orders\templates\orders\admin_dashboard.html:269
+msgid "Planuojama pabaiga"
+msgstr "Planned completion"
+
+#: .\orders\templates\orders\admin_dashboard.html:109
+#: .\orders\templates\orders\admin_dashboard.html:165
+#: .\orders\templates\orders\admin_dashboard.html:221
+#: .\orders\templates\orders\admin_dashboard.html:270
+msgid "Statusas pagal terminą"
+msgstr "Deadline status"
+
+#: .\orders\templates\orders\admin_dashboard.html:110
+#: .\orders\templates\orders\admin_dashboard.html:166
+#: .\orders\templates\orders\admin_dashboard.html:222
+#: .\orders\templates\orders\admin_dashboard.html:271
+#: .\orders\templates\orders\admin_dashboard.html:324
+msgid "Veiksmai"
+msgstr "Actions"
+
+#: .\orders\templates\orders\admin_dashboard.html:125
+#: .\orders\templates\orders\admin_dashboard.html:182
+#: .\orders\templates\orders\admin_dashboard.html:235
+#: .\orders\templates\orders\admin_dashboard.html:286
+#, python-format
+msgid "Vėluoja %(days)s d."
+msgstr "Overdue %(days)s d."
+
+#: .\orders\templates\orders\admin_dashboard.html:127
+#: .\orders\templates\orders\admin_dashboard.html:184
+#: .\orders\templates\orders\admin_dashboard.html:288
+msgid "Laiku"
+msgstr "On time"
+
+#: .\orders\templates\orders\admin_dashboard.html:131
+#: .\orders\templates\orders\admin_dashboard.html:188
+#: .\orders\templates\orders\admin_dashboard.html:237
+#: .\orders\templates\orders\admin_dashboard.html:292
+#: .\orders\templates\orders\partials\order_table.html:29
+msgid "Peržiūrėti"
+msgstr "View"
+
+#: .\orders\templates\orders\admin_dashboard.html:132
+#: .\orders\templates\orders\admin_dashboard.html:189
+#: .\orders\templates\orders\admin_dashboard.html:238
+#: .\orders\templates\orders\admin_dashboard.html:293
+#: .\orders\templates\orders\order_detail.html:119
+#: .\reviews\templates\reviews\review_list.html:60
+#: .\services\templates\services\category_list.html:50
+#: .\services\templates\services\service_list.html:43
+msgid "Redaguoti"
+msgstr "Edit"
+
+#: .\orders\templates\orders\admin_dashboard.html:136
+#: .\orders\templates\orders\admin_dashboard.html:193
+#: .\orders\templates\orders\admin_dashboard.html:242
+#: .\orders\templates\orders\admin_dashboard.html:297
+msgid "Ar tikrai norite ištrinti šį užsakymą?"
+msgstr "Are you sure you want to delete this order?"
+
+#: .\orders\templates\orders\admin_dashboard.html:136
+#: .\orders\templates\orders\admin_dashboard.html:193
+#: .\orders\templates\orders\admin_dashboard.html:242
+#: .\orders\templates\orders\admin_dashboard.html:297
+#: .\reviews\templates\reviews\review_list.html:63
+msgid "Ištrinti"
+msgstr "Delete"
+
+#: .\orders\templates\orders\admin_dashboard.html:163
+#: .\orders\templates\orders\admin_dashboard.html:268
+#: .\orders\templates\orders\order_detail.html:53
+msgid "Sukūrimo data"
+msgstr "Created date"
+
+#: .\orders\templates\orders\admin_dashboard.html:220
+#: .\orders\templates\orders\partials\order_table.html:9
+msgid "Terminas"
+msgstr "Deadline"
+
+#: .\orders\templates\orders\admin_dashboard.html:311
+msgid "Pašalinti užsakymai"
+msgstr "Deleted orders"
+
+#: .\orders\templates\orders\admin_dashboard.html:322
+msgid "Sukurta"
+msgstr "Created"
+
+#: .\orders\templates\orders\admin_dashboard.html:323
+msgid "Pašalinta"
+msgstr "Deleted"
+
+#: .\orders\templates\orders\admin_dashboard.html:340
+msgid "Atkurti"
+msgstr "Restore"
+
+#: .\orders\templates\orders\admin_dashboard.html:346
+msgid "Pašalintų užsakymų nėra."
+msgstr "No deleted orders."
+
+#: .\orders\templates\orders\admin_dashboard.html:358
+msgid "Peržiūrėti visus užsakymus"
+msgstr "View all orders"
+
+#: .\orders\templates\orders\client_dashboard.html:10
+msgid "Mano paskyra"
+msgstr "My account"
+
+#: .\orders\templates\orders\client_dashboard.html:19
+#: .\orders\templates\orders\client_dashboard.html:62
+#: .\orders\templates\orders\manager_dashboard.html:18
+#: .\orders\templates\orders\manager_dashboard.html:59
+msgid "Vykdomi užsakymai"
+msgstr "Orders in progress"
+
+#: .\orders\templates\orders\client_dashboard.html:37
+#: .\orders\templates\orders\client_dashboard.html:68
+#: .\orders\templates\orders\manager_dashboard.html:36
+#: .\orders\templates\orders\manager_dashboard.html:64
+msgid "Atlikti užsakymai"
+msgstr "Completed orders"
+
+#: .\orders\templates\orders\client_dashboard.html:46
+#: .\orders\templates\orders\manager_dashboard.html:45
+msgid "Vėluojantys"
+msgstr "Overdue"
+
+#: .\orders\templates\orders\invoice.html:221
+msgid "Išrašymo data:"
+msgstr "Issue date:"
+
+#: .\orders\templates\orders\invoice.html:222
+msgid "Valiuta:"
+msgstr "Currency:"
+
+#: .\orders\templates\orders\invoice.html:232
+msgid "Pardavėjo rekvizitai"
+msgstr "Seller details"
+
+#: .\orders\templates\orders\invoice.html:237
+#: .\orders\templates\orders\invoice.html:249
+msgid "Įmonės kodas:"
+msgstr "Company code:"
+
+#: .\orders\templates\orders\invoice.html:238
+#: .\orders\templates\orders\invoice.html:250
+msgid "PVM kodas:"
+msgstr "VAT code:"
+
+#: .\orders\templates\orders\invoice.html:239
+#: .\orders\templates\orders\invoice.html:256
+msgid "El. paštas:"
+msgstr "E-mail:"
+
+#: .\orders\templates\orders\invoice.html:244
+msgid "Pirkėjo rekvizitai"
+msgstr "Buyer details"
+
+#: .\orders\templates\orders\invoice.html:251
+#: .\orders\templates\orders\invoice.html:254
+msgid "Adresas:"
+msgstr "Address:"
+
+#: .\orders\templates\orders\invoice.html:267
+#: .\orders\templates\orders\order_detail.html:81
+#: .\orders\templates\orders\order_edit.html:59
+#: .\orders\templates\orders\order_edit.html:81
+#: .\orders\templates\orders\order_form.html:31
+#: .\orders\templates\orders\order_form.html:61 .\services\models.py:33
+#: .\services\templates\services\services_list.html:22
+msgid "Paslauga"
+msgstr "Service"
+
+#: .\orders\templates\orders\invoice.html:268
+#: .\orders\templates\orders\order_detail.html:82
+#: .\orders\templates\orders\order_edit.html:65
+#: .\orders\templates\orders\order_edit.html:82
+#: .\orders\templates\orders\order_form.html:38
+#: .\orders\templates\orders\order_form.html:62
+msgid "Kiekis"
+msgstr "Qty"
+
+#: .\orders\templates\orders\invoice.html:269
+#: .\orders\templates\orders\order_detail.html:83
+#: .\orders\templates\orders\order_edit.html:83
+#: .\orders\templates\orders\order_form.html:63
+#: .\services\templates\services\service_list.html:32
+#: .\services\templates\services\services_list.html:24
+msgid "Kaina"
+msgstr "Price"
+
+#: .\orders\templates\orders\invoice.html:287
+msgid "Suma be PVM"
+msgstr "Net total"
+
+#: .\orders\templates\orders\invoice.html:295
+msgid "Viso su PVM"
+msgstr "Total with VAT"
+
+#: .\orders\templates\orders\invoice.html:303
+msgid "Pardavėjo parašas"
+msgstr "Seller signature"
+
+#: .\orders\templates\orders\invoice.html:304
+#: .\orders\templates\orders\invoice.html:308
+msgid "(vardas, pavardė, parašas)"
+msgstr "(name, surname, signature)"
+
+#: .\orders\templates\orders\invoice.html:307
+msgid "Pirkėjo parašas"
+msgstr "Buyer signature"
+
+#: .\orders\templates\orders\invoice.html:315
+msgid "Sąskaita sugeneruota automatiškai FinPro sistemoje."
+msgstr "Invoice generated automatically in FinPro system."
+
+#: .\orders\templates\orders\order_detail.html:8
+msgid "Telefono nėra"
+msgstr "No phone"
+
+#: .\orders\templates\orders\order_detail.html:9
+msgid "Miestas nenurodytas"
+msgstr "City not specified"
+
+#: .\orders\templates\orders\order_detail.html:10
+msgid "Komentarų nėra"
+msgstr "No comments"
+
+#: .\orders\templates\orders\order_detail.html:36
+msgid "Priskirtas vadybininkas"
+msgstr "Assigned manager"
+
+#: .\orders\templates\orders\order_detail.html:58
+#: .\orders\templates\orders\order_edit.html:24
+msgid "Vadybininko terminas"
+msgstr "Manager deadline"
+
+#: .\orders\templates\orders\order_detail.html:63
+msgid "Bendra kaina (su PVM)"
+msgstr "Total price (with VAT)"
+
+#: .\orders\templates\orders\order_detail.html:69
+msgid "Vadybininko komentarai"
+msgstr "Manager comments"
+
+#: .\orders\templates\orders\order_detail.html:99
+#: .\orders\templates\orders\order_edit.html:95
+msgid "Suma be PVM:"
+msgstr "Net total:"
+
+#: .\orders\templates\orders\order_detail.html:103
+#: .\orders\templates\orders\order_edit.html:100
+#: .\orders\templates\orders\order_form.html:80
+#, python-format
+msgid "PVM (21%%):"
+msgstr "VAT (21%%):"
+
+#: .\orders\templates\orders\order_detail.html:107
+#: .\orders\templates\orders\order_edit.html:105
+#: .\orders\templates\orders\order_form.html:85
+msgid "Viso su PVM:"
+msgstr "Total with VAT:"
+
+#: .\orders\templates\orders\order_detail.html:121
+msgid "Atsisiųsti sąskaitą (PDF)"
+msgstr "Download invoice (PDF)"
+
+#: .\orders\templates\orders\order_detail.html:122
+#: .\services\templates\services\category_form.html:46
+msgid "Grįžti į sąrašą"
+msgstr "Back to list"
+
+#: .\orders\templates\orders\order_edit.html:8
+#: .\orders\templates\orders\order_form.html:10
+msgid "Redaguoti užsakymą"
+msgstr "Edit order"
+
+#: .\orders\templates\orders\order_edit.html:28
+#: .\orders\templates\orders\partials\order_table.html:8
+msgid "Statusas"
+msgstr "Status"
+
+#: .\orders\templates\orders\order_edit.html:40
+msgid "Komentarai klientui"
+msgstr "Comments for client"
+
+#: .\orders\templates\orders\order_edit.html:52
+msgid "Pasirinkite kategoriją"
+msgstr "Select category"
+
+#: .\orders\templates\orders\order_edit.html:61
+#: .\orders\templates\orders\order_edit.html:122
+#: .\orders\templates\orders\order_form.html:33
+#: .\orders\templates\orders\order_form.html:117
+msgid "Pasirinkite paslaugą"
+msgstr "Select service"
+
+#: .\orders\templates\orders\order_edit.html:69
+msgid "Kaina, EUR"
+msgstr "Price, EUR"
+
+#: .\orders\templates\orders\order_edit.html:90
+#: .\orders\templates\orders\order_form.html:70
+msgid "Kol kas nepridėta nė viena paslauga."
+msgstr "No services added yet."
+
+#: .\orders\templates\orders\order_edit.html:115
+msgid "Atgal"
+msgstr "Back"
+
+#: .\orders\templates\orders\order_edit.html:123
+#: .\orders\templates\orders\order_form.html:121
+#: .\services\templates\services\category_list.html:53
+#: .\services\templates\services\service_list.html:44
+msgid "Šalinti"
+msgstr "Remove"
+
+#: .\orders\templates\orders\order_edit.html:124
+msgid "Pasirinkite paslaugą ir įveskite teisingą kiekį bei kainą."
+msgstr "Select a service and enter a valid quantity and price."
+
+#: .\orders\templates\orders\order_form.html:12
+msgid "Naujas užsakymas"
+msgstr "New order"
+
+#: .\orders\templates\orders\order_form.html:43
+msgid "Atlikimo terminas"
+msgstr "Completion deadline"
+
+#: .\orders\templates\orders\order_form.html:49
+msgid "Pridėti paslaugos eilutę"
+msgstr "Add service line"
+
+#: .\orders\templates\orders\order_form.html:75
+msgid "Numatoma kaina be PVM:"
+msgstr "Estimated price without VAT:"
+
+#: .\orders\templates\orders\order_form.html:97
+msgid "Sukurti užsakymą"
+msgstr "Create order"
+
+#: .\orders\templates\orders\order_form.html:118
+msgid "Pasirinkite paslaugą ir įveskite teisingą kiekį."
+msgstr "Select a service and enter a valid quantity."
+
+#: .\orders\templates\orders\order_form.html:119
+msgid "Nepavyko nustatyti paslaugos kainos."
+msgstr "Could not determine service price."
+
+#: .\orders\templates\orders\order_list.html:10
+msgid "Orders List"
+msgstr "Orders List"
+
+#: .\orders\templates\orders\order_list.html:18
+msgid "Search by client, ID..."
+msgstr "Search by client, ID..."
+
+#: .\orders\templates\orders\order_list.html:24
+msgid "All statuses"
+msgstr "All statuses"
+
+#: .\orders\templates\orders\order_list.html:25
+msgid "New"
+msgstr "New"
+
+#: .\orders\templates\orders\order_list.html:26
+msgid "In Progress"
+msgstr "In Progress"
+
+#: .\orders\templates\orders\order_list.html:27
+msgid "Done"
+msgstr "Done"
+
+#: .\orders\templates\orders\order_list.html:28
+msgid "Cancelled"
+msgstr "Cancelled"
+
+#: .\orders\templates\orders\order_list.html:33
+msgid "Filter"
+msgstr "Filter"
+
+#: .\orders\templates\orders\order_list.html:43
+msgid "All Orders"
+msgstr "All Orders"
+
+#: .\orders\templates\orders\order_list.html:47
+msgid "New Order"
+msgstr "New Order"
+
+#: .\orders\templates\orders\order_list.html:57
+msgid "Client"
+msgstr "Client"
+
+#: .\orders\templates\orders\order_list.html:58
+msgid "Status"
+msgstr "Status"
+
+#: .\orders\templates\orders\order_list.html:59
+msgid "Deadline"
+msgstr "Deadline"
+
+#: .\orders\templates\orders\order_list.html:60
+msgid "Price"
+msgstr "Price"
+
+#: .\orders\templates\orders\order_list.html:90
+msgid "View"
+msgstr "View"
+
+#: .\orders\templates\orders\order_list.html:95
+msgid "Invoice PDF"
+msgstr "Invoice PDF"
+
+#: .\orders\templates\orders\order_list.html:99
+msgid "Edit"
+msgstr "Edit"
+
+#: .\orders\templates\orders\order_list.html:108
+msgid "Are you sure you want to delete this order?"
+msgstr "Are you sure you want to delete this order?"
+
+#: .\orders\templates\orders\order_list.html:110
+msgid "Delete"
+msgstr "Delete"
+
+#: .\orders\templates\orders\order_list.html:120
+msgid "No orders found."
+msgstr "No orders found."
+
+#: .\orders\templates\orders\partials\order_table.html:10
+msgid "Vėluoja?"
+msgstr "Overdue?"
+
+#: .\orders\templates\orders\partials\order_table.html:23
+msgid "Taip"
+msgstr "Yes"
+
+#: .\orders\templates\orders\partials\order_table.html:25
+msgid "Ne"
+msgstr "No"
+
+#: .\orders\templates\orders\partials\order_table.html:34
+msgid "Nėra duomenų."
+msgstr "No data."
+
+#: .\orders\views.py:43
+msgid "Neturi teisės keisti statuso"
+msgstr "No permission to change status"
+
+#: .\orders\views.py:55
+msgid "Šis puslapis skirtas tik klientams."
+msgstr "This page is for clients only."
+
+#: .\orders\views.py:83 .\orders\views.py:117
+msgid "Neturite teisės pasiekti šio puslapio."
+msgstr "You do not have permission to access this page."
+
+#: .\orders\views.py:161
+msgid "Klientai negali redaguoti užsakymų."
+msgstr "Clients cannot edit orders."
+
+#: .\orders\views.py:164
+msgid "Negalite redaguoti šio užsakymo."
+msgstr "You cannot edit this order."
+
+#: .\orders\views.py:192
+msgid "Kiekis ir kaina turi būti didesni už 0."
+msgstr "Quantity and price must be greater than 0."
+
+#: .\orders\views.py:201
+msgid "Neteisingas eilučių formatas."
+msgstr "Invalid line format."
+
+#: .\orders\views.py:210 .\orders\views.py:335
+msgid "Pasirinkta neegzistuojanti paslauga."
+msgstr "Selected service does not exist."
+
+#: .\orders\views.py:297
+msgid "Klientai negali trinti užsakymų."
+msgstr "Clients cannot delete orders."
+
+#: .\orders\views.py:300
+msgid "Negalite trinti šio užsakymo."
+msgstr "You cannot delete this order."
+
+#: .\orders\views.py:313
+msgid "Tik administratorius gali atkurti užsakymus."
+msgstr "Only an administrator can restore orders."
+
+#: .\orders\views.py:325
+msgid "Užsakymą kurti gali tik klientas."
+msgstr "Only a client can create an order."
+
+#: .\orders\views.py:379 .\orders\views.py:382
+msgid "Negalite peržiūrėti šio užsakymo."
+msgstr "You cannot view this order."
+
+#: .\orders\views.py:392 .\orders\views.py:395
+msgid "Negalite atsisiųsti šios sąskaitos."
+msgstr "You cannot download this invoice."
+
+#: .\reviews\forms.py:19
+msgid "Įvertinimas"
+msgstr "Rating"
+
+#: .\reviews\forms.py:20 .\reviews\models.py:18
+msgid "Atsiliepimo tekstas"
+msgstr "Review text"
+
+#: .\reviews\forms.py:26
+msgid "Atsiliepimo tekstas yra privalomas."
+msgstr "Review text is required."
+
+#: .\reviews\models.py:29
+msgid "Atsiliepimas"
+msgstr "Review"
+
+#: .\reviews\models.py:38
+msgid "Nuotrauka per didelė. Maksimalus dydis: 2 MB."
+msgstr "Photo is too large. Maximum size: 2 MB."
+
+#: .\reviews\models.py:42
+msgid "Leidžiami tik JPG arba PNG failai."
+msgstr "Only JPG or PNG files are allowed."
+
+#: .\reviews\models.py:45
+msgid "Video failo kelti negalima. Naudokite YouTube nuorodą."
+msgstr "Video files cannot be uploaded. Use a YouTube URL."
+
+#: .\reviews\models.py:50
+msgid "Leidžiamos tik YouTube nuorodos."
+msgstr "Only YouTube URLs are allowed."
+
+#: .\reviews\templates\reviews\review_form.html:10
+msgid "Redaguoti atsiliepimą"
+msgstr "Edit review"
+
+#: .\reviews\templates\reviews\review_list.html:8
+msgid "Klientų atsiliepimai"
+msgstr "Customer reviews"
+
+#: .\reviews\templates\reviews\review_list.html:17
+msgid "Vertinimas"
+msgstr "Rating"
+
+#: .\reviews\templates\reviews\review_list.html:18
+msgid "Žvaigždės"
+msgstr "Stars"
+
+#: .\reviews\templates\reviews\review_list.html:20
+msgid "Procentas"
+msgstr "Percentage"
+
+#: .\reviews\templates\reviews\review_list.html:29
+msgid "žvaigždė"
+msgstr "star"
+
+#: .\reviews\templates\reviews\review_list.html:31
+msgid "žvaigždės"
+msgstr "stars"
+
+#: .\reviews\templates\reviews\review_list.html:48
+msgid "Vidutinis vertinimas"
+msgstr "Average rating"
+
+#: .\reviews\templates\reviews\review_list.html:59
+msgid "iš viso"
+msgstr "total"
+
+#: .\reviews\templates\reviews\review_list.html:23
+msgid "Pateikti atsiliepimą"
+msgstr "Submit review"
+
+#: .\reviews\templates\reviews\review_list.html:70
+msgid "Atsiliepimų dar nėra."
+msgstr "No reviews yet."
+
+#: .\reviews\views.py:31
+msgid "Atsiliepimus gali rašyti tik klientai."
+msgstr "Only clients can write reviews."
+
+#: .\reviews\views.py:39
+msgid "Atsiliepimas išsaugotas."
+msgstr "Review saved."
+
+#: .\reviews\views.py:43
+msgid "Nepavyko išsaugoti atsiliepimo. Patikrinkite laukus."
+msgstr "Could not save the review. Please check the fields."
+
+#: .\reviews\views.py:48
+msgid "Neturite teisės redaguoti šio atsiliepimo."
+msgstr "You do not have permission to edit this review."
+
+#: .\reviews\views.py:70
+msgid "Atsiliepimas atnaujintas."
+msgstr "Review updated."
+
+#: .\reviews\views.py:85
+msgid "Neturite teisės trinti šio atsiliepimo."
+msgstr "You do not have permission to delete this review."
+
+#: .\reviews\views.py:95
+msgid "Atsiliepimas ištrintas."
+msgstr "Review deleted."
+
+#: .\services\models.py:10 .\services\templates\services\category_list.html:8
+msgid "Paslaugų kategorijos"
+msgstr "Service categories"
+
+#: .\services\models.py:20
+msgid "bėginiai metrai"
+msgstr "linear metres"
+
+#: .\services\models.py:21
+msgid "vnt."
+msgstr "pcs."
+
+#: .\services\models.py:22
+msgid "valandos"
+msgstr "hours"
+
+#: .\services\models.py:23
+msgid "taškai"
+msgstr "points"
+
+#: .\services\templates\services\category_form.html:12
+msgid "Redaguoti kategoriją"
+msgstr "Edit category"
+
+#: .\services\templates\services\category_form.html:14
+#: .\services\templates\services\category_list.html:26
+msgid "Nauja kategorija"
+msgstr "New category"
+
+#: .\services\templates\services\category_form.html:41
+msgid "Sukurti kategoriją"
+msgstr "Create category"
+
+#: .\services\templates\services\category_list.html:14
+msgid "Ieškoti kategorijos..."
+msgstr "Search category..."
+
+#: .\services\templates\services\category_list.html:16
+#: .\services\templates\services\service_list.html:14
+msgid "Ieškoti"
+msgstr "Search"
+
+#: .\services\templates\services\category_list.html:24
+msgid "Visos kategorijos"
+msgstr "All categories"
+
+#: .\services\templates\services\category_list.html:36
+msgid "Paslaugų skaičius"
+msgstr "Number of services"
+
+#: .\services\templates\services\category_list.html:60
+msgid "Kategorijų nerasta."
+msgstr "No categories found."
+
+#: .\services\templates\services\service_list.html:8
+msgid "Paslaugų katalogas"
+msgstr "Service catalogue"
+
+#: .\services\templates\services\service_list.html:13
+msgid "Ieškoti paslaugos..."
+msgstr "Search service..."
+
+#: .\services\templates\services\service_list.html:22
+msgid "Visos paslaugos"
+msgstr "All services"
+
+#: .\services\templates\services\service_list.html:23
+msgid "Nauja paslauga"
+msgstr "New service"
+
+#: .\services\templates\services\service_list.html:31
+msgid "Kategorija"
+msgstr "Category"
+
+#: .\services\templates\services\service_list.html:50
+msgid "Paslaugų nerasta."
+msgstr "No services found."
+
+#: .\services\templates\services\services_list.html:6
+msgid "Paslaugos pagal grupes"
+msgstr "Services by categories"
+
+#: .\services\templates\services\services_list.html:36
+msgid "Paslaugų šioje grupėje nėra."
+msgstr "No services in this group."
+
+#: .\services\templates\services\services_list.html:46
+msgid "Paslaugų kategorijų dar nėra."
+msgstr "No service categories yet."

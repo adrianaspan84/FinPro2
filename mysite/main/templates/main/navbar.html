@@ -43,9 +43,13 @@
 
                             {% if user.is_superuser or user.is_staff or nav_profile.role == 'admin' %}
                                 <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'service_list' %}">{% trans "Paslaugų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category_list' %}">{% trans "Kategorijų administravimas" %}</a></li>
                                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin Panelė" %}</a></li>
                             {% elif nav_profile and nav_profile.role == 'manager' %}
                                 <li><a class="dropdown-item" href="{% url 'manager_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'service_list' %}">{% trans "Paslaugų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category_list' %}">{% trans "Kategorijų administravimas" %}</a></li>
                             {% endif %}
 
 

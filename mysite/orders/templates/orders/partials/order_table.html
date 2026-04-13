@@ -1,10 +1,13 @@
 {% load i18n %}
 {% load status_badges %}
-<table class="table table-bordered mt-3">
+<table class="table table-bordered mt-3 orders-staff-table">
     <thead>
         <tr>
             <th>ID</th>
             <th>{% trans "Klientas" %}</th>
+            {% if show_manager %}
+            <th>{% trans "Vadybininkas" %}</th>
+            {% endif %}
             <th>{% trans "Statusas" %}</th>
             <th>{% trans "Terminas" %}</th>
             <th>{% trans "Vėluoja?" %}</th>
@@ -16,6 +19,9 @@
         <tr>
             <td>{{ order.id }}</td>
             <td>{{ order.client.username }}</td>
+            {% if show_manager %}
+            <td>{{ order.manager.username|default:"-" }}</td>
+            {% endif %}
             <td>{% status_badge order.status %}</td>
             <td>{{ order.deadline|default:"-" }}</td>
             <td>
@@ -31,7 +37,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="6" class="text-center">{% trans "Nėra duomenų." %}</td>
+            <td colspan="{% if show_manager %}7{% else %}6{% endif %}" class="text-center">{% trans "Nėra duomenų." %}</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -12,10 +12,15 @@ def get_or_create_profile(user):
     if not user or not getattr(user, 'is_authenticated', False):
         return None
     profile, _ = Profile.objects.get_or_create(user=user)
-    # Keep admin badge consistent for staff/superuser accounts.
-    if (user.is_superuser or user.is_staff) and profile.role != 'admin':
-        profile.role = 'admin'
-        profile.save(update_fields=['role'])
+    # Superuser → admin, staff (non-superuser) → staff, others keep their role.
+    if user.is_superuser:
+        if profile.role != 'admin':
+            profile.role = 'admin'
+            profile.save(update_fields=['role'])
+    elif user.is_staff:
+        if profile.role != 'staff':
+            profile.role = 'staff'
+            profile.save(update_fields=['role'])
     return profile
 
 
@@ -25,11 +30,13 @@ def role_badge(role):
         'client': 'success',
         'manager': 'primary',
         'admin': 'danger',
+        'staff': 'warning',
     }
     labels = {
         'client': _('Klientas'),
         'manager': _('Vadybininkas'),
         'admin': _('Administratorius'),
+        'staff': _('Darbuotojas'),
     }
 
     color = colors.get(role, 'secondary')

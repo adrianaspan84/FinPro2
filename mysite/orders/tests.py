@@ -133,6 +133,7 @@ class EditOrderLinesTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse('delete_order', args=[self.order.id]))
+        self.assertContains(response, self.manager_user.username)
 
     def test_soft_deleted_order_not_visible_in_order_list(self):
         self.order.soft_delete()
@@ -239,5 +240,4 @@ class OrderListPaginationTests(TestCase):
         self.assertTrue(response.context['is_paginated'])
         self.assertEqual(response.context['page_obj'].paginator.num_pages, 2)
         self.assertEqual(len(response.context['orders']), 10)
-
 

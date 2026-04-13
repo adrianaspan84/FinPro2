@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="glass-card table-glass-card p-4">
+                    <h2 class="fw-bold text-center mb-4">{% trans "Kontaktai" %}</h2>
+                    <table class="table table-borderless align-middle mb-0 contact-table">
+                        <tr><th>{% trans "Įmonė" %}</th><td>{{ company_info.name }}</td></tr>
+                        <tr><th>{% trans "Pilnas pavadinimas" %}</th><td>{{ company_info.full_name }}</td></tr>
+                        <tr><th>{% trans "Vadovas" %}</th><td>{{ company_info.manager }}</td></tr>
+                        <tr><th>{% trans "Įmonės kodas" %}</th><td>{{ company_info.seller_code }}</td></tr>
+                        <tr><th>{% trans "PVM kodas" %}</th><td>{{ company_info.vat_code }}</td></tr>
+                        <tr><th>{% trans "Adresas" %}</th><td>{{ company_info.address }}</td></tr>
+                        <tr><th>{% trans "Bankas" %}</th><td>{{ company_info.bank_name }}</td></tr>
+                        <tr><th>{% trans "Sąskaita" %}</th><td>{{ company_info.account_number }}</td></tr>
+                        <tr><th>{% trans "Telefonas" %}</th><td>{{ company_info.phone }}</td></tr>
+                        <tr><th>{% trans "El. paštas" %}</th><td>{{ company_info.email }}</td></tr>
+                    </table>
+            </div>
+
+            <div class="glass-card table-glass-card p-4 mt-4">
+                <h3 class="h5 fw-bold text-center mb-3">{% trans "Vieta žemėlapyje" %}</h3>
+                <div class="contact-map">
+                    <iframe
+                        src="https://www.google.com/maps?q={{ company_info.address|urlencode }}&output=embed"
+                        allowfullscreen
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="{% trans 'Įmonės vieta žemėlapyje' %}">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

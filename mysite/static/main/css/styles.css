@@ -25,6 +25,13 @@ body {
     --page-bg-light: #eaf2ff;
     --page-bg-night: #0b1220;
     --text-night: #e6eefc;
+    --table-glass-bg: rgba(232, 242, 255, 0.74);
+    --table-glass-head: rgba(213, 229, 250, 0.5);
+    --table-glass-border: rgba(148, 163, 184, 0.3);
+    --table-glass-text: #0f172a;
+    --table-glass-hover: rgba(219, 234, 254, 0.38);
+    --table-glass-striped: rgba(226, 239, 255, 0.24);
+    --table-glass-active: rgba(186, 211, 245, 0.5);
 }
 
 /* ===========================
@@ -94,15 +101,66 @@ body {
 .table {
     border-radius: 10px;
     overflow: hidden;
+    background: var(--table-glass-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--table-glass-border);
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--table-glass-text);
+    --bs-table-border-color: var(--table-glass-border);
+    --bs-table-hover-bg: var(--table-glass-hover);
+    --bs-table-hover-color: var(--table-glass-text);
+    --bs-table-striped-bg: var(--table-glass-striped);
+    --bs-table-striped-color: var(--table-glass-text);
+    --bs-table-active-bg: var(--table-glass-active);
+    --bs-table-active-color: var(--table-glass-text);
 }
 
 .table thead {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--table-glass-head);
+}
+
+.table th,
+.table td {
+    color: var(--table-glass-text);
+    border-color: var(--table-glass-border);
 }
 
 .table tbody tr:hover {
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--table-glass-hover);
     transition: var(--transition-fast);
+}
+
+.contact-table th,
+.contact-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.contact-table th {
+    width: 42%;
+}
+
+.contact-table.table {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: 1px solid var(--table-glass-border);
+    --bs-table-bg: transparent;
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.22);
+}
+
+.table-glass-card {
+    background: var(--table-glass-bg) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid var(--table-glass-border) !important;
+    color: var(--table-glass-text);
+    box-shadow: 0 10px 28px rgba(148, 163, 184, 0.16);
+}
+
+.table-glass-card .table {
+    margin-bottom: 0;
 }
 
 /* Right-align numeric cells and keep digits visually even in columns */
@@ -110,6 +168,43 @@ body {
     text-align: right;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+}
+
+/* Admin/manager order tables: centered content and slightly wider layout. */
+.orders-staff-table {
+    width: 100%;
+}
+
+.orders-staff-table th,
+.orders-staff-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.orders-staff-table .num-col {
+    text-align: center;
+}
+
+.orders-staff-table th:not(:last-child),
+.orders-staff-table td:not(:last-child) {
+    border-right: 1px solid rgba(15, 23, 42, 0.14);
+}
+
+.orders-wide-container {
+    max-width: 1600px;
+}
+
+.orders-staff-table .badge,
+.orders-staff-table form,
+.orders-staff-table .btn {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 991.98px) {
+    .orders-wide-container {
+        max-width: 100%;
+    }
 }
 
 /* ===========================
@@ -280,6 +375,29 @@ body.theme-night .text-muted {
     animation: heroKenBurns 24s ease-in-out infinite alternate;
 }
 
+.hero-slideshow::after {
+    display: none;
+}
+
+.hero-bg-layer {
+    position: absolute;
+    inset: -4%;
+    z-index: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: saturate(1.52) contrast(1.20) brightness(1.18) hue-rotate(-2deg);
+    transform: scale(1.02);
+    animation: heroKenBurns 24s ease-in-out infinite alternate;
+    opacity: 0;
+    transition: opacity 2.2s cubic-bezier(0.4, 0, 0.2, 1)
+}
+
+.hero-bg-layer.is-active {
+    opacity: 1;
+}
+
 .hero-dynamic > .container {
     position: relative;
     z-index: 2;
@@ -308,7 +426,8 @@ body.theme-night .text-muted {
 
 @media (prefers-reduced-motion: reduce) {
     .hero-dynamic::before,
-    .hero-dynamic::after {
+    .hero-dynamic::after,
+    .hero-bg-layer {
         animation: none;
     }
 }
@@ -358,8 +477,115 @@ body.theme-night .text-muted {
     margin-bottom: 1cm;
 }
 
+.home-page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.75rem, 1.6vh, 1.25rem);
+}
+
+.home-hero {
+    min-height: calc(clamp(360px, 56vh, 620px) + 4cm);
+    padding: clamp(1rem, 2.2vh, 1.75rem) 0;
+}
+
+.home-hero-card {
+    padding: clamp(1.25rem, 2.3vh, 2rem) !important;
+}
+
+.home-hero-card h1 {
+    font-size: clamp(1.8rem, 2.6vw, 2.8rem);
+    line-height: 1.18;
+}
+
+.home-hero-card .lead {
+    margin-bottom: clamp(0.85rem, 1.8vh, 1.25rem) !important;
+    font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+}
+
+.home-benefits-section {
+    margin-top: 0 !important;
+    margin-bottom: 0;
+}
+
+.home-benefits-section h2 {
+    margin-bottom: 0.65rem !important;
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+}
+
+.home-benefits-section .row {
+    --bs-gutter-y: 0.7rem;
+}
+
+.home-benefit-card {
+    padding: 0.9rem 1rem !important;
+}
+
+.home-benefit-card h4 {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    margin-bottom: 0.4rem !important;
+}
+
+.home-benefit-card p {
+    font-size: clamp(0.84rem, 0.95vw, 0.94rem);
+    line-height: 1.45;
+    margin-bottom: 0;
+}
+
+@media (max-height: 860px) {
+    .home-hero {
+        min-height: clamp(320px, 50vh, 520px);
+    }
+
+    .home-hero-card h1 {
+        font-size: clamp(1.55rem, 2.3vw, 2.2rem);
+    }
+
+    .home-benefits-section .row {
+        --bs-gutter-y: 0.65rem;
+    }
+}
+
+@media (max-height: 760px) {
+    .home-hero {
+        min-height: clamp(285px, 44vh, 450px);
+        padding: 0.8rem 0;
+    }
+
+    .home-hero-card {
+        padding: 1rem !important;
+    }
+
+    .home-hero-card h1 {
+        font-size: clamp(1.35rem, 2vw, 1.8rem);
+        margin-bottom: 0.5rem !important;
+    }
+
+    .home-hero-card .lead {
+        font-size: 0.88rem;
+        margin-bottom: 0.75rem !important;
+    }
+
+    .home-benefits-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.6rem !important;
+    }
+
+    .home-benefit-card {
+        padding: 0.8rem !important;
+    }
+
+    .home-benefit-card h4 {
+        font-size: 0.98rem;
+    }
+
+    .home-benefit-card p {
+        font-size: 0.78rem;
+    }
+}
+
 /* ===========================
-   NAVBAR EDGE SPACING
+    NAVBAR EDGE SPACING
 =========================== */
 
 .navbar > .container-fluid {
@@ -372,6 +598,14 @@ body.theme-night .text-muted {
         padding-left: 1rem;
         padding-right: 1rem;
     }
+}
+
+/* ===========================
+    NAVBAR HEIGHT
+=========================== */
+
+.navbar {
+    padding: 0.5rem 0;
 }
 
 /* ===========================
@@ -542,12 +776,56 @@ body.theme-night .service-category-toggle::after {
 }
 
 body.theme-night .service-category-card .table {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(225, 238, 255, 0.82);
 }
 
 body.theme-night .service-category-card .table td,
 body.theme-night .service-category-card .table th {
-    color: #111827;
+    color: #0f172a;
+}
+
+body.theme-night .table {
+    background: rgba(224, 238, 255, 0.8);
+    border-color: rgba(148, 163, 184, 0.32);
+    --bs-table-color: #0f172a;
+    --bs-table-border-color: rgba(148, 163, 184, 0.32);
+    --bs-table-hover-bg: rgba(211, 229, 255, 0.36);
+    --bs-table-hover-color: #0f172a;
+    --bs-table-striped-bg: rgba(219, 234, 254, 0.26);
+    --bs-table-striped-color: #0f172a;
+    --bs-table-active-bg: rgba(186, 211, 245, 0.48);
+    --bs-table-active-color: #0f172a;
+}
+
+body.theme-night .table thead {
+    background: rgba(206, 224, 247, 0.48);
+}
+
+body.theme-night .table th,
+body.theme-night .table td,
+body.theme-night .table tbody tr:hover,
+body.theme-night .table .text-muted {
+    color: #0f172a !important;
+}
+
+body.theme-night .table-glass-card {
+    background: rgba(224, 238, 255, 0.8) !important;
+    border-color: rgba(148, 163, 184, 0.32) !important;
+    color: #0f172a;
+}
+
+.contact-map {
+    width: 100%;
+    min-height: 320px;
+    border: 1px solid var(--table-glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.contact-map iframe {
+    width: 100%;
+    height: 320px;
+    border: 0;
 }
 
 body.theme-night .pagination .page-link {

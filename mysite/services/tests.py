@@ -1,4 +1,3 @@
-
 from decimal import Decimal
 
 from django.test import TestCase
@@ -17,5 +16,5 @@ class ServicesAccordionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'data-bs-toggle="collapse"')
         self.assertContains(response, f'categoryCollapse{category.id}')
-        self.assertContains(response, 'class="collapse"')
+        self.assertContains(response, 'accordion-collapse collapse')
         self.assertContains(response, 'Valymas')
