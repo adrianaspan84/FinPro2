@@ -212,3 +212,32 @@ class EditOrderLinesTests(TestCase):
         self.assertNotContains(response, reverse('edit_order', args=[self.order.id]))
         self.assertNotContains(response, reverse('delete_order', args=[self.order.id]))
 
+
+class OrderListPaginationTests(TestCase):
+    def setUp(self):
+        self.client_user = User.objects.create_user(username='client_pag', password='pass123')
+        self.client_user.profile.role = 'client'
+        self.client_user.profile.save()
+
+        self.manager_user = User.objects.create_user(username='manager_pag', password='pass123')
+        self.manager_user.profile.role = 'manager'
+        self.manager_user.profile.save()
+
+        category = ServiceCategory.objects.create(name='Paginacija')
+        service = Service.objects.create(category=category, name='Paslauga', unit='vnt', price=Decimal('10.00'))
+
+        for _ in range(12):
+            order = Order.objects.create(client=self.client_user, manager=self.manager_user, status='new')
+            OrderItem.objects.create(order=order, service=service, quantity=Decimal('1.00'))
+
+    def test_order_list_paginates_for_client(self):
+        self.client.login(username='client_pag', password='pass123')
+
+        response = self.client.get(reverse('order_list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['is_paginated'])
+        self.assertEqual(response.context['page_obj'].paginator.num_pages, 2)
+        self.assertEqual(len(response.context['orders']), 10)
+
+

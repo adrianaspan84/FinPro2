@@ -1,7 +1,7 @@
 from django.contrib import admin
 from tinymce.widgets import TinyMCE
 from django import forms
-from .models import GalleryItem, Photo
+from .models import GalleryItem
 
 
 class GalleryItemAdminForm(forms.ModelForm):
@@ -44,9 +44,3 @@ class GalleryItemAdmin(admin.ModelAdmin):
             obj.uploaded_by = request.user
         super().save_model(request, obj, form, change)
 
-
-@admin.register(Photo)
-class PhotoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'uploaded_by', 'created_at')
-    search_fields = ('title', 'description')
-    list_filter = ('created_at',)

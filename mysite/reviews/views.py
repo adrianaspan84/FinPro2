@@ -1,7 +1,10 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
+from django.views.generic import CreateView, DeleteView, UpdateView
 
 from main.models import Profile
 from .forms import ReviewForm
@@ -14,59 +17,80 @@ def review_list(request):
     return render(request, 'reviews/review_list.html', {'reviews': reviews, 'form': form})
 
 
-@login_required
-def review_create(request):
-    if request.method != 'POST':
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    form_class = ReviewForm
+    success_url = reverse_lazy('reviews_list')
+
+    def get(self, request, *args, **kwargs):
         return redirect('reviews_list')
 
-    profile, _ = Profile.objects.get_or_create(user=request.user)
-    if profile.role != 'client' and not (request.user.is_staff or request.user.is_superuser):
-        messages.error(request, _('Atsiliepimus gali rašyti tik klientai.'))
-        return redirect('reviews_list')
-
-    form = ReviewForm(request.POST, request.FILES)
-    if form.is_valid():
-        review = form.save(commit=False)
-        review.user = request.user
-        review.is_approved = True
-        review.save()
-        messages.success(request, _('Atsiliepimas išsaugotas.'))
-    else:
-        messages.error(request, _('Nepavyko išsaugoti atsiliepimo. Patikrinkite laukus.'))
-
-    return redirect('reviews_list')
-
-
-@login_required
-def review_edit(request, review_id):
-    review = get_object_or_404(Review, id=review_id)
-
-    if not (request.user.is_staff or request.user.is_superuser):
-        messages.error(request, _('Neturite teisės redaguoti šio atsiliepimo.'))
-        return redirect('reviews_list')
-
-    if request.method == 'POST':
-        form = ReviewForm(request.POST, request.FILES, instance=review)
-        if form.is_valid():
-            form.save()
-            messages.success(request, _('Atsiliepimas atnaujintas.'))
+    def post(self, request, *args, **kwargs):
+        profile, _created = Profile.objects.get_or_create(user=request.user)
+        if profile.role != 'client' and not (request.user.is_staff or request.user.is_superuser):
+            messages.error(request, _('Atsiliepimus gali rašyti tik klientai.'))
             return redirect('reviews_list')
-    else:
-        form = ReviewForm(instance=review)
+        return super().post(request, *args, **kwargs)
 
-    return render(request, 'reviews/review_form.html', {'form': form, 'review': review})
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.is_approved = True
+        response = super().form_valid(form)
+        messages.success(self.request, _('Atsiliepimas išsaugotas.'))
+        return response
 
-
-@login_required
-def review_delete(request, review_id):
-    review = get_object_or_404(Review, id=review_id)
-
-    if not (request.user.is_staff or request.user.is_superuser):
-        messages.error(request, _('Neturite teisės trinti šio atsiliepimo.'))
+    def form_invalid(self, form):
+        messages.error(self.request, _('Nepavyko išsaugoti atsiliepimo. Patikrinkite laukus.'))
         return redirect('reviews_list')
 
-    if request.method == 'POST':
-        review.delete()
-        messages.success(request, _('Atsiliepimas ištrintas.'))
 
-    return redirect('reviews_list')
+class StaffOrSuperuserRequiredMixin(UserPassesTestMixin):
+    error_message = _('Neturite teisės redaguoti šio atsiliepimo.')
+
+    def test_func(self):
+        user = self.request.user
+        return user.is_staff or user.is_superuser
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            messages.error(self.request, self.error_message)
+            return redirect('reviews_list')
+        return super().handle_no_permission()
+
+
+class ReviewUpdateView(LoginRequiredMixin, StaffOrSuperuserRequiredMixin, UpdateView):
+    model = Review
+    form_class = ReviewForm
+    pk_url_kwarg = 'review_id'
+    template_name = 'reviews/review_form.html'
+    success_url = reverse_lazy('reviews_list')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, _('Atsiliepimas atnaujintas.'))
+        return response
+
+
+class ReviewDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Review
+    pk_url_kwarg = 'review_id'
+    success_url = reverse_lazy('reviews_list')
+
+    def test_func(self):
+        user = self.request.user
+        return user.is_staff or user.is_superuser
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            messages.error(self.request, _('Neturite teisės trinti šio atsiliepimo.'))
+            return redirect('reviews_list')
+        return super().handle_no_permission()
+
+    def get(self, request, *args, **kwargs):
+        return redirect('reviews_list')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        messages.success(request, _('Atsiliepimas ištrintas.'))
+        return HttpResponseRedirect(self.get_success_url())

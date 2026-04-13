@@ -41,3 +41,31 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} profilis"
+
+
+class SiteSettings(models.Model):
+    """Site-wide configuration settings."""
+
+    background_image = models.ImageField(
+        upload_to='settings/',
+        blank=True,
+        null=True,
+        help_text='Homepage hero section background image'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Site Settings'
+        verbose_name_plural = 'Site Settings'
+
+    def __str__(self):
+        return 'Site Settings'
+
+    @classmethod
+    def load(cls):
+        """Get or create singleton settings instance."""
+        obj, created = cls.objects.get_or_create(pk=1)
+        return obj
+

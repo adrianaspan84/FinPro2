@@ -1,9 +1,11 @@
 import json
+from urllib.parse import urlencode
 from decimal import Decimal, InvalidOperation
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
 from django.http import FileResponse, HttpResponseForbidden, JsonResponse
@@ -266,8 +268,21 @@ def order_list(request):
     q = (request.GET.get('q') or '').strip()
     orders = _apply_order_filters(orders, status=status, q=q)
 
+    paginator = Paginator(orders, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    params = {}
+    if status:
+        params['status'] = status
+    if q:
+        params['q'] = q
+    query_suffix = f"&{urlencode(params)}" if params else ''
+
     return render(request, 'orders/order_list.html', {
-        'orders': orders,
+        'orders': page_obj,
+        'page_obj': page_obj,
+        'is_paginated': page_obj.paginator.num_pages > 1,
+        'query_suffix': query_suffix,
         'selected_status': status,
         'search_query': q,
     })

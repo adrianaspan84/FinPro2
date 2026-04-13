@@ -128,5 +128,25 @@
 
     </div>
 
+    {% if is_paginated %}
+    <nav class="mt-4" aria-label="Orders pagination">
+        <ul class="pagination justify-content-center mb-0">
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{{ query_suffix }}{% else %}#{% endif %}" aria-label="Previous">&laquo;</a>
+            </li>
+
+            {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}{{ query_suffix }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{{ query_suffix }}{% else %}#{% endif %}" aria-label="Next">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+    {% endif %}
+
 </div>
 {% endblock %}

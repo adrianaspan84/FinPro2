@@ -5,10 +5,12 @@ from django.contrib import messages
 from django.utils.translation import gettext as _
 
 from .forms import RegisterForm, ProfileEditForm
-from .models import Profile
+from .models import Profile, SiteSettings
 
 def index(request):
-    return render(request, 'main/index.html')
+    settings = SiteSettings.load()
+    background_url = settings.background_image.url if settings.background_image else '/media/background/background.jpg'
+    return render(request, 'main/index.html', {'background_url': background_url})
 
 
 def contact_view(request):

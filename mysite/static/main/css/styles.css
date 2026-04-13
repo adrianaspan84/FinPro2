@@ -3,7 +3,7 @@
 }
 
 body {
-    background: #f5f5f5;
+    background: #eaf2ff;
     margin: 0;
 }
 
@@ -20,6 +20,11 @@ body {
     --transition-fast: 0.2s ease;
     --transition-medium: 0.35s ease;
     --footer-height: 52px;
+    --chrome-bg: rgba(0, 0, 0, 0.72);
+    --chrome-border: rgba(255, 255, 255, 0.14);
+    --page-bg-light: #eaf2ff;
+    --page-bg-night: #0b1220;
+    --text-night: #e6eefc;
 }
 
 /* ===========================
@@ -46,10 +51,27 @@ body {
 =========================== */
 
 .navbar {
-    backdrop-filter: blur(10px);
-    background: rgba(0, 0, 0, 0.65) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: var(--chrome-bg) !important;
+    border-bottom: 1px solid var(--chrome-border);
     position: relative;
     z-index: 1100;
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .btn,
+.navbar .dropdown-toggle {
+    color: #fff !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.55), 0 0 14px rgba(126, 249, 255, 0.35);
+}
+
+.navbar .nav-link:hover,
+.navbar .btn:hover,
+.navbar .dropdown-toggle:hover {
+    color: #fff !important;
+    text-shadow: 0 0 9px rgba(255, 255, 255, 0.8), 0 0 20px rgba(126, 249, 255, 0.55);
 }
 
 /* ===========================
@@ -112,7 +134,23 @@ body {
 
 body {
     animation: fadeIn 0.4s ease;
+    background: var(--page-bg-light);
+    color: #111827;
     margin: 0;
+}
+
+body.theme-night {
+    background: var(--page-bg-night);
+    color: var(--text-night);
+}
+
+body.theme-night .glass-card {
+    background: rgba(15, 23, 42, 0.52);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+body.theme-night .text-muted {
+    color: rgba(226, 232, 240, 0.84) !important;
 }
 
 @keyframes fadeIn {
@@ -204,9 +242,75 @@ body {
 
 .hero-section {
     min-height: 70vh;
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    background: #0a1020;
     color: white;
     padding: 60px 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.hero-dynamic::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 15% 25%, rgba(56, 189, 248, 0.36), transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.30), transparent 40%),
+        radial-gradient(circle at 52% 85%, rgba(16, 185, 129, 0.22), transparent 42%),
+        linear-gradient(130deg, rgba(7, 10, 18, 0.12), rgba(7, 10, 18, 0.24));
+    background-size: 200% 200%;
+    animation: heroGradientFlow 16s ease-in-out infinite alternate;
+}
+
+.hero-dynamic::after {
+    content: '';
+    position: absolute;
+    inset: -4%;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--hero-bg-url, url('/media/background/background.jpg'));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: saturate(1.52) contrast(1.20) brightness(1.18) hue-rotate(-2deg);
+    transform: scale(1.02);
+    animation: heroKenBurns 24s ease-in-out infinite alternate;
+}
+
+.hero-dynamic > .container {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes heroGradientFlow {
+    0% {
+        background-position: 0% 50%, 100% 35%, 50% 100%, 0% 0%;
+    }
+    50% {
+        background-position: 40% 20%, 70% 65%, 20% 70%, 20% 20%;
+    }
+    100% {
+        background-position: 100% 60%, 0% 20%, 80% 30%, 100% 100%;
+    }
+}
+
+@keyframes heroKenBurns {
+    0% {
+        transform: scale(1.02) translate3d(0, 0, 0);
+    }
+    100% {
+        transform: scale(1.12) translate3d(-1.5%, -1.5%, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-dynamic::before,
+    .hero-dynamic::after {
+        animation: none;
+    }
 }
 /* AUTH BACKGROUND */
 .auth-bg {
@@ -233,18 +337,25 @@ body {
     margin-top: auto;
     min-height: var(--footer-height);
     z-index: 1020;
-    background: rgba(0, 0, 0, 0.65) !important;
-    backdrop-filter: blur(10px);
+    background: var(--chrome-bg) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--chrome-border);
 }
 
 .footer-text {
-    color: rgba(255, 255, 255, 0.85);
+    color: #fff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.45), 0 0 12px rgba(126, 249, 255, 0.3);
     margin: 0;
 }
 
 .site-main {
     flex: 1 0 auto;
     padding-bottom: 0;
+}
+
+.home-benefits-section {
+    margin-bottom: 1cm;
 }
 
 /* ===========================
@@ -316,6 +427,18 @@ body {
     border-radius: 2px;
     margin-right: 0.5rem;
     flex: 0 0 auto;
+}
+
+.nav-theme-toggle {
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.16);
 }
 
 /* ===========================
@@ -402,6 +525,53 @@ body {
     box-shadow: none;
     background: transparent;
     position: relative;
+}
+
+.service-description {
+    color: #111827;
+}
+
+body.theme-night .service-category-toggle,
+body.theme-night .service-category-toggle:hover,
+body.theme-night .service-category-toggle:focus {
+    color: #ffffff;
+}
+
+body.theme-night .service-category-toggle::after {
+    color: #ffffff;
+}
+
+body.theme-night .service-category-card .table {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+body.theme-night .service-category-card .table td,
+body.theme-night .service-category-card .table th {
+    color: #111827;
+}
+
+body.theme-night .pagination .page-link {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-color: rgba(148, 163, 184, 0.3);
+    color: #e6eefc;
+}
+
+body.theme-night .pagination .page-link:hover {
+    background-color: rgba(51, 65, 85, 0.9);
+    border-color: rgba(148, 163, 184, 0.5);
+    color: #ffffff;
+}
+
+body.theme-night .pagination .page-item.active .page-link {
+    background-color: rgba(59, 130, 246, 0.85);
+    border-color: rgba(96, 165, 250, 0.6);
+    color: #ffffff;
+}
+
+body.theme-night .pagination .page-item.disabled .page-link {
+    background-color: rgba(15, 23, 42, 0.5);
+    border-color: rgba(71, 85, 105, 0.3);
+    color: rgba(148, 163, 184, 0.5);
 }
 
 .service-category-toggle::after {
