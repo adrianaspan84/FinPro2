@@ -32,6 +32,9 @@ body {
     --table-glass-hover: rgba(226, 229, 235, 0.62);
     --table-glass-striped: rgba(236, 239, 243, 0.52);
     --table-glass-active: rgba(214, 220, 228, 0.7);
+    --table-font-size: 0.67rem;
+    --table-cell-padding-y: 0.34rem;
+    --table-cell-padding-x: 0.5rem;
     --form-glass-bg: rgba(242, 244, 247, 0.82);
     --form-glass-border: rgba(148, 163, 184, 0.34);
     --form-glass-focus: rgba(100, 116, 139, 0.24);
@@ -117,6 +120,7 @@ body {
     --bs-table-striped-color: var(--table-glass-text);
     --bs-table-active-bg: var(--table-glass-active);
     --bs-table-active-color: var(--table-glass-text);
+    font-size: var(--table-font-size);
 }
 
 .table thead {
@@ -127,6 +131,7 @@ body {
 .table td {
     color: var(--table-glass-text);
     border-color: var(--table-glass-border);
+    padding: var(--table-cell-padding-y) var(--table-cell-padding-x);
 }
 
 .table tbody tr:hover {
