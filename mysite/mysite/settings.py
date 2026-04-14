@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
@@ -13,9 +14,24 @@ MESSAGE_TAGS = {
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-fjm7vbd1j4&x6%8x1(!m1a=#pnag^z+(f!w&@arfi=2g8$ebu7'
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+def env_flag(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {'1', 'true', 'yes', 'on'}
+
+
+def env_list(name: str, default: list[str]) -> list[str]:
+    value = os.getenv(name)
+    if not value:
+        return default
+    return [item.strip() for item in value.split(',') if item.strip()]
+
+
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-fjm7vbd1j4&x6%8x1(!m1a=#pnag^z+(f!w&@arfi=2g8$ebu7')
+DEBUG = env_flag('DJANGO_DEBUG', True)
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', ['127.0.0.1', 'localhost', '0.0.0.0', 'hpro.pythonanywhere.com'])
+CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS', ['https://hpro.pythonanywhere.com'])
 
 
 # ---------------------------------------------------------
@@ -144,6 +160,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 ADMIN_CSS = "admin/css/premium_admin.css"
 
