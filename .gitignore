@@ -1,2 +1,3 @@
 __pycache__/
 *.py[cod]
+mysite/media/settings/visit_counter.json
