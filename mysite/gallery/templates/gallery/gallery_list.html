@@ -45,7 +45,7 @@
     </div>
 
     {% if is_paginated %}
-    <nav class="mt-4" aria-label="Gallery pagination">
+    <nav class="mt-4 gallery-pagination" aria-label="Gallery pagination">
         <ul class="pagination justify-content-center">
             {% if page_obj.number > first_page %}
             <li class="page-item"><a class="page-link" href="?page={{ first_page }}" aria-label="First">&laquo;&laquo;</a></li>

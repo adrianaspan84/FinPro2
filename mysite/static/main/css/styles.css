@@ -243,6 +243,24 @@ body {
     margin-right: auto;
 }
 
+.orders-centered-table th,
+.orders-centered-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.orders-centered-table .num-col {
+    text-align: center;
+}
+
+.orders-centered-table td form,
+.orders-centered-table td .btn,
+.orders-centered-table td .badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @media (max-width: 991.98px) {
     .orders-wide-container {
         max-width: 100%;
@@ -795,6 +813,12 @@ body.theme-night .text-muted {
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
 }
 
+.gallery-card .card-title,
+.gallery-card .card-text,
+.gallery-card .card-text * {
+    color: #111827;
+}
+
 .gallery-img {
     width: 100%;
     height: 220px;
@@ -1229,6 +1253,14 @@ body.theme-night .pagination .page-item.disabled .page-link {
     background: rgba(248, 250, 252, 0.78);
 }
 
+.theme-surface-text {
+    color: #0f172a;
+}
+
+.theme-surface-heading {
+    color: #111827;
+}
+
 body.theme-night .site-main h1,
 body.theme-night .site-main h2,
 body.theme-night .site-main h3,
@@ -1260,5 +1292,39 @@ body.theme-night .home-benefit-card h4 {
 body.theme-night .home-hero-card h1,
 body.theme-night .home-hero-card p.lead {
     color: #ffffff !important;
+}
+
+body.theme-night .theme-surface-text,
+body.theme-night .theme-surface-heading {
+    color: #ffffff;
+}
+
+body.theme-night .gallery-pagination .page-link {
+    background: rgba(242, 244, 247, 0.92);
+    border-color: var(--table-glass-border);
+    color: #0f172a;
+}
+
+body.theme-night .gallery-pagination .page-link:hover {
+    background: rgba(226, 229, 235, 0.98);
+    color: #0f172a;
+}
+
+body.theme-night .gallery-pagination .page-item.active .page-link {
+    background-color: rgba(59, 130, 246, 0.85);
+    border-color: rgba(96, 165, 250, 0.6);
+    color: #ffffff;
+}
+
+body.theme-night .gallery-pagination .page-item.disabled .page-link {
+    background: rgba(230, 233, 238, 0.72);
+    border-color: var(--table-glass-border);
+    color: rgba(15, 23, 42, 0.45);
+}
+
+body.theme-night .gallery-card .card-title,
+body.theme-night .gallery-card .card-text,
+body.theme-night .gallery-card .card-text * {
+    color: #111827 !important;
 }
 

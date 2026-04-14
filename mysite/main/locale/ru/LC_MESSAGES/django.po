@@ -720,6 +720,11 @@ msgstr "Дата создания"
 msgid "Terminas"
 msgstr "Срок"
 
+#: .\orders\templates\orders\order_list.html:60
+#: .\orders\templates\orders\partials\order_table.html:10
+msgid "Termino būsena"
+msgstr "Статус по сроку"
+
 #: .\orders\templates\orders\admin_dashboard.html:311
 msgid "Pašalinti užsakymai"
 msgstr "Удалённые заказы"

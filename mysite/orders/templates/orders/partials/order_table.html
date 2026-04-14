@@ -1,43 +1,49 @@
 {% load i18n %}
 {% load status_badges %}
-<table class="table table-bordered mt-3 orders-staff-table">
+{% load role_badges %}
+<table class="table table-bordered mt-3 orders-staff-table orders-centered-table">
     <thead>
         <tr>
             <th>ID</th>
             <th>{% trans "Klientas" %}</th>
-            {% if show_manager %}
             <th>{% trans "Vadybininkas" %}</th>
-            {% endif %}
             <th>{% trans "Statusas" %}</th>
             <th>{% trans "Terminas" %}</th>
-            <th>{% trans "Vėluoja?" %}</th>
-            <th></th>
+            <th>{% trans "Termino būsena" %}</th>
+            <th>{% trans "Kaina" %}</th>
+            <th>{% trans "Veiksmai" %}</th>
         </tr>
     </thead>
     <tbody>
         {% for order in orders %}
         <tr>
             <td>{{ order.id }}</td>
-            <td>{{ order.client.username }}</td>
-            {% if show_manager %}
+            <td>
+                {{ order.client.username }}
+                {% role_badge order.client.profile.role %}
+            </td>
             <td>{{ order.manager.username|default:"-" }}</td>
-            {% endif %}
             <td>{% status_badge order.status %}</td>
             <td>{{ order.deadline|default:"-" }}</td>
             <td>
-                {% if order.is_overdue %}
-                    <span class="text-danger">{% trans "Taip" %}</span>
+                {% if order.deadline %}
+                    {% if order.is_overdue %}
+                        <span class="badge bg-danger">{% trans "Vėluoja" %}</span>
+                    {% else %}
+                        <span class="badge bg-success">{% trans "Laiku" %}</span>
+                    {% endif %}
                 {% else %}
-                    {% trans "Ne" %}
+                    <span class="text-muted">-</span>
                 {% endif %}
             </td>
+            <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
             <td>
                 <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-primary">{% trans "Peržiūrėti" %}</a>
             </td>
         </tr>
         {% empty %}
         <tr>
-            <td colspan="{% if show_manager %}7{% else %}6{% endif %}" class="text-center">{% trans "Nėra duomenų." %}</td>
+            <td colspan="8" class="text-center">{% trans "Nėra duomenų." %}</td>
         </tr>
         {% endfor %}
     </tbody>
