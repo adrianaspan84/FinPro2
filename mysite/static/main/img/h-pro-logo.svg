@@ -1,0 +1,19 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="44" y1="36" x2="278" y2="286" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#163A6B"/>
+      <stop offset="1" stop-color="#4FA7E8"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="92" y1="70" x2="234" y2="210" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D9F1FF"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+  <rect x="20" y="20" width="280" height="280" rx="54" fill="url(#bg)"/>
+  <path d="M92 214V96H122V143H168V96H198V214H168V170H122V214H92Z" fill="url(#accent)"/>
+  <path d="M205 215V96H237C255.4 96 271 111.3 271 132.1C271 146.7 263.1 158.7 251.2 164.7L276.6 215H243.5L223.3 172.4H235.6C245.7 172.4 253.9 164.4 253.9 154.4C253.9 144.4 245.7 136.4 235.6 136.4H235V215H205Z" fill="url(#accent)"/>
+  <path d="M86 90L160 48L234 90" stroke="#D9F1FF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M95 236H225" stroke="#D9F1FF" stroke-width="16" stroke-linecap="round"/>
+  <path d="M96 256H190" stroke="#8AD0FF" stroke-width="12" stroke-linecap="round"/>
+  <text x="160" y="286" text-anchor="middle" fill="#F7FBFF" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="2">H-PRO</text>
+</svg>

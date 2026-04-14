@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% load i18n %}
 
 {% block content %}
@@ -6,6 +7,9 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="glass-card table-glass-card p-4">
+                    <div class="contact-branding">
+                        <img src="{% static 'main/img/h-pro-logo.svg' %}" alt="H-Pro logotipas" class="contact-logo">
+                    </div>
                     <h2 class="fw-bold text-center mb-4">{% trans "Kontaktai" %}</h2>
                     <table class="table table-borderless align-middle mb-0 contact-table">
                         <tr><th>{% trans "Įmonė" %}</th><td>{{ company_info.name }}</td></tr>

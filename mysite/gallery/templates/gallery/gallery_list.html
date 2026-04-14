@@ -8,11 +8,11 @@
     <div class="row g-3">
         {% for item in items %}
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm gallery-card">
                 {% if item.media_type == 'photo' and item.image %}
-                    <a href="{{ item.image.url }}" target="_blank" rel="noopener noreferrer">
-                        <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}" style="height: 220px; object-fit: cover;">
-                    </a>
+                    <button type="button" class="gallery-open-btn" data-gallery-index="{{ forloop.counter0 }}" aria-expanded="false" aria-label="{% trans 'Padidinti nuotrauką' %}">
+                        <img src="{{ item.image.url }}" class="card-img-top gallery-img gallery-toggle-img" alt="{{ item.title }}">
+                    </button>
                 {% elif item.media_type == 'video_url' and item.embed_video_url %}
                     <div class="ratio ratio-16x9">
                         <iframe src="{{ item.embed_video_url }}" title="{{ item.title }}" allowfullscreen></iframe>
@@ -84,5 +84,176 @@
     </nav>
     {% endif %}
 </div>
+
+<div class="gallery-overlay" id="galleryOverlay" hidden>
+    <div class="gallery-overlay-backdrop" data-gallery-close="true"></div>
+    <div class="gallery-overlay-card glass-card table-glass-card" role="dialog" aria-modal="true" aria-labelledby="galleryOverlayTitle">
+        <div class="gallery-overlay-toolbar">
+            <button type="button" class="gallery-overlay-nav" id="galleryOverlayPrev" aria-label="{% trans 'Ankstesnė nuotrauka' %}">&#8249;</button>
+            <button type="button" class="gallery-overlay-close" id="galleryOverlayClose" aria-label="{% trans 'Uždaryti nuotrauką' %}">&times;</button>
+            <button type="button" class="gallery-overlay-nav" id="galleryOverlayNext" aria-label="{% trans 'Kita nuotrauka' %}">&#8250;</button>
+        </div>
+        <button type="button" class="gallery-overlay-image-btn" id="galleryOverlayImageBtn" aria-label="{% trans 'Sumažinti nuotrauką' %}">
+            <img src="" alt="" class="gallery-overlay-image" id="galleryOverlayImage">
+        </button>
+        <div class="card-body gallery-overlay-body" id="galleryOverlayBody"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const galleryButtons = Array.from(document.querySelectorAll('.gallery-open-btn'));
+        const overlay = document.getElementById('galleryOverlay');
+        const overlayImage = document.getElementById('galleryOverlayImage');
+        const overlayBody = document.getElementById('galleryOverlayBody');
+        const overlayImageBtn = document.getElementById('galleryOverlayImageBtn');
+        const overlayClose = document.getElementById('galleryOverlayClose');
+        const overlayPrev = document.getElementById('galleryOverlayPrev');
+        const overlayNext = document.getElementById('galleryOverlayNext');
+        let activeButton = null;
+        let activeIndex = -1;
+
+        function syncOverlayImageSize() {
+            if (!overlayImage.src) {
+                return;
+            }
+
+            overlayImage.style.width = overlayImage.naturalWidth ? overlayImage.naturalWidth + 'px' : 'auto';
+            overlayImage.style.height = overlayImage.naturalHeight ? overlayImage.naturalHeight + 'px' : 'auto';
+            overlayImage.style.maxWidth = '92vw';
+            overlayImage.style.maxHeight = window.innerWidth < 768 ? '60vh' : '78vh';
+        }
+
+        function updateNavButtons() {
+            const hasPhotos = galleryButtons.length > 1;
+            overlayPrev.hidden = !hasPhotos;
+            overlayNext.hidden = !hasPhotos;
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('is-visible');
+            overlay.hidden = true;
+            document.body.classList.remove('gallery-overlay-open');
+            overlayImage.removeAttribute('src');
+            overlayImage.removeAttribute('style');
+            overlayImage.alt = '';
+            overlayBody.innerHTML = '';
+            activeIndex = -1;
+
+            if (activeButton) {
+                activeButton.setAttribute('aria-expanded', 'false');
+                activeButton = null;
+            }
+        }
+
+        function openOverlay(button) {
+            const card = button.closest('.gallery-card');
+            const image = button.querySelector('.gallery-toggle-img');
+            const body = card ? card.querySelector('.card-body') : null;
+            const buttonIndex = galleryButtons.indexOf(button);
+
+            if (!image) {
+                return;
+            }
+
+            if (activeButton === button && !overlay.hidden) {
+                closeOverlay();
+                return;
+            }
+
+            if (activeButton) {
+                activeButton.setAttribute('aria-expanded', 'false');
+            }
+
+            activeButton = button;
+            activeIndex = buttonIndex;
+            activeButton.setAttribute('aria-expanded', 'true');
+            overlayImage.src = image.currentSrc || image.src;
+            overlayImage.alt = image.alt || '';
+            overlayBody.innerHTML = body ? body.innerHTML : '';
+            overlay.hidden = false;
+            document.body.classList.add('gallery-overlay-open');
+            requestAnimationFrame(function () {
+                overlay.classList.add('is-visible');
+            });
+            updateNavButtons();
+
+            if (image.naturalWidth) {
+                syncOverlayImageSize();
+            } else {
+                overlayImage.onload = syncOverlayImageSize;
+            }
+        }
+
+        function openByOffset(offset) {
+            if (!galleryButtons.length || activeIndex === -1) {
+                return;
+            }
+
+            const nextIndex = (activeIndex + offset + galleryButtons.length) % galleryButtons.length;
+            openOverlay(galleryButtons[nextIndex]);
+        }
+
+        galleryButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                openOverlay(button);
+            });
+        });
+
+        overlay.addEventListener('click', function (event) {
+            if (event.target.dataset.galleryClose === 'true') {
+                closeOverlay();
+            }
+        });
+
+        overlayImageBtn.addEventListener('click', function () {
+            closeOverlay();
+        });
+
+        overlayClose.addEventListener('click', function () {
+            closeOverlay();
+        });
+
+        overlayPrev.addEventListener('click', function () {
+            openByOffset(-1);
+        });
+
+        overlayNext.addEventListener('click', function () {
+            openByOffset(1);
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (overlay.hidden) {
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                closeOverlay();
+            } else if (event.key === 'ArrowLeft') {
+                openByOffset(-1);
+            } else if (event.key === 'ArrowRight') {
+                openByOffset(1);
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (!overlay.hidden) {
+                syncOverlayImageSize();
+            }
+        });
+
+        overlay.addEventListener('click', function (event) {
+            if (event.target === overlay) {
+                closeOverlay();
+            }
+        });
+
+        overlay.querySelector('.gallery-overlay-card').addEventListener('click', function (event) {
+            if (event.target === overlayImage) {
+                closeOverlay();
+            }
+        });
+    });
+</script>
 {% endblock %}
 
