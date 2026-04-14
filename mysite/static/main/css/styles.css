@@ -143,6 +143,7 @@ body {
 .contact-table td {
     text-align: center;
     vertical-align: middle;
+    font-size: 1.2rem; /* arba 1.3rem, 1.4rem */
 }
 
 .contact-table th {
@@ -165,7 +166,7 @@ body {
 }
 
 .contact-logo {
-    width: min(220px, 100%);
+    width: min(120px, 100%);
     height: auto;
     display: block;
     filter: drop-shadow(0 12px 24px rgba(22, 58, 107, 0.18));
@@ -1042,6 +1043,16 @@ body.gallery-overlay-open {
     flex-direction: column;
 }
 
+.reviews-table th {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.reviews-table td {
+    font-size: 1.1rem;
+}
+
+
 /* ===========================
    SERVICES ACCORDION
 =========================== */
@@ -1187,6 +1198,37 @@ body.theme-night .pagination .page-item.disabled .page-link {
     outline: 2px solid rgba(59, 130, 246, 0.45);
     outline-offset: -2px;
 }
+
+.accordion-body table td {
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+}
+
+.accordion-body table th {
+    font-weight: 600;
+}
+
+.accordion-button {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.accordion-body {
+    font-size: 1.35rem;
+}
+
+/* Increase font size inside accordion */
+.accordion-body {
+    font-size: 1rem; /* ~1.5x didesnis */
+    line-height: 1.6;
+}
+
+/* Increase table text inside accordion */
+.accordion-body table th,
+.accordion-body table td {
+    font-size: 1rem;
+}
+
 
 /* ===========================
    GLOBAL CONSISTENCY LAYER
