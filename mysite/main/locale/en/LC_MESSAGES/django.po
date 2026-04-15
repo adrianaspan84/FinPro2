@@ -679,6 +679,9 @@ msgstr "Overdue %(days)s d."
 msgid "Laiku"
 msgstr "On time"
 
+msgid "Vėluoja"
+msgstr "Overdue"
+
 #: .\orders\templates\orders\admin_dashboard.html:131
 #: .\orders\templates\orders\admin_dashboard.html:188
 #: .\orders\templates\orders\admin_dashboard.html:237
@@ -732,6 +735,9 @@ msgstr "Deadline status"
 #: .\orders\templates\orders\admin_dashboard.html:311
 msgid "Pašalinti užsakymai"
 msgstr "Deleted orders"
+
+msgid "Tik pašalinti užsakymai"
+msgstr "Only deleted orders"
 
 #: .\orders\templates\orders\admin_dashboard.html:322
 msgid "Sukurta"

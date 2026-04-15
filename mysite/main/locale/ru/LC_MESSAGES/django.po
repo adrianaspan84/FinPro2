@@ -681,6 +681,9 @@ msgstr "Просрочен на %(days)s д."
 msgid "Laiku"
 msgstr "В срок"
 
+msgid "Vėluoja"
+msgstr "Просрочен"
+
 #: .\orders\templates\orders\admin_dashboard.html:131
 #: .\orders\templates\orders\admin_dashboard.html:188
 #: .\orders\templates\orders\admin_dashboard.html:237
@@ -734,6 +737,9 @@ msgstr "Статус по сроку"
 #: .\orders\templates\orders\admin_dashboard.html:311
 msgid "Pašalinti užsakymai"
 msgstr "Удалённые заказы"
+
+msgid "Tik pašalinti užsakymai"
+msgstr "Только удалённые заказы"
 
 #: .\orders\templates\orders\admin_dashboard.html:322
 msgid "Sukurta"

@@ -119,6 +119,10 @@ def admin_dashboard(request):
     include_deleted = request.GET.get('include_deleted') == '1'
     status = request.GET.get('status')
     q = (request.GET.get('q') or '').strip()
+    deleted_only = status == '__deleted_only__'
+
+    if deleted_only:
+        include_deleted = True
 
     all_orders = _apply_order_filters(Order.objects.filter(is_deleted=False), status=status, q=q)
     active_orders = all_orders.filter(status='in_progress')
@@ -130,6 +134,14 @@ def admin_dashboard(request):
         if include_deleted else Order.objects.none()
     )
 
+    if deleted_only:
+        all_orders = Order.objects.none()
+        active_orders = Order.objects.none()
+        new_orders = Order.objects.none()
+        done_orders = Order.objects.none()
+        overdue_orders = []
+        deleted_orders = _apply_order_filters(Order.objects.filter(is_deleted=True), status=None, q=q)
+
     context = {
         'all_orders': all_orders,
         'active_orders': active_orders,
@@ -138,6 +150,7 @@ def admin_dashboard(request):
         'overdue_orders': overdue_orders,
         'deleted_orders': deleted_orders,
         'include_deleted': include_deleted,
+        'deleted_only': deleted_only,
         'selected_status': status,
         'search_query': q,
         'stats': {
@@ -316,6 +329,9 @@ def restore_order(request, order_id):
     order.is_deleted = False
     order.deleted_at = None
     order.save(update_fields=['is_deleted', 'deleted_at'])
+    next_url = request.POST.get('next', '')
+    if next_url and url_has_allowed_host_and_scheme(next_url, {request.get_host()}):
+        return redirect(next_url)
     return redirect('admin_dashboard')
 
 

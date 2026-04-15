@@ -11,7 +11,7 @@
         <h1 class="fw-bold mb-4">{% trans "Administravimo panelė" %}</h1>
 
         <div class="glass-card p-3 mb-4">
-            <form method="get" class="row g-3 align-items-center">
+            <form method="get" class="row g-3 align-items-center" id="adminDashboardFilters">
                 <div class="col-md-4">
                     <input type="text" name="q" class="form-control"
                            placeholder="{% trans 'Ieškoti pagal klientą, ID...' %}"
@@ -25,12 +25,13 @@
                         <option value="in_progress" {% if selected_status == 'in_progress' %}selected{% endif %}>{% trans "Vykdomi" %}</option>
                         <option value="done" {% if selected_status == 'done' %}selected{% endif %}>{% trans "Atlikti" %}</option>
                         <option value="cancelled" {% if selected_status == 'cancelled' %}selected{% endif %}>{% trans "Atšaukti" %}</option>
+                        <option value="__deleted_only__" {% if selected_status == '__deleted_only__' %}selected{% endif %}>{% trans "Tik pašalinti užsakymai" %}</option>
                     </select>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" id="includeDeleted" name="include_deleted" value="1" {% if include_deleted %}checked{% endif %}>
+                        <input class="form-check-input" type="checkbox" id="includeDeleted" name="include_deleted" value="1" {% if include_deleted %}checked{% endif %} onchange="document.getElementById('adminDashboardFilters').submit()">
                         <label class="form-check-label" for="includeDeleted">
                             {% trans "Rodyti pašalintus užsakymus" %}
                         </label>
@@ -118,7 +119,7 @@
                                 <td>{{ order.client.username }}</td>
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
-                                <td>{{ order.manager.username|default:default_unassigned }}</td>
+                                <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deadline|date:"Y-m-d"|default:"-" }}</td>
@@ -175,7 +176,7 @@
                                 <td>{{ order.client.username }}</td>
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
-                                <td>{{ order.manager.username|default:default_unassigned }}</td>
+                                <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deadline|date:"Y-m-d"|default:"-" }}</td>
@@ -231,7 +232,7 @@
                                 <td>{{ order.client.username }}</td>
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
-                                <td>{{ order.manager.username|default:default_unassigned }}</td>
+                                <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td><span class="badge bg-danger">{{ order.deadline|date:"Y-m-d" }}</span></td>
                                 <td><span class="badge bg-danger">{% blocktrans with days=order.overdue_days %}Vėluoja {{ days }} d.{% endblocktrans %}</span></td>
@@ -281,7 +282,7 @@
                                 <td>{{ order.client.username }}</td>
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
-                                <td>{{ order.manager.username|default:default_unassigned }}</td>
+                                <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deadline|date:"Y-m-d"|default:"-" }}</td>
@@ -336,13 +337,14 @@
                                 <td>{{ order.client.username }}</td>
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
-                                <td>{{ order.manager.username|default:default_unassigned }}</td>
+                                <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deleted_at|date:"Y-m-d H:i"|default:"-" }}</td>
                                 <td>
                                     <form method="post" action="{% url 'restore_order' order.id %}" class="d-inline">
                                         {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
                                         <button type="submit" class="btn btn-sm btn-success">{% trans "Atkurti" %}</button>
                                     </form>
                                 </td>

@@ -22,7 +22,7 @@
                 {{ order.client.username }}
                 {% role_badge order.client.profile.role %}
             </td>
-            <td>{{ order.manager.username|default:"-" }}</td>
+            <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}-{% endif %}</td>
             <td>{% status_badge order.status %}</td>
             <td>{{ order.deadline|default:"-" }}</td>
             <td>

@@ -76,7 +76,11 @@
                         </td>
 
                         <td>
-                            {{ order.manager.username|default:"-" }}
+                            {% if order.manager %}
+                                {{ order.manager.get_full_name|default:order.manager.username }}
+                            {% else %}
+                                -
+                            {% endif %}
                         </td>
 
                         <td>
