@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 
-MAX_REVIEW_IMAGE_SIZE = 2 * 1024 * 1024  # 2 MB
+MAX_REVIEW_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
 YOUTUBE_HOSTS = {'youtube.com', 'www.youtube.com', 'youtu.be', 'm.youtube.com'}
 ALLOWED_IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png'}
 
@@ -35,7 +35,7 @@ class Review(models.Model):
     def clean(self):
         if self.photo:
             if getattr(self.photo, 'size', 0) > MAX_REVIEW_IMAGE_SIZE:
-                raise ValidationError({'photo': _('Nuotrauka per didelė. Maksimalus dydis: 2 MB.')})
+                raise ValidationError({'photo': _('Nuotrauka per didelė. Maksimalus dydis: 5 MB.')})
 
             ext = os.path.splitext(self.photo.name.lower())[1]
             if ext not in ALLOWED_IMAGE_EXTENSIONS:

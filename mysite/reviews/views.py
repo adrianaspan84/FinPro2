@@ -12,9 +12,8 @@ from .forms import ReviewForm
 from .models import Review
 
 
-def review_list(request):
+def _review_list_context(form=None):
     reviews = Review.objects.select_related('user').filter(is_approved=True)
-    form = ReviewForm() if request.user.is_authenticated else None
 
     stats = Review.objects.filter(is_approved=True).aggregate(
         avg_rating=Avg('rating'),
@@ -33,13 +32,18 @@ def review_list(request):
         })
     rating_rows.reverse()
 
-    context = {
+    return {
         'reviews': reviews,
         'form': form,
         'avg_rating': stats['avg_rating'] or 0,
         'total_reviews': total,
         'rating_rows': rating_rows,
     }
+
+
+def review_list(request):
+    form = ReviewForm() if request.user.is_authenticated else None
+    context = _review_list_context(form=form)
     return render(request, 'reviews/review_list.html', context)
 
 
@@ -67,7 +71,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         messages.error(self.request, _('Nepavyko išsaugoti atsiliepimo. Patikrinkite laukus.'))
-        return redirect('reviews_list')
+        context = _review_list_context(form=form)
+        return render(self.request, 'reviews/review_list.html', context, status=400)
 
 
 class StaffOrSuperuserRequiredMixin(UserPassesTestMixin):

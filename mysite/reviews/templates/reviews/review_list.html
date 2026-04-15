@@ -67,15 +67,33 @@
     {% if user.is_authenticated and form %}
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-            <form method="post" action="{% url 'reviews_create' %}">
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+            <form method="post" action="{% url 'reviews_create' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label class="form-label" for="id_rating">{{ form.rating.label }}</label>
                     {{ form.rating }}
+                    {% if form.rating.errors %}
+                    <div class="text-danger small mt-1">{{ form.rating.errors }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="id_content">{{ form.content.label }}</label>
                     {{ form.content }}
+                    {% if form.content.errors %}
+                    <div class="text-danger small mt-1">{{ form.content.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="id_photo">{{ form.photo.label }}</label>
+                    {{ form.photo }}
+                    {% if form.photo.errors %}
+                    <div class="text-danger small mt-1">{{ form.photo.errors }}</div>
+                    {% endif %}
                 </div>
                 <button class="btn btn-primary" type="submit">{% trans "Pateikti atsiliepimą" %}</button>
             </form>
@@ -111,6 +129,12 @@
                 </div>
 
                 <div>{{ review.content|safe }}</div>
+
+                {% if review.photo %}
+                <div class="mt-3">
+                    <img src="{{ review.photo.url }}" alt="{% trans 'Atsiliepimo nuotrauka' %}" class="img-fluid rounded shadow-sm">
+                </div>
+                {% endif %}
 
                 {% if user.is_staff or user.is_superuser %}
                 <div class="mt-3 d-flex gap-2">
