@@ -1578,6 +1578,20 @@ body.theme-night.site-shell {
     cursor: pointer;
 }
 
+#id_is_paid.form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-width: 1px;
+    cursor: pointer;
+    flex: 0 0 auto;
+}
+
+#id_is_paid.form-check-input:checked {
+    background-color: #16a34a !important;
+    border-color: #16a34a !important;
+    background-image: var(--bs-form-check-bg-image) !important;
+}
+
 .home-hero-card {
     background: rgba(255, 255, 255, 0.02) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;

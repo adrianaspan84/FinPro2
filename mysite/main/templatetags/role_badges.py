@@ -12,14 +12,10 @@ def get_or_create_profile(user):
     if not user or not getattr(user, 'is_authenticated', False):
         return None
     profile, _ = Profile.objects.get_or_create(user=user)
-    # Superuser → admin, staff (non-superuser) → staff, others keep their role.
+    # Superuser must always retain admin role; other users keep their explicit profile role.
     if user.is_superuser:
         if profile.role != 'admin':
             profile.role = 'admin'
-            profile.save(update_fields=['role'])
-    elif user.is_staff:
-        if profile.role != 'staff':
-            profile.role = 'staff'
             profile.save(update_fields=['role'])
     return profile
 

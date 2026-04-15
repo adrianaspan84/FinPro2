@@ -105,6 +105,7 @@
                                 <th>{% trans "Vardas" %}</th>
                                 <th>{% trans "Pavardė" %}</th>
                                 <th>{% trans "Vadybininkas" %}</th>
+                                <th>{% trans "Apmokėjimas" %}</th>
                                 <th class="num-col">{% trans "Suma" %}</th>
                                 <th>{% trans "Data" %}</th>
                                 <th>{% trans "Planuojama pabaiga" %}</th>
@@ -120,6 +121,13 @@
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
                                 <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
+                                <td>
+                                    {% if order.is_paid %}
+                                        <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                                    {% endif %}
+                                </td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deadline|date:"Y-m-d"|default:"-" }}</td>
@@ -162,6 +170,7 @@
                                 <th>{% trans "Vardas" %}</th>
                                 <th>{% trans "Pavardė" %}</th>
                                 <th>{% trans "Vadybininkas" %}</th>
+                                <th>{% trans "Apmokėjimas" %}</th>
                                 <th class="num-col">{% trans "Suma" %}</th>
                                 <th>{% trans "Sukūrimo data" %}</th>
                                 <th>{% trans "Planuojama pabaiga" %}</th>
@@ -177,6 +186,13 @@
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
                                 <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
+                                <td>
+                                    {% if order.is_paid %}
+                                        <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                                    {% endif %}
+                                </td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deadline|date:"Y-m-d"|default:"-" }}</td>
@@ -219,6 +235,7 @@
                                 <th>{% trans "Vardas" %}</th>
                                 <th>{% trans "Pavardė" %}</th>
                                 <th>{% trans "Vadybininkas" %}</th>
+                                <th>{% trans "Apmokėjimas" %}</th>
                                 <th class="num-col">{% trans "Suma" %}</th>
                                 <th>{% trans "Terminas" %}</th>
                                 <th>{% trans "Statusas pagal terminą" %}</th>
@@ -233,6 +250,13 @@
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
                                 <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
+                                <td>
+                                    {% if order.is_paid %}
+                                        <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                                    {% endif %}
+                                </td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td><span class="badge bg-danger">{{ order.deadline|date:"Y-m-d" }}</span></td>
                                 <td><span class="badge bg-danger">{% blocktrans with days=order.overdue_days %}Vėluoja {{ days }} d.{% endblocktrans %}</span></td>
@@ -268,6 +292,7 @@
                                 <th>{% trans "Vardas" %}</th>
                                 <th>{% trans "Pavardė" %}</th>
                                 <th>{% trans "Vadybininkas" %}</th>
+                                <th>{% trans "Apmokėjimas" %}</th>
                                 <th class="num-col">{% trans "Suma" %}</th>
                                 <th>{% trans "Sukūrimo data" %}</th>
                                 <th>{% trans "Planuojama pabaiga" %}</th>
@@ -283,6 +308,13 @@
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
                                 <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
+                                <td>
+                                    {% if order.is_paid %}
+                                        <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                                    {% endif %}
+                                </td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deadline|date:"Y-m-d"|default:"-" }}</td>
@@ -324,6 +356,7 @@
                                 <th>{% trans "Vardas" %}</th>
                                 <th>{% trans "Pavardė" %}</th>
                                 <th>{% trans "Vadybininkas" %}</th>
+                                <th>{% trans "Apmokėjimas" %}</th>
                                 <th class="num-col">{% trans "Suma" %}</th>
                                 <th>{% trans "Sukurta" %}</th>
                                 <th>{% trans "Pašalinta" %}</th>
@@ -338,6 +371,13 @@
                                 <td>{{ order.client.first_name|default:"-" }}</td>
                                 <td>{{ order.client.last_name|default:"-" }}</td>
                                 <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}{{ default_unassigned }}{% endif %}</td>
+                                <td>
+                                    {% if order.is_paid %}
+                                        <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                                    {% endif %}
+                                </td>
                                 <td class="num-col">{{ order.total_price|floatformat:2 }} €</td>
                                 <td>{{ order.created_at|date:"Y-m-d" }}</td>
                                 <td>{{ order.deleted_at|date:"Y-m-d H:i"|default:"-" }}</td>
@@ -351,7 +391,7 @@
                             </tr>
                             {% empty %}
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-3">{% trans "Pašalintų užsakymų nėra." %}</td>
+                                <td colspan="10" class="text-center text-muted py-3">{% trans "Pašalintų užsakymų nėra." %}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

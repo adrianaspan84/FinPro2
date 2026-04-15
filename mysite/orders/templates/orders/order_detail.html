@@ -63,6 +63,16 @@
                 <h6 class="fw-semibold theme-surface-heading">{% trans "Bendra kaina (su PVM)" %}</h6>
                 <p class="fw-bold theme-surface-text">{{ order.total_with_vat|floatformat:2 }} €</p>
             </div>
+            <div class="col-md-4 mb-3">
+                <h6 class="fw-semibold theme-surface-heading">{% trans "Apmokėjimo būsena" %}</h6>
+                <p class="theme-surface-text">
+                    {% if order.is_paid %}
+                        <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                    {% endif %}
+                </p>
+            </div>
         </div>
 
         <div class="mt-2 mb-3">
@@ -118,11 +128,13 @@
             {% if user.profile.role != 'client' %}
                 <a href="{% url 'edit_order' order.id %}" class="btn btn-primary px-4">{% trans "Redaguoti" %}</a>
             {% endif %}
-            <a href="{% url 'download_invoice' order.id %}" class="btn btn-outline-secondary px-4">{% trans "Atsisiųsti sąskaitą (PDF)" %}</a>
+            {% if user.profile.role != 'client' or order.status == 'done' %}
+                <a href="{% url 'download_invoice' order.id %}" class="btn btn-outline-secondary px-4">{% trans "Atsisiųsti sąskaitą (PDF)" %}</a>
+            {% endif %}
             {% if user.profile.role == 'admin' %}
                 <a href="{% url 'admin_dashboard' %}" class="btn btn-light px-4">{% trans "Grįžti į sąrašą" %}</a>
             {% elif user.profile.role == 'manager' %}
-                <a href="{% url 'manager_dashboard' %}" class="btn btn-light px-4">{% trans "Grįžti į sąrašą" %}</a>
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-light px-4">{% trans "Grįžti į sąrašą" %}</a>
             {% else %}
                 <a href="{% url 'order_list' %}" class="btn btn-light px-4">{% trans "Grįžti į sąrašą" %}</a>
             {% endif %}

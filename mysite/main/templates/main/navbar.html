@@ -68,15 +68,18 @@
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark user-dropdown shadow">
                             <li><a class="dropdown-item" href="{% url 'profile' %}">{% trans "Profilis" %}</a></li>
 
-                            {% if user.is_superuser or user.is_staff or nav_profile.role == 'admin' %}
+                            {% if nav_profile and nav_profile.role == 'admin' or nav_profile and nav_profile.role == 'manager' or nav_profile and nav_profile.role == 'staff' %}
+                                <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'service_list' %}">{% trans "Paslaugų administravimas" %}</a></li>
+                                <li><a class="dropdown-item" href="{% url 'category_list' %}">{% trans "Kategorijų administravimas" %}</a></li>
+                                {% if user.is_superuser or nav_profile.role == 'admin' %}
+                                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin Panelė" %}</a></li>
+                                {% endif %}
+                            {% elif user.is_superuser %}
                                 <li><a class="dropdown-item" href="{% url 'admin_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
                                 <li><a class="dropdown-item" href="{% url 'service_list' %}">{% trans "Paslaugų administravimas" %}</a></li>
                                 <li><a class="dropdown-item" href="{% url 'category_list' %}">{% trans "Kategorijų administravimas" %}</a></li>
                                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "Admin Panelė" %}</a></li>
-                            {% elif nav_profile and nav_profile.role == 'manager' %}
-                                <li><a class="dropdown-item" href="{% url 'manager_dashboard' %}">{% trans "Užsakymų administravimas" %}</a></li>
-                                <li><a class="dropdown-item" href="{% url 'service_list' %}">{% trans "Paslaugų administravimas" %}</a></li>
-                                <li><a class="dropdown-item" href="{% url 'category_list' %}">{% trans "Kategorijų administravimas" %}</a></li>
                             {% endif %}
 
 

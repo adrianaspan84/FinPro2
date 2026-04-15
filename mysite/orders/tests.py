@@ -193,6 +193,16 @@ class EditOrderLinesTests(TestCase):
 
         self.assertEqual(response.status_code, 403)
 
+    def test_manager_can_open_admin_dashboard_for_owned_orders(self):
+        self.client.login(username='manager1', password='pass123')
+
+        response = self.client.get(reverse('admin_dashboard'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Administravimo panelė')
+        self.assertIn(self.order, response.context['new_orders'])
+        self.assertIn(self.second_order, response.context['done_orders'])
+
     def test_admin_dashboard_search_and_status_filter(self):
         self.client.login(username='admin1', password='pass123')
 
@@ -203,6 +213,8 @@ class EditOrderLinesTests(TestCase):
         self.assertNotIn(self.second_order, response.context['done_orders'])
 
     def test_client_order_list_shows_only_view_and_invoice_actions(self):
+        self.order.status = 'done'
+        self.order.save(update_fields=['status'])
         self.client.login(username='client1', password='pass123')
 
         response = self.client.get(reverse('order_list'))
@@ -212,6 +224,32 @@ class EditOrderLinesTests(TestCase):
         self.assertContains(response, reverse('download_invoice', args=[self.order.id]))
         self.assertNotContains(response, reverse('edit_order', args=[self.order.id]))
         self.assertNotContains(response, reverse('delete_order', args=[self.order.id]))
+
+    def test_client_cannot_see_invoice_link_until_order_is_done(self):
+        self.client.login(username='client1', password='pass123')
+
+        response = self.client.get(reverse('order_list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, reverse('download_invoice', args=[self.order.id]))
+
+    def test_client_cannot_download_invoice_until_order_is_done(self):
+        self.client.login(username='client1', password='pass123')
+
+        response = self.client.get(reverse('download_invoice', args=[self.order.id]))
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_order_lists_show_payment_status(self):
+        self.second_order.is_paid = True
+        self.second_order.save(update_fields=['is_paid'])
+        self.client.login(username='manager1', password='pass123')
+
+        response = self.client.get(reverse('order_list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Apmokėtas')
+        self.assertContains(response, 'Neapmokėtas')
 
 
 class OrderListPaginationTests(TestCase):

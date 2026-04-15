@@ -13,6 +13,14 @@ class NavbarOrderLinkTests(TestCase):
 		self.admin_user.profile.role = 'admin'
 		self.admin_user.profile.save()
 
+		self.manager_staff_user = User.objects.create_user(
+			username='manager_staff_nav',
+			password='pass123',
+			is_staff=True,
+		)
+		self.manager_staff_user.profile.role = 'manager'
+		self.manager_staff_user.profile.save()
+
 	def test_client_sees_mano_uzsakymai_link(self):
 		self.client.login(username='client_nav', password='pass123')
 
@@ -28,3 +36,13 @@ class NavbarOrderLinkTests(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertNotContains(response, 'Mano užsakymai')
+
+	def test_staff_manager_sees_admin_dashboard_link(self):
+		self.client.login(username='manager_staff_nav', password='pass123')
+
+		response = self.client.get(reverse('home'))
+
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, reverse('admin_dashboard'))
+		self.manager_staff_user.profile.refresh_from_db()
+		self.assertEqual(self.manager_staff_user.profile.role, 'manager')

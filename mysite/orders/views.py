@@ -21,6 +21,15 @@ from .forms import OrderCreateForm, OrderEditForm
 from .models import Order, OrderItem
 
 
+def _can_manage_orders(user):
+    if not user.is_authenticated:
+        return False
+    if user.is_superuser:
+        return True
+    profile = getattr(user, 'profile', None)
+    return profile is not None and profile.role in ('admin', 'manager', 'staff')
+
+
 def _apply_order_filters(queryset, status=None, q=''):
     if status:
         queryset = queryset.filter(status=status)
@@ -39,7 +48,7 @@ def _apply_order_filters(queryset, status=None, q=''):
 def order_change_status(request, order_id, new_status):
     order = get_object_or_404(Order, id=order_id, is_deleted=False)
 
-    if request.user.profile.role not in ["manager", "admin"]:
+    if not _can_manage_orders(request.user):
         return HttpResponseForbidden(_("Neturi teisės keisti statuso"))
 
     order.status = new_status
@@ -79,12 +88,12 @@ def client_dashboard(request):
 
 @login_required
 def manager_dashboard(request):
-    if request.user.profile.role not in ['manager', 'admin']:
+    if request.user.profile.role not in ['manager', 'admin', 'staff']:
         raise PermissionDenied(_("Neturite teisės pasiekti šio puslapio."))
 
     user = request.user
 
-    if user.profile.role == 'admin':
+    if user.profile.role in ('admin', 'staff'):
         active_orders = Order.objects.filter(status='in_progress', is_deleted=False)
         new_orders = Order.objects.filter(status='new', is_deleted=False)
         done_orders = Order.objects.filter(status='done', is_deleted=False)
@@ -113,28 +122,30 @@ def manager_dashboard(request):
 
 @login_required
 def admin_dashboard(request):
-    if request.user.profile.role != 'admin':
+    if not _can_manage_orders(request.user):
         raise PermissionDenied(_("Neturite teisės pasiekti šio puslapio."))
 
+    is_admin = request.user.profile.role == 'admin' or request.user.is_superuser
     include_deleted = request.GET.get('include_deleted') == '1'
     status = request.GET.get('status')
     q = (request.GET.get('q') or '').strip()
     deleted_only = status == '__deleted_only__'
 
-    if deleted_only:
+    if deleted_only and is_admin:
         include_deleted = True
 
-    all_orders = _apply_order_filters(Order.objects.filter(is_deleted=False), status=status, q=q)
+    visible_orders = Order.objects.filter(is_deleted=False)
+
+    all_orders = _apply_order_filters(visible_orders, status=status, q=q)
     active_orders = all_orders.filter(status='in_progress')
     new_orders = all_orders.filter(status='new')
     done_orders = all_orders.filter(status='done')
     overdue_orders = [o for o in active_orders if o.is_overdue]
-    deleted_orders = (
-        _apply_order_filters(Order.objects.filter(is_deleted=True), status=status, q=q)
-        if include_deleted else Order.objects.none()
-    )
+    deleted_orders = Order.objects.none()
+    if include_deleted and is_admin:
+        deleted_orders = _apply_order_filters(Order.objects.filter(is_deleted=True), status=status, q=q)
 
-    if deleted_only:
+    if deleted_only and is_admin:
         all_orders = Order.objects.none()
         active_orders = Order.objects.none()
         new_orders = Order.objects.none()
@@ -149,17 +160,18 @@ def admin_dashboard(request):
         'done_orders': done_orders,
         'overdue_orders': overdue_orders,
         'deleted_orders': deleted_orders,
-        'include_deleted': include_deleted,
-        'deleted_only': deleted_only,
+        'include_deleted': include_deleted and is_admin,
+        'deleted_only': deleted_only and is_admin,
         'selected_status': status,
         'search_query': q,
+        'can_restore_deleted': is_admin,
         'stats': {
             'total': all_orders.count(),
             'active': active_orders.count(),
             'new': new_orders.count(),
             'done': done_orders.count(),
             'overdue': len(overdue_orders),
-            'deleted': deleted_orders.count() if include_deleted else 0,
+            'deleted': deleted_orders.count() if include_deleted and is_admin else 0,
         }
     }
 
@@ -170,7 +182,7 @@ def admin_dashboard(request):
 def edit_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, is_deleted=False)
 
-    if request.user.profile.role == 'client':
+    if not _can_manage_orders(request.user):
         raise PermissionDenied(_("Klientai negali redaguoti užsakymų."))
 
     if request.user.profile.role == 'manager' and order.manager != request.user:
@@ -270,10 +282,8 @@ def edit_order(request, order_id):
 def order_list(request):
     user = request.user
 
-    if user.is_superuser or user.profile.role == 'admin':
+    if _can_manage_orders(user):
         orders = Order.objects.filter(is_deleted=False)
-    elif user.profile.role == 'manager':
-        orders = Order.objects.filter(manager=user, is_deleted=False)
     else:
         orders = Order.objects.filter(client=user, is_deleted=False)
 
@@ -306,7 +316,7 @@ def order_list(request):
 def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, is_deleted=False)
 
-    if request.user.profile.role == 'client':
+    if not _can_manage_orders(request.user):
         raise PermissionDenied(_("Klientai negali trinti užsakymų."))
 
     if request.user.profile.role == 'manager' and order.manager != request.user:
@@ -322,7 +332,7 @@ def delete_order(request, order_id):
 @login_required
 @require_POST
 def restore_order(request, order_id):
-    if request.user.profile.role != 'admin':
+    if request.user.profile.role != 'admin' and not request.user.is_superuser:
         raise PermissionDenied(_("Tik administratorius gali atkurti užsakymus."))
 
     order = get_object_or_404(Order, id=order_id, is_deleted=True)
@@ -406,6 +416,9 @@ def download_invoice(request, order_id):
 
     if request.user.profile.role == 'client' and order.client != request.user:
         raise PermissionDenied(_("Negalite atsisiųsti šios sąskaitos."))
+
+    if request.user.profile.role == 'client' and order.status != 'done':
+        raise PermissionDenied(_("Sąskaita bus prieinama tik įvykdžius užsakymą."))
 
     if request.user.profile.role == 'manager' and order.manager != request.user:
         raise PermissionDenied(_("Negalite atsisiųsti šios sąskaitos."))

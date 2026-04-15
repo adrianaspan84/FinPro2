@@ -8,6 +8,7 @@
             <th>{% trans "Klientas" %}</th>
             <th>{% trans "Vadybininkas" %}</th>
             <th>{% trans "Statusas" %}</th>
+            <th>{% trans "Apmokėjimas" %}</th>
             <th>{% trans "Terminas" %}</th>
             <th>{% trans "Termino būsena" %}</th>
             <th>{% trans "Kaina" %}</th>
@@ -24,6 +25,13 @@
             </td>
             <td>{% if order.manager %}{{ order.manager.get_full_name|default:order.manager.username }}{% else %}-{% endif %}</td>
             <td>{% status_badge order.status %}</td>
+            <td>
+                {% if order.is_paid %}
+                    <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                {% else %}
+                    <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                {% endif %}
+            </td>
             <td>{{ order.deadline|default:"-" }}</td>
             <td>
                 {% if order.deadline %}
@@ -43,7 +51,7 @@
         </tr>
         {% empty %}
         <tr>
-            <td colspan="8" class="text-center">{% trans "Nėra duomenų." %}</td>
+            <td colspan="9" class="text-center">{% trans "Nėra duomenų." %}</td>
         </tr>
         {% endfor %}
     </tbody>

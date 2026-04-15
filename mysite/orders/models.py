@@ -19,6 +19,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     deadline = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new')
+    is_paid = models.BooleanField(default=False, verbose_name=_("Apmokėtas"))
     manager_comment = models.TextField(blank=True)
     pdf_file = models.FileField(upload_to='invoices/', null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
@@ -68,7 +69,7 @@ class Order(models.Model):
 
     def assign_manager(self):
         """Automatinis vadybininko priskyrimas pagal mažiausią aktyvių užsakymų skaičių."""
-        managers = User.objects.filter(profile__role='manager')
+        managers = User.objects.filter(profile__role__in=['manager', 'staff'], is_superuser=False)
         if managers.exists():
             manager = sorted(
                 managers,

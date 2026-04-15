@@ -11,10 +11,11 @@ from .models import Order
 class OrderEditForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['deadline', 'status', 'manager', 'manager_comment']
+        fields = ['deadline', 'status', 'is_paid', 'manager', 'manager_comment']
         widgets = {
             'deadline': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-select'}),
+            'is_paid': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'manager': forms.Select(attrs={'class': 'form-select'}),
             'manager_comment': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }

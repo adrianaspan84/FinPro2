@@ -57,6 +57,7 @@
                         <th>{% trans "Klientas" %}</th>
                         <th>{% trans "Vadybininkas" %}</th>
                         <th>{% trans "Statusas" %}</th>
+                        <th>{% trans "Apmokėjimas" %}</th>
                         <th class="num-col">{% trans "Terminas" %}</th>
                         <th>{% trans "Termino būsena" %}</th>
                         <th class="num-col">{% trans "Kaina" %}</th>
@@ -87,6 +88,14 @@
                             {% status_badge order.status %}
                         </td>
 
+                        <td>
+                            {% if order.is_paid %}
+                                <span class="badge bg-success">{% trans "Apmokėtas" %}</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{% trans "Neapmokėtas" %}</span>
+                            {% endif %}
+                        </td>
+
                         <td class="num-col">
                             {{ order.deadline|default:"-" }}
                         </td>
@@ -113,9 +122,11 @@
                             </a>
 
                             {% if user.profile.role == 'client' %}
-                                <a href="{% url 'download_invoice' order.id %}" class="btn btn-sm btn-outline-secondary">
-                                    {% trans "Atsisiųsti sąskaitą (PDF)" %}
-                                </a>
+                                {% if order.status == 'done' %}
+                                    <a href="{% url 'download_invoice' order.id %}" class="btn btn-sm btn-outline-secondary">
+                                        {% trans "Atsisiųsti sąskaitą (PDF)" %}
+                                    </a>
+                                {% endif %}
                             {% else %}
                                 <a href="{% url 'edit_order' order.id %}" class="btn btn-sm btn-warning">
                                     {% trans "Redaguoti" %}
@@ -138,7 +149,7 @@
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
+                        <td colspan="9" class="text-center text-muted py-4">
                             {% trans "Nėra duomenų." %}
                         </td>
                     </tr>
