@@ -261,6 +261,12 @@ msgstr "Account"
 msgid "Visos teisės saugomos"
 msgstr "All rights reserved"
 
+msgid "Apsilankymų skaičius:"
+msgstr "Visit count:"
+
+msgid "Vieta žemėlapyje"
+msgstr "Location on the map"
+
 #: .\main\templates\main\index.html:13
 msgid "„H-Pro“ – paverskite savo svajonių namų viziją realybe"
 msgstr "\"H-Pro\" – turn your dream home vision into reality"

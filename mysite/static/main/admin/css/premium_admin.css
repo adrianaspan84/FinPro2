@@ -1,87 +1,475 @@
 /* ===========================
-   PREMIUM DJANGO ADMIN UI
-   Glass, modern colors, spacing
+   FINPRO ADMIN THEME
 =========================== */
 
-/* Background */
+:root,
+html[data-theme="light"] {
+    --admin-bg: #dfeeff;
+    --admin-bg-secondary: #edf5ff;
+    --admin-bg-soft: rgba(226, 232, 240, 0.72);
+    --admin-bg-strong: rgba(226, 232, 240, 0.86);
+    --admin-surface: rgba(255, 255, 255, 0.54);
+    --admin-surface-strong: rgba(241, 245, 249, 0.84);
+    --admin-border: rgba(148, 163, 184, 0.28);
+    --admin-text: #111827;
+    --admin-muted: rgba(15, 23, 42, 0.7);
+    --admin-accent: #0f4c81;
+    --admin-accent-2: #0ea5e9;
+    --admin-danger: #c62828;
+    --admin-shadow: 0 16px 40px rgba(100, 116, 139, 0.16);
+    --admin-blur: blur(16px);
+    --admin-radius: 16px;
+    --admin-hover: rgba(255, 255, 255, 0.2);
+    --admin-input-bg: rgba(255, 255, 255, 0.52);
+    --admin-table-head: rgba(226, 232, 240, 0.86);
+}
+
+html[data-theme="dark"] {
+    --admin-bg: #070b14;
+    --admin-bg-secondary: #03060d;
+    --admin-bg-soft: rgba(0, 0, 0, 0.58);
+    --admin-bg-strong: rgba(0, 0, 0, 0.74);
+    --admin-surface: rgba(15, 23, 42, 0.48);
+    --admin-surface-strong: rgba(0, 0, 0, 0.66);
+    --admin-border: rgba(255, 255, 255, 0.14);
+    --admin-text: #ffffff;
+    --admin-muted: rgba(255, 255, 255, 0.74);
+    --admin-accent: #7ef9ff;
+    --admin-accent-2: #ff5cff;
+    --admin-danger: #ff6b6b;
+    --admin-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
+    --admin-blur: blur(16px);
+    --admin-radius: 16px;
+    --admin-hover: rgba(255, 255, 255, 0.06);
+    --admin-input-bg: rgba(0, 0, 0, 0.46);
+    --admin-table-head: rgba(0, 0, 0, 0.7);
+}
+
+html,
 body {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    background-attachment: fixed;
-    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, var(--admin-bg) 0%, var(--admin-bg-secondary) 100%) !important;
+    background-attachment: fixed !important;
+    color: var(--admin-text) !important;
 }
 
-/* Header */
-#header {
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+body,
+body.login {
+    font-family: Georgia, "Times New Roman", serif;
+    position: relative;
 }
 
-#header a:link, #header a:visited {
-    color: #fff !important;
-    font-weight: 600;
+.admin-aurora {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    --aurora-shift-x: 0px;
+    --aurora-shift-y: 0px;
+    --aurora-rotate: 0deg;
+    transition: opacity 0.3s ease;
 }
 
-/* Sidebar */
-#content-related {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    padding: 15px;
+.admin-aurora.is-light {
+    opacity: 0.2;
 }
 
-/* Main content card */
+.admin-aurora.is-dark {
+    opacity: 1;
+}
+
+.admin-aurora__layer {
+    position: absolute;
+    inset: auto;
+    display: block;
+    border-radius: 50%;
+    filter: blur(80px);
+    transform: translate3d(var(--aurora-shift-x), var(--aurora-shift-y), 0) rotate(var(--aurora-rotate));
+    will-change: transform;
+}
+
+.admin-aurora__layer--one {
+    width: 42vw;
+    height: 42vw;
+    left: -8vw;
+    top: -10vw;
+    background: radial-gradient(circle, rgba(88, 255, 188, 0.42) 0%, rgba(76, 255, 214, 0.22) 34%, rgba(76, 255, 214, 0) 72%);
+    animation: adminAuroraFloatOne 16s ease-in-out infinite alternate;
+}
+
+.admin-aurora__layer--two {
+    width: 36vw;
+    height: 36vw;
+    right: -10vw;
+    top: 10vh;
+    background: radial-gradient(circle, rgba(132, 255, 120, 0.28) 0%, rgba(77, 214, 255, 0.2) 38%, rgba(77, 214, 255, 0) 72%);
+    animation: adminAuroraFloatTwo 18s ease-in-out infinite alternate;
+}
+
+.admin-aurora__layer--three {
+    width: 44vw;
+    height: 44vw;
+    left: 25vw;
+    bottom: -18vw;
+    background: radial-gradient(circle, rgba(88, 255, 160, 0.24) 0%, rgba(170, 106, 255, 0.18) 36%, rgba(170, 106, 255, 0) 74%);
+    animation: adminAuroraFloatThree 20s ease-in-out infinite alternate;
+}
+
+html[data-theme="dark"] .admin-aurora__layer--one {
+    background: radial-gradient(circle, rgba(92, 255, 166, 0.58) 0%, rgba(76, 255, 214, 0.34) 28%, rgba(76, 255, 214, 0.06) 56%, rgba(76, 255, 214, 0) 76%);
+}
+
+html[data-theme="dark"] .admin-aurora__layer--two {
+    background: radial-gradient(circle, rgba(170, 255, 92, 0.4) 0%, rgba(71, 211, 255, 0.28) 32%, rgba(71, 211, 255, 0.05) 58%, rgba(71, 211, 255, 0) 78%);
+}
+
+html[data-theme="dark"] .admin-aurora__layer--three {
+    background: radial-gradient(circle, rgba(78, 255, 127, 0.34) 0%, rgba(129, 140, 248, 0.22) 34%, rgba(217, 70, 239, 0.16) 52%, rgba(217, 70, 239, 0) 78%);
+}
+
+@keyframes adminAuroraFloatOne {
+    from { transform: translate3d(-1.5vw, 0, 0) scale(1); }
+    to { transform: translate3d(2vw, 2vh, 0) scale(1.08); }
+}
+
+@keyframes adminAuroraFloatTwo {
+    from { transform: translate3d(0, -1vh, 0) scale(1); }
+    to { transform: translate3d(-2vw, 2vh, 0) scale(1.1); }
+}
+
+@keyframes adminAuroraFloatThree {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to { transform: translate3d(1vw, -2vh, 0) scale(1.06); }
+}
+
+#container,
+#header,
+#content,
+#content-main,
+#content-related,
+#nav-sidebar,
+#changelist-filter,
+.module,
+.inline-group,
+.selector,
+.messagelist,
+div.breadcrumbs,
+.submit-row,
+.results,
+.login #container {
+    position: relative;
+    z-index: 1;
+}
+
+a:link,
+a:visited {
+    color: var(--admin-accent);
+}
+
+a:hover,
+a:focus {
+    color: var(--admin-accent-2);
+}
+
+#container {
+    background: transparent !important;
+}
+
+#header,
+.module h2,
+.module caption,
+.inline-group h2,
+div.breadcrumbs,
+.submit-row,
+#nav-sidebar,
+#content-related,
+.selector,
+.calendarbox,
+.clockbox,
+.messagelist li,
+.paginator,
+.object-tools a,
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+button,
+.results,
+.form-row,
+.aligned .form-row,
+.login #container,
+.dashboard .module,
+#changelist-filter,
+#changelist .actions,
+#toolbar,
+#content-main,
 #content {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(12px);
-    padding: 25px;
+    backdrop-filter: var(--admin-blur);
+    -webkit-backdrop-filter: var(--admin-blur);
+}
+
+#header {
+    background: var(--admin-bg-strong) !important;
+    border-bottom: 1px solid var(--admin-border) !important;
+    box-shadow: var(--admin-shadow);
+}
+
+#site-name,
+#site-name a,
+#header a:link,
+#header a:visited,
+#user-tools,
+#user-tools a {
+    color: var(--admin-text) !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.18), 0 0 14px rgba(126, 249, 255, 0.2);
+}
+
+html[data-theme="dark"] #site-name,
+html[data-theme="dark"] #site-name a,
+html[data-theme="dark"] #header a:link,
+html[data-theme="dark"] #header a:visited,
+html[data-theme="dark"] #user-tools,
+html[data-theme="dark"] #user-tools a {
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.55), 0 0 14px rgba(126, 249, 255, 0.35);
+}
+
+div.breadcrumbs {
+    margin: 18px 18px 0;
+    border: 1px solid var(--admin-border);
     border-radius: 14px;
+    background: var(--admin-bg-soft) !important;
+    color: var(--admin-muted) !important;
+    box-shadow: var(--admin-shadow);
+}
+
+div.breadcrumbs a {
+    color: var(--admin-accent) !important;
+}
+
+#content {
+    background: var(--admin-bg-soft) !important;
+    border: 1px solid var(--admin-border);
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow);
+    margin: 20px 18px 24px;
+    padding: 22px !important;
+}
+
+#content-main,
+#content-related,
+#changelist-filter,
+#nav-sidebar,
+.dashboard .module,
+.module,
+.inline-group,
+.selector {
+    background: var(--admin-surface) !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: 14px;
+    box-shadow: var(--admin-shadow);
+}
+
+#nav-sidebar {
     margin-top: 20px;
 }
 
-/* Tables */
-table {
-    background: rgba(255, 255, 255, 0.35) !important;
-    backdrop-filter: blur(8px);
-    border-radius: 10px;
+#nav-sidebar .current-model,
+#nav-sidebar a.current-model {
+    background: color-mix(in srgb, var(--admin-accent) 18%, transparent) !important;
+    color: var(--admin-text) !important;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: var(--admin-surface-strong) !important;
+    color: var(--admin-text) !important;
+    border-bottom: 1px solid var(--admin-border) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+caption,
+th,
+label,
+.help,
+p,
+li,
+dt,
+dd,
+.quiet,
+.paginator,
+.selector-chosen h2,
+.selector-available h2,
+.form-row p,
+.readonly,
+.file-upload,
+.results th,
+.results td,
+#content-related .module h2,
+#content-related .module h3 {
+    color: var(--admin-text) !important;
+}
+
+.help,
+.quiet,
+.form-row .help,
+.inline-related .help,
+.selector .help {
+    color: var(--admin-muted) !important;
+}
+
+table,
+#changelist table,
+.results table {
+    width: 100%;
+    background: var(--admin-surface) !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: 14px;
     overflow: hidden;
+    box-shadow: var(--admin-shadow);
 }
 
-table thead th {
-    background: rgba(255, 255, 255, 0.45) !important;
-    font-weight: 600;
+thead th,
+thead th a,
+tfoot td,
+.results thead th,
+.results thead th a {
+    background: var(--admin-table-head) !important;
+    color: var(--admin-text) !important;
+    border-bottom: 1px solid var(--admin-border) !important;
 }
 
-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.25) !important;
+tbody tr,
+.row1,
+.row2 {
+    background: transparent !important;
 }
 
-/* Buttons */
-.button, input[type=submit], .submit-row input {
-    background: #1e3c72 !important;
-    border: none !important;
-    color: white !important;
-    padding: 8px 16px !important;
-    border-radius: 8px !important;
-    font-weight: 600;
-    transition: 0.2s ease;
+tbody tr:hover,
+#changelist tbody tr:hover {
+    background: var(--admin-hover) !important;
 }
 
-.button:hover, input[type=submit]:hover {
-    background: #2a5298 !important;
+td,
+th {
+    border-color: color-mix(in srgb, var(--admin-border) 70%, transparent) !important;
 }
 
-/* Forms */
-input, select, textarea {
-    border-radius: 8px !important;
-    border: 1px solid rgba(0,0,0,0.2) !important;
-    padding: 8px !important;
+input,
+select,
+textarea {
+    background: var(--admin-input-bg) !important;
+    color: var(--admin-text) !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: 10px !important;
+    padding: 10px 12px !important;
+    box-shadow: none !important;
 }
 
-/* Footer */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: color-mix(in srgb, var(--admin-accent) 42%, white) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--admin-accent) 18%, transparent) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: color-mix(in srgb, var(--admin-text) 42%, transparent);
+}
+
+select option {
+    background: var(--admin-bg-secondary);
+    color: var(--admin-text);
+}
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+button,
+.object-tools a,
+a.button {
+    background: var(--admin-bg-strong) !important;
+    color: var(--admin-text) !important;
+    border: 1px solid color-mix(in srgb, var(--admin-accent) 22%, var(--admin-border)) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.submit-row input:hover,
+button:hover,
+.object-tools a:hover,
+a.button:hover {
+    background: color-mix(in srgb, var(--admin-bg-strong) 82%, var(--admin-accent) 18%) !important;
+    border-color: color-mix(in srgb, var(--admin-accent) 38%, var(--admin-border)) !important;
+    color: var(--admin-text) !important;
+}
+
+.deletelink,
+.deletelink:link,
+.deletelink:visited {
+    background: color-mix(in srgb, var(--admin-danger) 26%, var(--admin-bg-strong)) !important;
+    border-color: color-mix(in srgb, var(--admin-danger) 34%, var(--admin-border)) !important;
+    color: var(--admin-danger) !important;
+}
+
+.deletelink:hover {
+    background: color-mix(in srgb, var(--admin-danger) 34%, var(--admin-bg-strong)) !important;
+}
+
+.messagelist li {
+    background: var(--admin-bg-soft) !important;
+    border: 1px solid var(--admin-border) !important;
+    color: var(--admin-text) !important;
+    border-radius: 12px;
+    box-shadow: var(--admin-shadow);
+}
+
+.messagelist .success {
+    border-left: 4px solid #4ade80 !important;
+}
+
+.messagelist .warning {
+    border-left: 4px solid #fbbf24 !important;
+}
+
+.messagelist .error {
+    border-left: 4px solid var(--admin-danger) !important;
+}
+
+.selector select,
+.selector filter {
+    min-height: 240px;
+}
+
+.login #container {
+    background: var(--admin-bg-soft) !important;
+    border: 1px solid var(--admin-border) !important;
+    border-radius: 18px !important;
+    box-shadow: var(--admin-shadow) !important;
+}
+
+.login #header {
+    border-radius: 18px 18px 0 0;
+}
+
 #footer {
-    background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
-    color: white !important;
+    background: transparent !important;
+    color: var(--admin-muted) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-aurora__layer {
+        animation: none !important;
+    }
 }

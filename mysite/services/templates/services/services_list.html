@@ -10,7 +10,12 @@
         <div class="accordion-item mb-2 border-0 shadow-sm rounded-3 overflow-hidden">
             <h2 class="accordion-header" id="heading{{ category.id }}">
                 <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#categoryCollapse{{ category.id }}" aria-expanded="false" aria-controls="categoryCollapse{{ category.id }}">
-                    {{ category.name }}
+                    <span>
+                        <span class="d-block">{{ category.name }}</span>
+                        {% if category.description %}
+                        <span class="d-block fw-normal">{{ category.description }}</span>
+                        {% endif %}
+                    </span>
                 </button>
             </h2>
             <div id="categoryCollapse{{ category.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ category.id }}" data-bs-parent="#servicesAccordion">

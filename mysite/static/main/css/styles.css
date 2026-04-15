@@ -80,11 +80,31 @@ body {
     text-shadow: 0 0 6px rgba(255, 255, 255, 0.55), 0 0 14px rgba(126, 249, 255, 0.35);
 }
 
+.navbar .dropdown-menu .dropdown-item,
+.navbar .dropdown-menu .dropdown-item-text,
+.navbar .dropdown-menu .dropdown-header {
+    color: #fff !important;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.55), 0 0 14px rgba(126, 249, 255, 0.35);
+}
+
 .navbar .nav-link:hover,
 .navbar .btn:hover,
 .navbar .dropdown-toggle:hover {
     color: #fff !important;
     text-shadow: 0 0 9px rgba(255, 255, 255, 0.8), 0 0 20px rgba(126, 249, 255, 0.55);
+}
+
+.navbar .dropdown-menu .dropdown-item:hover,
+.navbar .dropdown-menu .dropdown-item:focus {
+    color: #fff !important;
+    text-shadow: 0 0 9px rgba(255, 255, 255, 0.8), 0 0 20px rgba(126, 249, 255, 0.55);
+}
+
+.navbar .dropdown-menu .dropdown-item.text-danger,
+.navbar .dropdown-menu .dropdown-item.text-danger:hover,
+.navbar .dropdown-menu .dropdown-item.text-danger:focus {
+    color: #ff5f5f !important;
+    text-shadow: 0 0 6px rgba(255, 95, 95, 0.55), 0 0 14px rgba(255, 59, 59, 0.32);
 }
 
 /* ===========================
@@ -1373,5 +1393,413 @@ body.theme-night .gallery-card .card-title,
 body.theme-night .gallery-card .card-text,
 body.theme-night .gallery-card .card-text * {
     color: #111827 !important;
+}
+
+/* ===========================
+   FINAL UNIFIED SURFACE THEME
+=========================== */
+
+:root {
+    --page-bg-day: #dfeeff;
+    --page-bg-night-solid: #080808;
+    --surface-bg-day: rgba(226, 232, 240, 0.52);
+    --surface-bg-day-strong: rgba(226, 232, 240, 0.68);
+    --surface-border-day: rgba(148, 163, 184, 0.34);
+    --surface-text-day: #0f172a;
+    --surface-muted-day: rgba(15, 23, 42, 0.72);
+    --surface-bg-night: rgba(0, 0, 0, 0.52);
+    --surface-bg-night-strong: rgba(0, 0, 0, 0.68);
+    --surface-border-night: rgba(255, 255, 255, 0.16);
+    --surface-text-night: #ffffff;
+    --surface-muted-night: rgba(255, 255, 255, 0.74);
+    --surface-blur-strong: blur(18px);
+    --surface-shadow-day: 0 12px 32px rgba(100, 116, 139, 0.16);
+    --surface-shadow-night: 0 14px 36px rgba(0, 0, 0, 0.42);
+}
+
+body,
+body.site-shell {
+    background: var(--page-bg-day);
+    color: var(--surface-text-day);
+}
+
+body.theme-night,
+body.theme-night.site-shell {
+    background: var(--page-bg-night-solid);
+    color: var(--surface-text-night);
+}
+
+.auth-bg {
+    background: transparent;
+}
+
+.site-main {
+    color: inherit;
+}
+
+.site-main .glass-card,
+.site-main .table-glass-card,
+.site-main .card,
+.site-main .accordion-item,
+.site-main .contact-table,
+.site-main .contact-map,
+.site-main .gallery-overlay-card,
+.site-main .modal-content,
+.site-main .list-group,
+.site-main .ratio,
+.site-main .image-container,
+.site-main .img-container {
+    background: var(--surface-bg-day) !important;
+    color: var(--surface-text-day) !important;
+    border: 1px solid var(--surface-border-day) !important;
+    backdrop-filter: var(--surface-blur-strong);
+    -webkit-backdrop-filter: var(--surface-blur-strong);
+    box-shadow: var(--surface-shadow-day);
+}
+
+.site-main .card-body,
+.site-main .card-header,
+.site-main .card-footer,
+.site-main .accordion-body,
+.site-main .list-group-item {
+    background: transparent !important;
+    color: inherit !important;
+    border-color: var(--surface-border-day) !important;
+}
+
+.site-main .table,
+.site-main table {
+    background: var(--surface-bg-day) !important;
+    color: var(--surface-text-day) !important;
+    border-color: var(--surface-border-day) !important;
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--surface-text-day);
+    --bs-table-border-color: var(--surface-border-day);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.16);
+    --bs-table-striped-color: var(--surface-text-day);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.24);
+    --bs-table-hover-color: var(--surface-text-day);
+    --bs-table-active-bg: rgba(255, 255, 255, 0.28);
+    --bs-table-active-color: var(--surface-text-day);
+    backdrop-filter: var(--surface-blur-strong);
+    -webkit-backdrop-filter: var(--surface-blur-strong);
+    font-family: "Times New Roman", Times, serif !important;
+    font-size: 12pt !important;
+    line-height: 1.35;
+}
+
+.site-main .table thead,
+.site-main table thead,
+.site-main .accordion-button {
+    background: var(--surface-bg-day-strong) !important;
+    color: var(--surface-text-day) !important;
+}
+
+.site-main .table th,
+.site-main .table td,
+.site-main table th,
+.site-main table td,
+.site-main .accordion-button,
+.site-main .accordion-body,
+.site-main .service-description,
+.site-main .card-title,
+.site-main .card-text,
+.site-main .card-text *,
+.site-main .gallery-card .card-title,
+.site-main .gallery-card .card-text,
+.site-main .gallery-card .card-text * {
+    color: var(--surface-text-day) !important;
+    border-color: var(--surface-border-day) !important;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt !important;
+}
+
+.site-main .text-muted,
+.site-main .form-text,
+.site-main small.text-muted {
+    color: var(--surface-muted-day) !important;
+}
+
+.site-main .form-control,
+.site-main .form-select,
+.site-main textarea,
+.site-main input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+.site-main .form-check-input {
+    background: var(--surface-bg-day) !important;
+    color: var(--surface-text-day) !important;
+    border: 1px solid var(--surface-border-day) !important;
+    backdrop-filter: var(--surface-blur-strong);
+    -webkit-backdrop-filter: var(--surface-blur-strong);
+}
+
+.site-main .form-control::placeholder,
+.site-main textarea::placeholder {
+    color: rgba(15, 23, 42, 0.5) !important;
+}
+
+.site-main .form-control:focus,
+.site-main .form-select:focus,
+.site-main textarea:focus,
+.site-main .form-check-input:focus {
+    background: var(--surface-bg-day-strong) !important;
+    color: var(--surface-text-day) !important;
+    border-color: rgba(59, 130, 246, 0.42) !important;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.16) !important;
+}
+
+.site-main .accordion-button::after,
+.site-main .service-category-toggle::after {
+    color: var(--surface-text-day) !important;
+}
+
+.site-main .gallery-overlay-image,
+.site-main .gallery-img,
+.site-main .gallery-content img,
+.site-main img.rounded-circle,
+.site-main .contact-logo {
+    border: 1px solid var(--surface-border-day);
+}
+
+.home-hero-card {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+}
+
+.site-main .table td.fw-semibold,
+.site-main table td.fw-semibold,
+.site-main .table .service-name,
+.site-main table .service-name {
+    font-size: 1.2em !important;
+}
+
+body.theme-night .site-main .glass-card,
+body.theme-night .site-main .table-glass-card,
+body.theme-night .site-main .card,
+body.theme-night .site-main .accordion-item,
+body.theme-night .site-main .contact-table,
+body.theme-night .site-main .contact-map,
+body.theme-night .site-main .gallery-overlay-card,
+body.theme-night .site-main .modal-content,
+body.theme-night .site-main .list-group,
+body.theme-night .site-main .ratio,
+body.theme-night .site-main .image-container,
+body.theme-night .site-main .img-container {
+    background: var(--surface-bg-night) !important;
+    color: var(--surface-text-night) !important;
+    border: 1px solid var(--surface-border-night) !important;
+    box-shadow: var(--surface-shadow-night);
+}
+
+body.theme-night .site-main .card-body,
+body.theme-night .site-main .card-header,
+body.theme-night .site-main .card-footer,
+body.theme-night .site-main .accordion-body,
+body.theme-night .site-main .list-group-item {
+    background: transparent !important;
+    color: inherit !important;
+    border-color: var(--surface-border-night) !important;
+}
+
+body.theme-night .site-main .table,
+body.theme-night .site-main table {
+    background: var(--surface-bg-night) !important;
+    color: var(--surface-text-night) !important;
+    border-color: var(--surface-border-night) !important;
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--surface-text-night);
+    --bs-table-border-color: var(--surface-border-night);
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.06);
+    --bs-table-striped-color: var(--surface-text-night);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.1);
+    --bs-table-hover-color: var(--surface-text-night);
+    --bs-table-active-bg: rgba(255, 255, 255, 0.14);
+    --bs-table-active-color: var(--surface-text-night);
+    font-family: "Times New Roman", Times, serif !important;
+    font-size: 12pt !important;
+    line-height: 1.35;
+}
+
+body.theme-night .site-main .table thead,
+body.theme-night .site-main table thead,
+body.theme-night .site-main .accordion-button {
+    background: var(--surface-bg-night-strong) !important;
+    color: var(--surface-text-night) !important;
+}
+
+body.theme-night .site-main .table th,
+body.theme-night .site-main .table td,
+body.theme-night .site-main table th,
+body.theme-night .site-main table td,
+body.theme-night .site-main .accordion-button,
+body.theme-night .site-main .accordion-body,
+body.theme-night .site-main .service-description,
+body.theme-night .site-main .service-category-toggle,
+body.theme-night .site-main .card-title,
+body.theme-night .site-main .card-text,
+body.theme-night .site-main .card-text *,
+body.theme-night .site-main .gallery-card .card-title,
+body.theme-night .site-main .gallery-card .card-text,
+body.theme-night .site-main .gallery-card .card-text *,
+body.theme-night .site-main .table .text-muted {
+    color: var(--surface-text-night) !important;
+    border-color: var(--surface-border-night) !important;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt !important;
+}
+
+body.theme-night .site-main .text-muted,
+body.theme-night .site-main .form-text,
+body.theme-night .site-main small.text-muted {
+    color: var(--surface-muted-night) !important;
+}
+
+body.theme-night .site-main .form-control,
+body.theme-night .site-main .form-select,
+body.theme-night .site-main textarea,
+body.theme-night .site-main input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),
+body.theme-night .site-main .form-check-input {
+    background: var(--surface-bg-night) !important;
+    color: var(--surface-text-night) !important;
+    border: 1px solid var(--surface-border-night) !important;
+}
+
+body.theme-night .site-main .form-control::placeholder,
+body.theme-night .site-main textarea::placeholder {
+    color: rgba(255, 255, 255, 0.48) !important;
+}
+
+body.theme-night .site-main .form-control:focus,
+body.theme-night .site-main .form-select:focus,
+body.theme-night .site-main textarea:focus,
+body.theme-night .site-main .form-check-input:focus {
+    background: var(--surface-bg-night-strong) !important;
+    color: var(--surface-text-night) !important;
+    border-color: rgba(96, 165, 250, 0.5) !important;
+    box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.16) !important;
+}
+
+body.theme-night .site-main .accordion-button::after,
+body.theme-night .site-main .service-category-toggle::after {
+    color: var(--surface-text-night) !important;
+}
+
+body.theme-night .site-main .gallery-overlay-image,
+body.theme-night .site-main .gallery-img,
+body.theme-night .site-main .gallery-content img,
+body.theme-night .site-main img.rounded-circle,
+body.theme-night .site-main .contact-logo {
+    border-color: var(--surface-border-night);
+}
+
+body.theme-night .home-hero-card {
+    background: rgba(0, 0, 0, 0.38) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
+}
+
+/* Index page specific overrides */
+.site-main .home-page .home-hero-card.glass-card {
+    background: rgba(203, 213, 225, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1) !important;
+    max-width: 590px !important;
+    padding: 1.7rem !important;
+}
+
+.site-main .home-page .home-hero-card.glass-card h1 {
+    font-size: clamp(1.5rem, 2.15vw, 2.28rem) !important;
+}
+
+.site-main .home-page .home-hero-card.glass-card .lead {
+    font-size: clamp(1.56rem, 1.9vw, 1.82rem) !important;
+    margin-bottom: 1.05rem !important;
+    color: #ffffff !important;
+}
+
+.site-main .home-page .home-benefit-card.glass-card {
+    padding: 1.38rem 1.54rem !important;
+}
+
+.site-main .home-page .home-benefit-card.glass-card h4 {
+    font-size: clamp(1.15rem, 1.38vw, 1.38rem) !important;
+}
+
+.site-main .home-page .home-benefit-card.glass-card p {
+    font-size: clamp(0.97rem, 1.1vw, 1.08rem) !important;
+}
+
+body.theme-night .site-main .home-page .home-hero-card.glass-card {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28) !important;
+}
+
+body.theme-night .navbar,
+body.theme-night .site-footer,
+body.theme-night .footer-glass {
+    background: rgba(0, 0, 0, 0.72) !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+}
+
+body.theme-night .navbar .nav-link,
+body.theme-night .navbar .navbar-brand,
+body.theme-night .navbar .btn,
+body.theme-night .navbar .dropdown-toggle,
+body.theme-night .footer-text,
+body.theme-night .footer-link {
+    color: #fff !important;
+}
+
+body.theme-night .pagination .page-link,
+body.theme-night .gallery-pagination .page-link {
+    background: rgba(0, 0, 0, 0.52) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+}
+
+body.theme-night .pagination .page-link:hover,
+body.theme-night .gallery-pagination .page-link:hover {
+    background: rgba(0, 0, 0, 0.68) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.24) !important;
+}
+
+body.theme-night .pagination .page-item.active .page-link,
+body.theme-night .gallery-pagination .page-item.active .page-link {
+    background: rgba(20, 20, 20, 0.78) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+body.theme-night .pagination .page-item.disabled .page-link,
+body.theme-night .gallery-pagination .page-item.disabled .page-link {
+    background: rgba(0, 0, 0, 0.3) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.site-main #servicesAccordion .accordion-button,
+.site-main #servicesAccordion .accordion-body,
+.site-main #servicesAccordion .table,
+.site-main #servicesAccordion .table th,
+.site-main #servicesAccordion .table td {
+    font-family: "Times New Roman", Times, serif !important;
+    font-size: 12pt !important;
+}
+
+.site-main #servicesAccordion .accordion-button {
+    font-weight: 700 !important;
 }
 

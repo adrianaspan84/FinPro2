@@ -263,6 +263,12 @@ msgstr "Счёт"
 msgid "Visos teisės saugomos"
 msgstr "Все права защищены"
 
+msgid "Apsilankymų skaičius:"
+msgstr "Количество посещений:"
+
+msgid "Vieta žemėlapyje"
+msgstr "Местоположение на карте"
+
 #: .\main\templates\main\index.html:13
 msgid "„H-Pro“ – paverskite savo svajonių namų viziją realybe"
 msgstr "H-Pro – воплотите своё видение жилья мечты в реальность"

@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'main/admin/css/premium_admin.css' %}">
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const body = document.body;
+            if (!body) {
+                return;
+            }
+
+            const aurora = document.createElement('div');
+            aurora.className = 'admin-aurora';
+            aurora.innerHTML = [
+                '<span class="admin-aurora__layer admin-aurora__layer--one"></span>',
+                '<span class="admin-aurora__layer admin-aurora__layer--two"></span>',
+                '<span class="admin-aurora__layer admin-aurora__layer--three"></span>'
+            ].join('');
+            body.prepend(aurora);
+
+            const html = document.documentElement;
+
+            function syncAuroraTheme() {
+                const theme = html.getAttribute('data-theme') || 'auto';
+                aurora.classList.toggle('is-light', theme === 'light');
+                aurora.classList.toggle('is-dark', theme !== 'light');
+            }
+
+            syncAuroraTheme();
+
+            const observer = new MutationObserver(syncAuroraTheme);
+            observer.observe(html, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+
+            let tick = 0;
+            window.setInterval(function () {
+                tick += 1;
+                aurora.style.setProperty('--aurora-shift-x', Math.sin(tick / 18) * 18 + 'px');
+                aurora.style.setProperty('--aurora-shift-y', Math.cos(tick / 22) * 14 + 'px');
+                aurora.style.setProperty('--aurora-rotate', Math.sin(tick / 26) * 6 + 'deg');
+            }, 120);
+        });
+    </script>
+{% endblock %}
+
+{% block title %}FinPro Admin{% endblock %}

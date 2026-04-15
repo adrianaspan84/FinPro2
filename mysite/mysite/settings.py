@@ -10,8 +10,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def env_flag(name: str, default: bool) -> bool:
@@ -20,13 +18,11 @@ def env_flag(name: str, default: bool) -> bool:
         return default
     return value.strip().lower() in {'1', 'true', 'yes', 'on'}
 
-
 def env_list(name: str, default: list[str]) -> list[str]:
     value = os.getenv(name)
     if not value:
         return default
     return [item.strip() for item in value.split(',') if item.strip()]
-
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-fjm7vbd1j4&x6%8x1(!m1a=#pnag^z+(f!w&@arfi=2g8$ebu7')
 DEBUG = env_flag('DJANGO_DEBUG', True)
